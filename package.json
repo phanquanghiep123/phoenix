@@ -1,0 +1,28 @@
+{
+  "name": "scjs",
+  "version": "1.0.0",
+  "description": "mvc framword nodejs",
+  "main": "public/server.js",
+  "dependencies": {
+    "express": "^4.16.2",
+    "mysql": "github:mysqljs/mysql"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/phanquanghiep123/mvcNodeJS.git"
+  },
+  "author": "quanghiep",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/phanquanghiep123/mvcNodeJS/issues"
+  },
+  "homepage": "https://github.com/phanquanghiep123/mvcNodeJS#readme",
+  "keywords": [
+    "mvc",
+    "nodejs"
+  ]
+}
