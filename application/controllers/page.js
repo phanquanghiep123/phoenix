@@ -1,4 +1,4 @@
-_Controller.home = {
+_Controller.page = {
 	__construct : function(){
 		
 	},
