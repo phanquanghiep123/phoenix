@@ -1,3 +1,14 @@
+
+_Route.add(
+	{
+		type       : "get",//put or post or get or all.
+		url        : "/",//listening request.
+		controller : "home", // controller url.
+		action     : "index",// action of funciton controller
+		midellwell : _Midellwell.auth(), // is function run before route this.
+		rule       : {"id" : "0-9+","member" : "A-Z,a-z"} // validate parameter passed from request url.
+	}
+);
 _Route.add(
 	{
 		type       : "get",//put or post or get or all.
