@@ -3,12 +3,7 @@ _Controller.home = {
 		
 	},
 	index : function(a,b){
-		this.load.model("members");
-		this.members.db.from("members");
-		this.members.db.get(function(error,rows,fidel){
-			console.log(error);
-		});
-		//console.log(this.members);
+		this.load.view("home",{a:a,b:b});
 	},
 	hello : function(a){
 		write(a);
