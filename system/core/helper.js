@@ -129,6 +129,15 @@ Array.prototype.clean = function(deleteValue) {
 	}
 	return this;
 }
-
-
-
+String.prototype.addslashes = function() {
+    this.replace(/\\/g, '\\\\').
+    replace(/\u0008/g, '\\b').
+    replace(/\t/g, '\\t').
+    replace(/\n/g, '\\n').
+    replace(/\f/g, '\\f').
+    replace(/\r/g, '\\r').
+    replace(/'/g, '\\\'').
+    replace(/"/g, '\\"').
+    replace("'", "\'");
+    return this;
+}

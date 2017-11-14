@@ -9,14 +9,10 @@ function Phoenix(argument) {
 		var phoenix = _Controller[_Controller.info.controller].phoenix;
 		if ($data != null) {
 			for (var key in $data ){
-				if (typeof $data[key] === "object")  value_set = JSON.stringify($data[key]) ;
-				else value_set = (isNaN($data[key]) == true) ? '"' + $data[key] + '"' : $data[key];
-				strEval += "var " + key + " = " + value_set + ";\n";
+				eval("var " + key + " = $data[key];" );
 			}
 		}
-
 		try {
-			eval(strEval);
 			view = view.split("<?node");
             var countArg = view.length;
             var evalArg ;
