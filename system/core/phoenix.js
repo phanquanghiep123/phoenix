@@ -1,15 +1,20 @@
 function Phoenix(argument) {
+	var _load = require("./loader.js");
+	var _db   = require("./db.js");
+	this.load = new _load();
+	this.db   = new _db();
 	this.loadview = function($file, $data, $return = false){
 		var view = _Fs.readFileSync(_F_views + $file, 'utf8');
 		var DataString = strEval = evalString = "";
 		var phoenix = _Controller[_Controller.info.controller].phoenix;
 		if ($data != null) {
 			for (var key in $data ){
-				if (typeof $data[key] === "object")  value_set = JSON.stringify(value);
+				if (typeof $data[key] === "object")  value_set = JSON.stringify($data[key]) ;
 				else value_set = (isNaN($data[key]) == true) ? '"' + $data[key] + '"' : $data[key];
-				strEval += key + " = " + value_set + ";";
+				strEval += "var " + key + " = " + value_set + ";\n";
 			}
 		}
+
 		try {
 			eval(strEval);
 			view = view.split("<?node");

@@ -1,8 +1,7 @@
 _Config.database = {
-	hostname : "localhost",
+	hostname : "127.0.0.1",
 	username : "root",
-	passwor  : "",
+	password : "",
 	database : "dezignwall",
-	port     : "8080",
-	driver   : "mysql"
+	driver   : "mysql",
 }

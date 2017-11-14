@@ -1,7 +1,9 @@
 _Model.members  = {
-	getall : function(){
-		this.db.from("members AS tbl2");
-		this.db.where("tbl2.id",1);
-		 
-	}	 
+	getall : function($callback){
+		this.db.from("members");
+		this.db.limit(20,30);
+		this.db.get(function(e,r,f){
+			$callback(e,r,f);
+		});
+	}
 }

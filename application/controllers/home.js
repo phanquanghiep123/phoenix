@@ -3,13 +3,17 @@ _Controller.home = {
 		
 	},
 	index : function(a = 1,b =3){
-		console.log("11");
-		this.load.view("home.html",{a:a,b:b});
-		this.response.end();
+		var that = this;
+		that.load.model("members");
+		that.members.getall(function(e,r,f){
+			that.load.view("home.html",{members:r,a:a,b:b});
+			that.end();
+		});
+
 	},
 	hello : function(a){
 		write(a);
-		this.response.end();
+		this.end();
 	},
 	__destructors : function(){
 		//console.log("0");

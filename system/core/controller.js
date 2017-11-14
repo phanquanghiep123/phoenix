@@ -4,13 +4,6 @@ function Controller() {
 	this.next = function(){
 		this.response.next();
 	}
-	this.return = 0;
-	this.wait = function(){
-		this.return++;
-	}	
-	this.endwait = function(){
-		this.return--;
-	}
 	this.end = function(){
 		this.response.end();
 	}
@@ -22,16 +15,8 @@ function Controller() {
 	this.info.view       = [];
 	this.info.model      = [];
 	this.info.controller = [];
-	this.construct   = function(){console.log("construct")}
-	this.destructors =  function(){
-		/*do {
-		    console.log(this.return);
-		}
-		while (this.return >= 0){
-			this.end();
-		}*/
-		console.log("destructors") ;
-	}
+	this.construct   = function(){console.log("construct");}
+	this.destructors =  function(){ console.log("destructors");}
 	this.init = function($object){
 		var that  = this[$object];
 		var _this = this;

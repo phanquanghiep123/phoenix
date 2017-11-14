@@ -1,6 +1,6 @@
 function Model() {
 	var _db   = require("./db.js");
-	this.db   = new _db();	
+	this.db   = new _db();
 	this.__construct   = function(){console.log("__construct")}
 	this.__destructors =  function(){console.log("__destructors")}
 	this.init = function($object){
