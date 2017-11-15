@@ -11,7 +11,7 @@ _Route.add(
 _Route.add(
 	{
 		type       : "get",//put or post or get or all.
-		url        : "/page",//listening request.
+		url        : "/page/:id",//listening request.
 		controller : "page", // controller url.
 		action     : "index",// action of funciton controller
 		midellwell : _Midellwell.auth(), // is function run before route this.

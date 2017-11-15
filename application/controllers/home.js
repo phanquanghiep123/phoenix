@@ -7,7 +7,6 @@ _Controller.home = {
 		that.load.model("members");
 		that.members.getall(function(e,r,f){
 			that.load.view("home.html",{members:r,a:a,b:b});
-			that.end();
 		});
 
 	},

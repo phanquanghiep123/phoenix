@@ -141,3 +141,17 @@ String.prototype.addslashes = function() {
     replace("'", "\'");
     return this;
 }
+Array.prototype.foreach = function($callback){
+	for(var i in this){
+		if(isNaN (i) === false){
+			$callback(i,this[i]);
+		}
+	}
+	return true;
+}
+Object.prototype.foreach = function($callback){
+	for(var i in this){
+		$callback(i,this[i]);
+	}
+	return true;
+}

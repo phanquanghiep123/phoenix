@@ -1,2 +1,0 @@
-_Midellwell.auth = function(){ }
-

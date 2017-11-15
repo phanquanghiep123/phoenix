@@ -7,10 +7,9 @@
 <h1>Phan quang hiep</h1>
  
 <?node 
-    console.log(members);
-   	for (var item in members){
-   		write(members[item].email + "<br/>");
-	}
+	members.foreach(function(key,val){
+		write(val.email+"<br/>");
+	})
 ?>
 </body>
 </html>

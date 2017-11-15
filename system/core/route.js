@@ -33,14 +33,17 @@ function Router(){
 		var params    = _Controller.request.params;
 		var stringP   = "";
 		var argparams = [];
-		for (var key in params){
-			if(isNaN(params[key].trim()) == true) params[key] = '"'+params[key]+'"';
-				if(params[key] != null && params[key].trim() != "");
-					argparams.push(params[key].trim());
-		}
+		if(params.length > 0 ){
+			params.foreach(function(key,val){
+				if(typeof val !== "undefined" && val != null){
+					if(isNaN(val.trim()) == true) val = '"'+val+'"';
+						if(val != null && val.trim() != "");
+							argparams.push(val.trim());
+				}
+			});
+		}	
 		stringP = argparams.join(",");
 		require(_F_controlers + c );
-		
 		var StringEval = "_Controller['"+$Controller+"']['"+$Action+"']("+stringP+");";
 		_Controller.construct();
 		_Controller.init(c);
