@@ -1,5 +1,6 @@
 _Controller.home = {
-	__construct : function(){
+
+	_construct : function(){
 		// auto call before.
 	},
 	demoview : function(){
@@ -11,7 +12,7 @@ _Controller.home = {
 			that.load.view("demomodel.html",{members:r,a:a,b:b});
 		});
 	}
-	__destructors : function(){
+	_destructors : function(){
 		// auto call affer.
 	}
 

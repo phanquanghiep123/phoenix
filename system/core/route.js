@@ -45,10 +45,10 @@ function Router(){
 		stringP = argparams.join(",");
 		require(_F_controlers + c );
 		var StringEval = "_Controller['"+$Controller+"']['"+$Action+"']("+stringP+");";
-		_Controller.construct();
+		_Controller.__construct();
 		_Controller.init(c);
 		try {
-			_Controller[$Controller].__construct();
+			_Controller[$Controller]._construct();
 		} catch (e) {
 			if (e instanceof SyntaxError) write(e.message);
 			else write(e);
@@ -60,12 +60,12 @@ function Router(){
 			else write(e);
 		}
 		try {
-			_Controller[$Controller].__destructors();
+			_Controller[$Controller]._destructors();
 		} catch (e) {
 			if (e instanceof SyntaxError) write(e.message);
 			else write(e);
 		}	
-		_Controller.destructors();
+		_Controller.__destructors();
 	}
 }
 module.exports = Router;

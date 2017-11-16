@@ -15,8 +15,8 @@ function Controller() {
 	this.info.view       = [];
 	this.info.model      = [];
 	this.info.controller = [];
-	this.construct   = function(){console.log("construct");}
-	this.destructors =  function(){ 
+	this.__construct   = function(){console.log("construct");}
+	this.__destructors =  function(){ 
         var views = this.load.views;
         var that  = this;
         views.foreach (function(key,val){
