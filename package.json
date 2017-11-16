@@ -5,22 +5,25 @@
   "main": "public/server.js",
   "dependencies": {
     "express": "^4.16.2",
-    "mysql": "github:mysqljs/mysql"
+    "mysql": "github:mysqljs/mysql",
+    "nodemon": "^1.12.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "nodemon": "^1.12.1"
+  },
   "scripts": {
     "start": "node public/server.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/phanquanghiep123/mvcNodeJS.git"
+    "url": "git+https://github.com/phanquanghiep123/phoenix.git"
   },
   "author": "quanghiep",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/phanquanghiep123/mvcNodeJS/issues"
+    "url": "https://github.com/phanquanghiep123/phoenix/issues"
   },
-  "homepage": "https://github.com/phanquanghiep123/mvcNodeJS#readme",
+  "homepage": "https://github.com/phanquanghiep123/phoenix#readme",
   "keywords": [
     "mvc",
     "nodejs"

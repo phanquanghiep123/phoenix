@@ -20,10 +20,9 @@ function Mysql(){
 	  if ($err) {
 	    console.error('error connecting: ' + $err.stack);
 	  }
-	  //console.log('connected as id ' + connection.threadId);
 	});
 	var sqlPrint = "";
-	this.seclect = function($columns){
+	this.select = function($columns){
 		columns = $columns;
 		return true;
 	}
@@ -31,7 +30,7 @@ function Mysql(){
 		table = $table;
 		return true;
 	}
-	this.join = function($table,$ondata,$type = ""){
+	this.join = function($table, $ondata , $type = ""){
 		relationship.push($type.trim() + " JOIN " + $table.trim() + " ON " + $ondata.trim());
 		return true;
 	}
@@ -114,7 +113,7 @@ function Mysql(){
 		return true;
 	}
 	this.limit = function($offset,$limit){
-		limit = "LIMIT " + $offset + " , " + $limit ;
+		limit = " LIMIT " + $offset + " , " + $limit ;
 		return true;
 	}
 	this.get = function($callback){
@@ -125,6 +124,7 @@ function Mysql(){
 		if(stringcondition != "" )
 			stringcondition = "WHERE" + stringcondition;
 		sql = "SELECT " + columns + " FROM " + table +" " + stringJoin + stringcondition  + limit;
+		console.log(sql);
 		var options = {sql: sql, nesttables: false};
 		this.connection.query(options,function(err, rows, fields){
 			$callback(err, rows, fields);

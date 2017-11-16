@@ -5,12 +5,21 @@ function Loader(argument) {
 		_Model.init($file);
 		_Controller[_Controller.info.controller][$file]= _Model[$file];
 	}
-	this.view = function( $file = "", $data = {}, $return = false){
-		var dataload = {file : $file,data : $data, return : $return};
-		_Controller.info.view.push(dataload);
-		var view = _Phoenix.loadview($file, $data, $return);
-		if($return) return view;
-		else write(view);
+	this.views = [];
+	this.view  = function( $file = "", $data = {}, $return = false){
+		if($return === false){
+			this.views.push({file:$file, data:$data });
+		    return true;
+		}
+		else
+		{
+			var view = _Phoenix.loadview($file, $data, $return);
+			return view;
+		}	
+	}
+	this.sentView = function ($file = "", $data = {}){
+		var view = _Phoenix.loadview($file, $data, false);
+		write(view);
 	}
 	this.helper = function (){
 		_Controller.next;

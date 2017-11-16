@@ -9,14 +9,22 @@ function Controller() {
 	}
 	this.info = [];
 	var _load = require("./loader.js");
-	var _db   = require("./db.js");
 	this.load = new _load();
-	this.db   = new _db();	
+	var _db   = require("./db.js");
+	this.db   = new _db();
 	this.info.view       = [];
 	this.info.model      = [];
 	this.info.controller = [];
 	this.construct   = function(){console.log("construct");}
-	this.destructors =  function(){ console.log("destructors");}
+	this.destructors =  function(){ 
+        var views = this.load.views;
+        var that  = this;
+        views.foreach (function(key,val){
+        	that.load.sentView(val.file,val.data);
+        });
+        this.load.views = [];
+        this.end();
+	}
 	this.init = function($object){
 		var that  = this[$object];
 		var _this = this;
