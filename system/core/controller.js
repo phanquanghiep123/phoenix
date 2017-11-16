@@ -15,14 +15,17 @@ function Controller() {
 	this.info.view       = [];
 	this.info.model      = [];
 	this.info.controller = [];
-	this.__construct   = function(){console.log("construct");}
+	this.__construct   = function(){
+		this.info = [];
+		this.load.views = [];
+	}
 	this.__destructors =  function(){ 
         var views = this.load.views;
         var that  = this;
+        console.log(views);
         views.foreach (function(key,val){
         	that.load.sentView(val.file,val.data);
         });
-        this.load.views = [];
         this.end();
 	}
 	this.init = function($object){

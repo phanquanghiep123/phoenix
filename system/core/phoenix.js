@@ -6,7 +6,6 @@ function Phoenix(argument) {
 	this.loadview = function($file, $data, $return = false){
 		var view = _Fs.readFileSync(_F_views + $file, 'utf8');
 		var DataString = strEval = evalString = "";
-		var phoenix = _Controller[_Controller.info.controller].phoenix;
 		if ($data != null) {
 			for (var key in $data ){
 				eval("var " + key + " = $data[key];" );

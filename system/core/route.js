@@ -48,7 +48,7 @@ function Router(){
 		_Controller.__construct();
 		_Controller.init(c);
 		try {
-			_Controller[$Controller]._construct();
+			_Controller[$Controller].construct();
 		} catch (e) {
 			if (e instanceof SyntaxError) write(e.message);
 			else write(e);
@@ -60,7 +60,7 @@ function Router(){
 			else write(e);
 		}
 		try {
-			_Controller[$Controller]._destructors();
+			_Controller[$Controller].destructors();
 		} catch (e) {
 			if (e instanceof SyntaxError) write(e.message);
 			else write(e);
