@@ -7,19 +7,11 @@ function Mysql(){
 	var limit           = "";
 	var relationship 	= [];
 	var condition 		= [];
-	var dataConfig      = _Config.database;
-	var connectData     = {
-		host     : dataConfig.hostname,
-		user     : dataConfig.username,
-		password : dataConfig.password,
-		database : dataConfig.database,
-		port     : dataConfig.port
-	};
-	this.connection = that.createConnection(connectData);
+	this.connection = that.createConnection(_Config.database[_Config.database.driver]);
 	this.connection.connect(function($err) {
-	  if ($err) {
-	    console.error('error connecting: ' + $err.stack);
-	  }
+		if ($err) {
+			console.error('error connecting: ' + $err.stack);
+		}
 	});
 	var sqlPrint = "";
 	this.select = function($columns){

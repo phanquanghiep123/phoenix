@@ -1,13 +1,5 @@
-var driver;
-switch(_Config.database.driver) {
-    case "mysql":
-        driver = require("./drivers/mysql");
-        break;
-    case "NoSQL":
-        driver = require("./drivers/nosql");
-        break;
-    case "PostgreSQL":
-        driver = require("./drivers/postgresql");
-   		break;
+var driver = null;
+if(_Config.database.driver != null){
+	driver = require("./drivers/"+_Config.database.driver);
 }
 module.exports = driver;

@@ -8,7 +8,7 @@ function Loader(argument) {
 	this.views = [];
 	this.view  = function( $file = "", $data = {}, $return = false){
 		if($return === false){
-			this.views.push({file:$file, data:$data });
+			this.views.push({file : $file, data : $data });
 		    return true;
 		}
 		else

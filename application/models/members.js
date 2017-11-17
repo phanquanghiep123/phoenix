@@ -1,5 +1,5 @@
 _Model.members  = {
-	getall : function($callback,$offset,$limit){
+	getall : function($callback,$offset = 0,$limit = 10){
 		this.db.from("photos");
 		this.db.limit($offset,$limit);
 		this.db.get(function(e,r,f){
@@ -7,7 +7,7 @@ _Model.members  = {
 		});
 	},
 
-	getalljoin : function($callback,$offset,$limit){
+	getalljoin : function($callback,$offset = 0,$limit = 10){
 		this.db.from("photos");
 		this.db.join("members","members.id = photos.member_id","left");
 		this.db.limit($offset,$limit);

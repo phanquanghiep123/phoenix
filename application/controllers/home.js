@@ -6,9 +6,10 @@ _Controller.home = {
 		this.load.view("demoview.html");
 	},
 	demomodel: function(){
-		this.load.model("members"); 
-		this.members.getall (function(e,r,f){
-			that.load.view("demomodel.html",{members:r,a:a,b:b});
+		var that = this;
+		that.load.model("members"); 
+		that.members.getall (function(e,r,f){
+			that.load.view("demomodel.html",{members:r});
 		});
 	},
 	destructors : function(){
