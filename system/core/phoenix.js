@@ -26,16 +26,15 @@ function Phoenix(argument) {
 						eval(evalString.trim());
 						DataString += evalArg[1];
 					} catch (e) {
-						if (e instanceof SyntaxError) write(e.message);
-						else write(e);
+						if (e instanceof SyntaxError) _Controller.info.error.push({detail:e ,message : e.message});
+						else _Controller.info.error.push({detail:e ,message : e});
 					}
 				}
             }
-			
 		}
 		catch (e) {
-			if (e instanceof SyntaxError) write(e.message);
-			else write(e);
+			if (e instanceof SyntaxError) _Controller.info.error.push({detail:e ,message : e.message});
+			else _Controller.info.error.push({detail:e ,message : e});
 		}
 		return DataString;
 	}

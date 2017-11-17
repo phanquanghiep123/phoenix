@@ -1,6 +1,20 @@
 function Controller() {
 	this.request;
 	this.response;
+	this.wait = 0;
+	this.fwait = function($w = false){
+		if($w == false){
+			this.wait ++;
+		}else{
+			this.wait--;
+		}
+	} 
+	this.swait = function(){
+		for (var i = this.wait; i > 0 ;) {
+  			i = this.wait;
+  			console.log(i);
+        }
+	}
 	this.next = function(){
 		this.response.next();
 	}
@@ -15,17 +29,20 @@ function Controller() {
 	this.info.view       = [];
 	this.info.model      = [];
 	this.info.controller = [];
+	this.info.error      = [];
 	this.__construct   = function(){
 		
 	}
 	this.__destructors =  function(){ 
-        var views = this.load.views;
-        var that  = this;
-        views.foreach (function(key,val){
-        	that.load.sentView(val.file,val.data);
-        });
-        this.load.views = [];
-        this.end();
+        var that = this; 
+        that.swait();
+        var errors = that.info.error;
+        if(Object.keys(errors).length > 0){
+        	errors.foreach (function(key,val){
+	        	write(val.message);
+	        });
+        }
+        that.end();
 	}
 	this.init = function($object){
 		var that  = this[$object];

@@ -1,6 +1,6 @@
 _Controller.home = {
 	construct : function(){
-		// auto call before.
+		this.load.view("demoview.html");
 	},
 	demoview : function(){
 		this.load.view("demoview.html");
@@ -8,12 +8,12 @@ _Controller.home = {
 	demomodel: function(){
 		var that = this;
 		that.load.model("members"); 
-		that.members.getall (function(e,r,f){
+		that.members.getall (function(r,f){
 			that.load.view("demomodel.html",{members:r});
 		});
 	},
 	destructors : function(){
-		// auto call affer.
+		this.load.view("demoview.html");
 	}
 
 }

@@ -8,14 +8,26 @@ function Mysql(){
 	var relationship 	= [];
 	var condition 		= [];
 	this.connection = that.createConnection(_Config.database[_Config.database.driver]);
-	this.connection.connect(function($err) {
-		if ($err) {
-			console.error('error connecting: ' + $err.stack);
-		}
-	});
+	try{
+		this.connection.connect(function($err) {
+			if ($err) {
+				_Controller.info.error.push({detail:$err ,message : $err.stack});
+			}
+		});
+	}catch(e){
+		if (e instanceof SyntaxError)  _Controller.info.error.push({detail:e ,message : e.message});
+		else  _Controller.info.error.push({detail:e ,message : e});
+	}
 	var sqlPrint = "";
 	this.select = function($columns){
-		columns = $columns;
+		var joinString = $columns.join("`,`");
+		joinString = joinString.replaceAll("````","`");
+		joinString = joinString.replaceAll("```","`");
+		joinString = joinString.replaceAll("``","`");
+		joinString = "`"+joinString+"`";
+		joinString = joinString.replaceAll(".","`.`");
+		joinString = joinString.replaceAll("`*`","*");
+		columns    = joinString;
 		return true;
 	}
 	this.from = function($table){
@@ -109,6 +121,8 @@ function Mysql(){
 		return true;
 	}
 	this.get = function($callback){
+		_Controller.swait();
+		_Controller.fwait(false);
 		rows    		    = [];
 		var stringcondition = condition.join(" ");
 		var stringJoin      = relationship.join(" ");
@@ -116,11 +130,22 @@ function Mysql(){
 		if(stringcondition != "" )
 			stringcondition = "WHERE" + stringcondition;
 		sql = "SELECT " + columns + " FROM " + table +" " + stringJoin + stringcondition  + limit;
-		console.log(sql);
 		var options = {sql: sql, nesttables: false};
-		this.connection.query(options,function(err, rows, fields){
-			$callback(err, rows, fields);
-		});
+		try {
+			this.connection.query(options,function(err, rows, fields){
+				if(err == null){
+					$callback(rows, fields);
+				}
+			    else {
+			    	_Controller.info.error.push({detail:err ,message : err.sqlMessage + "<br>" + "sql: " + err.sql});
+			    }
+			    _Controller.fwait(true);
+			});
+		}catch (e){
+			if (e instanceof SyntaxError) _Controller.info.error.push({detail:e ,message : e.message});
+			else _Controller.info.error.push({detail:e ,message : e});
+			_Controller.fwait(true);
+		}
 		sqlPrint	    += (sql+ " <br/>");	
 		sql     		= "";
 		table   		= null;
