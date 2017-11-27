@@ -1,4 +1,4 @@
-function Mysql(){
+function driverMysql(){
 	var that            = require('mysql');
 	var rows    		= [];
 	var sql     		= "";
@@ -121,8 +121,6 @@ function Mysql(){
 		return true;
 	}
 	this.get = function($callback){
-		_Controller.swait();
-		_Controller.fwait(false);
 		rows    		    = [];
 		var stringcondition = condition.join(" ");
 		var stringJoin      = relationship.join(" ");
@@ -139,12 +137,12 @@ function Mysql(){
 			    else {
 			    	_Controller.info.error.push({detail:err ,message : err.sqlMessage + "<br>" + "sql: " + err.sql});
 			    }
-			    _Controller.fwait(true);
+			    _Controller.endwait();
 			});
 		}catch (e){
 			if (e instanceof SyntaxError) _Controller.info.error.push({detail:e ,message : e.message});
 			else _Controller.info.error.push({detail:e ,message : e});
-			_Controller.fwait(true);
+			_Controller.endwait();
 		}
 		sqlPrint	    += (sql+ " <br/>");	
 		sql     		= "";
@@ -240,4 +238,4 @@ function Mysql(){
 		}
 	}
 }
-module.exports = Mysql;
+module.exports = driverMysql;

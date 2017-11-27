@@ -13,19 +13,18 @@ function Loader(argument) {
 		
 	}
 	this.view  = function( $file = "", $data = {}, $return = false){
-		_Controller.swait();
-		_Controller.fwait(false);
+		_Controller.wait(false);
 		try {
 			var dataload = {file : $file,data : $data, return : $return};
 			_Controller.info.view.push(dataload);
 			var view = _Phoenix.loadview($file, $data, $return);
-			_Controller.fwait(true);
+			_Controller.endwait(true);
 			if($return) return view;
 			else write(view);
 		}catch (e){
 			if (e instanceof SyntaxError) _Controller.info.error.push({detail:e ,message : e.message});
 			else _Controller.info.error.push({detail:e ,message : e});
-			_Controller.fwait(true);
+			_Controller.endwait(true);
 		}
 		return true;
 	}

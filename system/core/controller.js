@@ -1,19 +1,12 @@
 function Controller() {
 	this.request;
 	this.response;
-	this.wait = 0;
-	this.fwait = function($w = false){
-		if($w == false){
-			this.wait ++;
-		}else{
-			this.wait--;
-		}
+	this.waitdding = 0;
+	this.wait = function(){
+		this.waitdding++;
 	} 
-	this.swait = function(){
-		for (var i = this.wait; i > 0 ;) {
-  			i = this.wait;
-  			console.log(i);
-        }
+	this.endwait = function(){
+		this.waitdding--;
 	}
 	this.next = function(){
 		this.response.next();
@@ -35,7 +28,10 @@ function Controller() {
 	}
 	this.__destructors =  function(){ 
         var that = this; 
-        that.swait();
+        console.log(that.waitdding);
+        for (that.waitdding; that.waitdding > 0 ;that.waitdding = that.waitdding) {
+  			console.log(that.waitdding);
+        }
         var errors = that.info.error;
         if(Object.keys(errors).length > 0){
         	errors.foreach (function(key,val){
