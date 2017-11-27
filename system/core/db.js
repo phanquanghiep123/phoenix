@@ -1,19 +1,20 @@
 function Db() {
-	this.connectDriver;
+	this.connectDriver = {};
 	this.driver;
 	this.init = function (){
+		console.log(_Config.database);
 		switch(_Config.database.driver) {
-		    case "mysql":
-		        connectDriver = require("./drivers/mysql");
+		    case "Mysql":
+		        this.connectDriver = require("./drivers/mysql");
 		        break;
 		    case "NoSQL":
-		        connectDriver = require("./drivers/nosql");
+		        this.connectDriver = require("./drivers/nosql");
 		        break;
 		    case "PostgreSQL":
-		        connectDriver = require("./drivers/postgresql");
+		        this.connectDriver = require("./drivers/postgresql");
 		   		break;
 		}
-		this.driver = new connectDriver();
+		this.driver = new this.connectDriver(_Config.database[_Config.database.driver]); 
 	}
 	this.seclect = function(columns){
 		this.driver.seclect(columns)

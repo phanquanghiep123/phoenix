@@ -1,4 +1,4 @@
-function driverMysql(){
+function driverMysql(database){
 	var that            = require('mysql');
 	var rows    		= [];
 	var sql     		= "";
@@ -7,7 +7,7 @@ function driverMysql(){
 	var limit           = "";
 	var relationship 	= [];
 	var condition 		= [];
-	this.connection = that.createConnection(_Config.database[_Config.database.driver]);
+	this.connection = that.createConnection(database);
 	try{
 		this.connection.connect(function($err) {
 			if ($err) {
