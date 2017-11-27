@@ -2,7 +2,6 @@ function Db() {
 	this.connectDriver = {};
 	this.driver;
 	this.init = function (){
-		console.log(_Config.database);
 		switch(_Config.database.driver) {
 		    case "Mysql":
 		        this.connectDriver = require("./drivers/mysql");
@@ -15,6 +14,9 @@ function Db() {
 		   		break;
 		}
 		this.driver = new this.connectDriver(_Config.database[_Config.database.driver]); 
+		console.log(this.get(function(){
+			console.log("ghjhgjhg");
+		}));
 	}
 	this.seclect = function(columns){
 		this.driver.seclect(columns)
@@ -46,10 +48,9 @@ function Db() {
 	this.limit = function(offset,limit){
 		this.driver.limit(offset,limit); 
 	}
-	this.get = function($callback){
+	this.get = function(callback){
 		_Controller.wait();
 		this.driver.get(callback); 
-
 	}
 	this.printsql = function(){
 		this.driver.printsql(); 

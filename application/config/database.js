@@ -6,6 +6,7 @@ _Config.database = {
 		user     : "root",
 		password : "",
 		database : "dezignwall",
+		port     : 8080
 	},
 	NoSQL : {
 		host     : "127.0.0.1",
