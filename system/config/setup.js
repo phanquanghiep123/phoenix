@@ -10,6 +10,7 @@ function setup(argument) {
 	this._F_librarys   = this._F_app + "librarys/";
 	this._F_https      = this._F_app + "https/";
 	this._F_config     = this._F_app + "config/";
+	this._F_core       = this._F_app + "core/";
 	// !set folder.
 }
 module.exports = setup;

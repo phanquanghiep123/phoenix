@@ -2,11 +2,10 @@
 _Config.database = {
 	driver : "Mysql", //default null.
 	Mysql  : {
-		host     : "127.0.0.1",
-		user     : "root",
-		password : "",
-		database : "dezignwall",
-		port     : 8080
+		host: "localhost",
+		user: "root",
+		password: "",
+		database: "dezignwall"
 	},
 	NoSQL : {
 		host     : "127.0.0.1",

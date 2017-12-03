@@ -1,7 +1,7 @@
 CapitalizeFirstLetter = function(string) {
 	return string.charAt(0).toUpperCase() + string.slice(1);
 }
-Gen_slug = function(str) {
+Gen_Slug = function(str) {
 	str = str.replace(/^\s+|\s+$/g, ''); // trim
 	str = str.toLowerCase();
 	// remove accents, swap ñ for n, etc
@@ -83,7 +83,7 @@ end = function() {
 }
 
 base_url = function(url=""){
-	return (_BaseUrl + url);
+	return (_Config.local.host +"/"+  url);
 }
 HttpRequestPost = function($key = null){
 	if(_Method == "post"){
@@ -154,4 +154,11 @@ Object.prototype.foreach = function($callback){
 		$callback(i,this[i]);
 	}
 	return true;
+}
+
+autoloadMyController = function ($arg){
+	$arg.foreach(function(key,val){
+		var include = require(_F_core + val["file"]);
+		eval(val.name + " = new include(); "+val.name + " = Object.assign(_Controller,"+val.name+") ;");
+	});
 }

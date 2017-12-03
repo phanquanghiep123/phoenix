@@ -129,15 +129,13 @@ function driverMysql(database){
 			stringcondition = "WHERE" + stringcondition;
 		sql = "SELECT " + columns + " FROM " + table +" " + stringJoin + stringcondition  + limit;
 		var options = {sql: sql, nesttables: false};
-		try {
+		try { 
 			this.connection.query(options,function(err, rows, fields){
-				if(err == null){
+				if (err) 
+					_Controller.info.error.push({detail:err ,message : err.sqlMessage});
+				else
 					$callback(rows, fields);
-				}
-			    else {
-			    	_Controller.info.error.push({detail:err ,message : err.sqlMessage + "<br>" + "sql: " + err.sql});
-			    }
-			    _Controller.endwait();
+				_Controller.endwait();
 			});
 		}catch (e){
 			if (e instanceof SyntaxError) _Controller.info.error.push({detail:e ,message : e.message});

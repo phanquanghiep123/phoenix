@@ -43,29 +43,34 @@ function Router(){
 			});
 		}	
 		stringP = argparams.join(",");
-		require(_F_controlers + c );
-		var StringEval = "_Controller['"+$Controller+"']['"+$Action+"']("+stringP+");";
-		_Controller.__construct();
-		_Controller.init(c);
+		var objectCt = require(_F_controlers + c );
+		var controller = new objectCt();
 		try {
-			_Controller[$Controller].construct();
+			if(typeof controller.extent !== "undefined" && typeof controller.extent === "object")				 
+				controller = Object.assign(controller.extent,controller);
+			else
+				controller = Object.assign(_Controller,controller);
 		} catch (e) {
+			controller = Object.assign(_Controller,controller);
 			if (e instanceof SyntaxError) write(e.message);
 			else write(e);
 		}
+		var StringEval = "controller['"+$Action+"']("+stringP+");";
+		_Controller.__construct();
+		if(typeof controller.construct === "function"){
+			controller.construct();
+		}  
 		try {
 			eval(StringEval.trim());
 		} catch (e) {
 			if (e instanceof SyntaxError) write(e.message);
 			else write(e);
 		}
-		try {
-			_Controller[$Controller].destructors();
-		} catch (e) {
-			if (e instanceof SyntaxError) write(e.message);
-			else write(e);
-		}	
+		if(typeof controller.destructors === "function"){
+			controller.destructors();
+		} 
 		_Controller.__destructors();
+		
 	}
 }
 module.exports = Router;

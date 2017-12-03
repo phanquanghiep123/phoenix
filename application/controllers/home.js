@@ -1,19 +1,21 @@
-_Controller.home = {
-	construct : function(){
+function home (){
+	this.extent   = AdminController;
+	this.demoview = function(){
 		this.load.view("demoview.html");
 	},
-	demoview : function(){
-		this.load.view("demoview.html");
-	},
-	demomodel: function(){
+	this.demomodel = function(){
 		var that = this;
 		that.load.model("members"); 
-		that.members.getall (function(r,f){
-			that.load.view("demomodel.html",{members:r});
-		});
-	},
-	destructors : function(){
-		this.load.view("demoview.html");
-	}
+		that.members.getall(function(r,f){
+			r.foreach (function(key ,val){
+				write("<html><body>");
+				write(base_url(val.email)+"<br>");
+				write("</body></html>");
 
+			})
+	
+		},0,100); 
+	}	
 }
+module.exports = home;
+

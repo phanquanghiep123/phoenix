@@ -14,9 +14,6 @@ function Db() {
 		   		break;
 		}
 		this.driver = new this.connectDriver(_Config.database[_Config.database.driver]); 
-		console.log(this.get(function(){
-			console.log("ghjhgjhg");
-		}));
 	}
 	this.seclect = function(columns){
 		this.driver.seclect(columns)
