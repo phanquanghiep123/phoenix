@@ -1,8 +1,8 @@
 function home (){
-	this.extent   = AdminController;
-	this.demoview = function(){
-		this.load.view("demoview.html");
-	},
+	this.extent   = MyController;
+	this.index = function(){
+		this.load.view("demomodel.html");
+	}
 	this.demomodel = function(){
 		var that = this;
 		that.load.model("members"); 
@@ -11,8 +11,7 @@ function home (){
 				write("<html><body>");
 				write(base_url(val.email)+"<br>");
 				write("</body></html>");
-
-			})
+			});
 	
 		},0,100); 
 	}	

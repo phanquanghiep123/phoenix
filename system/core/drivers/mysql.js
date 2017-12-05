@@ -5,6 +5,8 @@ function driverMysql(database){
 	var table   		= null;
 	var columns 		= "*";
 	var limit           = "";
+	var order           = "";
+	var group           = "";
 	var relationship 	= [];
 	var condition 		= [];
 	this.connection = that.createConnection(database);
@@ -120,6 +122,12 @@ function driverMysql(database){
 		limit = " LIMIT " + $offset + " , " + $limit ;
 		return true;
 	}
+	this.order_by = function ($order){
+		order = " ORDER BY `"+$order.join("`,`")+"`";
+	}
+	this.group_by =  function ($order){
+		group = " GROUP BY `"+$order.join("`,`")+"`";
+	}
 	this.get = function($callback){
 		rows    		    = [];
 		var stringcondition = condition.join(" ");
@@ -127,7 +135,7 @@ function driverMysql(database){
 		stringcondition     = stringcondition.replace("AND", "");
 		if(stringcondition != "" )
 			stringcondition = "WHERE" + stringcondition;
-		sql = "SELECT " + columns + " FROM " + table +" " + stringJoin + stringcondition  + limit;
+		sql = "SELECT " + columns + " FROM " + table +" " + stringJoin + stringcondition  + limit + order + group;
 		var options = {sql: sql, nesttables: false};
 		try { 
 			this.connection.query(options,function(err, rows, fields){

@@ -1,7 +1,7 @@
-function AdminController (){
+function MyController (){
 	this.data = {};
 	this.construct = function(){
 		this.data.abc = 1;
 	}
 }
-module.exports = AdminController;
+module.exports = MyController;

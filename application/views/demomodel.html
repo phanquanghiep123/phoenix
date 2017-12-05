@@ -1,1 +1,14 @@
-<h1> Demo Call model and view</h1>
+<?node
+	this.ExtenLayout("master/layout.html");
+	this.LayoutSetSection("header");
+		write("<p>Phan quang hiep header</p>");
+	this.LayoutendSection();
+
+	this.LayoutSetSection("main");
+		write("<p>Phan quang hiep main</p>");
+	this.LayoutendSection();
+
+	this.LayoutSetSection("footer");
+		write("<p>Phan quang hiep footer</p>");
+	this.LayoutendSection();
+?>

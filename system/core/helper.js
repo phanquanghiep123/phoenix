@@ -162,3 +162,13 @@ autoloadMyController = function ($arg){
 		eval(val.name + " = new include(); "+val.name + " = Object.assign(_Controller,"+val.name+") ;");
 	});
 }
+
+ramdonString = function($num = 10) {
+  var text = "";
+  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  for (var i = 0; i < $num; i++)
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+  return "phoenix_" + text;
+}
+
+ 

@@ -13,18 +13,27 @@ function Loader() {
 		
 	}
 	this.view  = function( $file = "", $data = {}, $return = false){
-		var view = _Phoenix.loadview($file, $data, $return);
-		if($return === false)
-			write(view);
-		else 
-			return view;	
+		
+		try {
+			var view = _Phoenix.loadview($file, $data, $return);
+			if($return === false)
+				write(view);
+			else 
+				return view;
+		}catch (e){
+			if (e instanceof SyntaxError) _Controller.info.error.push({detail:e ,message : e.message});
+			else _Controller.info.error.push({detail:e ,message : e});
+		}	
 	}
 	this.viewToview  = function($file = "", $data = {}){
-		var view = _Phoenix.loadview($file, $data);
-		return view;	
+		try {
+			var view = _Phoenix.loadview($file, $data);
+			return view;	
+		}catch (e){
+			if (e instanceof SyntaxError) _Controller.info.error.push({detail:e ,message : e.message});
+			else _Controller.info.error.push({detail:e ,message : e});
+		}	
 	}
-	this.helper = function (){
-		_Controller.next;
-	}
+	 
 }
 module.exports = Loader;

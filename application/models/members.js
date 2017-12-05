@@ -6,7 +6,6 @@ _Model.members  = {
 			$callback(r,f);
 		});
 	},
-
 	getalljoin : function($callback,$offset = 0,$limit = 10){
 		this.db.from("photos");
 		this.db.join("members","members.id = photos.member_id","left");
