@@ -1,13 +1,15 @@
 function Phoenix(argument) {
-	var _load = require("./loader.js");
-	var _db   = require("./db.js");
+	var _load  = require("./loader.js");
+	var _db    = require("./db.js");
+	var _input = require("./input.js");
 	var pix_setsection = "setsection_";
 	var pix_addsection = "addsection_";
 	this.dataView      = "";
 	this.layout        = "";
 	this.islayout      = false;
-	this.load = new _load();
-	this.db   = new _db();
+	this.load  = new _load();
+	this.db    = new _db();
+	this.input = new _input();
 	this.request;
 	this.response;
 	this.waitdding   = 0;
@@ -20,6 +22,7 @@ function Phoenix(argument) {
 	this.info.controller = [];
 	this.info.error      = [];
 	this.info.layout     = [];
+	this.contentType     = "text/html";
 	this.wait = function(){
 		this.waitdding++;
 	} 
@@ -49,7 +52,7 @@ function Phoenix(argument) {
 	this.info.controller = [];
 	this.info.error      = [];
 	this.__construct = function(){
-		this.response.writeHead(200, { 'Content-Type': 'text/html' });
+		this.response.writeHead(200, { 'Content-Type': this.contentType });
 	}
 	this.__destructors =  function(){
 		var that = this; 

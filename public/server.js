@@ -26,7 +26,7 @@ _F_core       = _Path + ".." + _Setup._F_core;
 	require(_F_config + 'database');
 
 	//--------------------------------------------!set user config --------------------------------------------//
-	_App         = new _autoload.express();
+	_App         = null;
 	_Phoenix     = new _autoload.phoenix();
 	_Route       = new _autoload.route();
 	_Http        = new _autoload.http();

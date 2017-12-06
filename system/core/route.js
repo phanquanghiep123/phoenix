@@ -50,6 +50,9 @@ function Router(){
 				controller = Object.assign(controller.extent,controller);
 			else
 				controller = Object.assign(_Controller,controller);
+			if(typeof controller.contentType !== "undefined"){
+				_Controller.contentType = controller.contentType;
+			}
 		} catch (e) {
 			controller = Object.assign(_Controller,controller);
 			if (e instanceof SyntaxError) write(e.message);
