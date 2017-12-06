@@ -6,7 +6,6 @@ function Phoenix(argument) {
 	this.dataView      = "";
 	this.layout        = "";
 	this.islayout      = false;
-	this.stringViewtoView = "";
 	this.load = new _load();
 	this.db   = new _db();
 	this.request;
@@ -15,6 +14,12 @@ function Phoenix(argument) {
 	this.nameSection = "";
 	this.listSection = {};
 	this.setSection  = false;
+	this.info = {};
+	this.info.view       = [];
+	this.info.model      = [];
+	this.info.controller = [];
+	this.info.error      = [];
+	this.info.layout     = [];
 	this.wait = function(){
 		this.waitdding++;
 	} 
@@ -32,6 +37,7 @@ function Phoenix(argument) {
 		this.info.model      = [];
 		this.info.controller = [];
 		this.info.error      = [];
+		this.info.layout     = [];
 		this.listSection     = {};
 		this.dataView        = "";
 		this.layout          = "";
@@ -90,7 +96,7 @@ function Phoenix(argument) {
 						var evalArg = view[i].split("?>");
 						evalString  = evalArg[0].trim();
 						evalString  = evalString.replaceAll("write", "this.writeView");
-						evalString  = evalString.replaceAll("this.load.view", "this.load.viewToview");
+						evalString  = evalString.replaceAll("this.load.view", "this.viewToview");
 						try {
 							eval(evalString.trim());
 							this.dataView += evalArg[1];
@@ -212,6 +218,7 @@ function Phoenix(argument) {
 	this.ExtenLayout  = function($file){
 		this.islayout = true;
 		var view = this.readFlie(_F_views + $file);
+		this.info.layout.push({file : $file});
 		if(view != false){
 			try {
 				view = view.split("<?node");
@@ -261,6 +268,7 @@ function Phoenix(argument) {
 	this.viewToview  = function($file = "", $data = {}){
 		var stringView = "";
 		var view = this.readFlie(_F_views + $file);
+		this.info.view.push({file : $file});
 		if(view != false){
 			var evalString = "";
 			if ($data != null) {
@@ -279,15 +287,21 @@ function Phoenix(argument) {
 	            var evalArg ;
 	            for (var i = 0; i <= (countArg -1); i++) {
 	  				if (view[i].indexOf("?>") == "-1") {
-						this.stringViewtoView += view[i];
+	  					if(!this.islayout)
+							this.dataView += view[i];
+						else
+							this.layout += view[i];
 					}else{
 						var evalArg = view[i].split("?>");
 						evalString  = evalArg[0].trim();
 						evalString  = evalString.replaceAll("write", "this.writeView");
-						evalString  = evalString.replaceAll("this.load.view", "this.load.viewToview");
+						evalString  = evalString.replaceAll("this.load.view", "this.viewToview");
 						try {
 							eval(evalString.trim());
-							stringView += evalArg[1];
+							if(!this.islayout)
+								this.dataView += evalArg[1];
+							else
+								this.layout += evalArg[1];
 						} catch (e) {
 							if (e instanceof SyntaxError) this.info.error.push({detail:e ,message : e.message});
 							else this.info.error.push({detail:e ,message : e});
@@ -300,11 +314,7 @@ function Phoenix(argument) {
 				else this.info.error.push({detail:e ,message : e});
 			}		
 		}
-		if(!this.islayout)
-			this.dataView += this.stringViewtoView;
-		else
-			this.layout += this.stringViewtoView;
-		this.stringViewtoView = "";
+		 
 	}
 }
 module.exports = Phoenix;

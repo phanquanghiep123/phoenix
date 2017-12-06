@@ -13,7 +13,7 @@ function Loader() {
 		
 	}
 	this.view  = function( $file = "", $data = {}, $return = false){
-		
+		_Controller.info.view.push({file : $file});
 		try {
 			var view = _Phoenix.loadview($file, $data, $return);
 			if($return === false)
@@ -25,7 +25,5 @@ function Loader() {
 			else _Controller.info.error.push({detail:e ,message : e});
 		}	
 	}
-	
-	 
 }
 module.exports = Loader;

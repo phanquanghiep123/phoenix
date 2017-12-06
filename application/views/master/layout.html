@@ -6,15 +6,15 @@
 <body>
 <?node
 	this.LayoutSection("header");
-		this.load.view("master/header.html");
+		write('LayoutSection("header")');
 	this.LayoutendSection();
 
 	this.LayoutSection("main");
-		this.load.view("master/main.html");
+		write('LayoutSection("main")');
 	this.LayoutendSection();
 
 	this.LayoutSection("footer");
-		this.load.view("master/footer.html");
+		write('LayoutSection("footer")');
 	this.LayoutendSection();
 ?>
 </body>
