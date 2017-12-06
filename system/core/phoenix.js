@@ -108,17 +108,11 @@ function Phoenix(argument) {
 		}
 	    var that = this;
 		this.listSection.foreach(function(key,val){
-			console.log(val);
-			var setstart   = "[start_" + pix_setsection + val + "]";
-			var setend     = "[end_"   + pix_setsection + val + "]";
 			var start      = "[start_" + pix_addsection + val + "]";
 			var end        = "[end_"   + pix_addsection + val + "]";
-			that.dataView = that.dataView.replaceAll(setstart,""); 
-			that.dataView = that.dataView.replaceAll(setend,"");
-			that.dataView = that.dataView.replaceAll(start,"");
-			that.dataView = that.dataView.replaceAll(end,"");	
+			that.dataView  = that.dataView.replaceAll(start,"");
+			that.dataView  = that.dataView.replaceAll(end,"");	
 		});
-		
 		this.islayout = true;
 		return this.dataView;
 	}
@@ -184,7 +178,7 @@ function Phoenix(argument) {
 						if(layoutArg != null){
 							searchString  = layoutArg[1].split(end);
 							searchString  = searchString[0];
-							this.dataView = this.dataView.replaceAll(replaceString,""); 
+							this.dataView = this.dataView.replaceAll(setstart+replaceString+setend,""); 
 							this.dataView = this.dataView.replaceAll(searchString,replaceString); 
 						}
 					}
@@ -199,9 +193,8 @@ function Phoenix(argument) {
 						if(layoutArg != null){
 							searchString  = layoutArg[1].split(end);
 							searchString  = searchString[0];
-							this.layout   = this.layout.replaceAll(replaceString,""); 
+							this.layout   = this.layout.replaceAll(setstart+replaceString+setend,""); 
 							this.layout   = this.layout.replaceAll(searchString,replaceString);
-
 						}
 					}
 				}
