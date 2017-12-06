@@ -25,15 +25,7 @@ function Loader() {
 			else _Controller.info.error.push({detail:e ,message : e});
 		}	
 	}
-	this.viewToview  = function($file = "", $data = {}){
-		try {
-			var view = _Phoenix.loadview($file, $data);
-			return view;	
-		}catch (e){
-			if (e instanceof SyntaxError) _Controller.info.error.push({detail:e ,message : e.message});
-			else _Controller.info.error.push({detail:e ,message : e});
-		}	
-	}
+	
 	 
 }
 module.exports = Loader;

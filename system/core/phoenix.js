@@ -3,6 +3,10 @@ function Phoenix(argument) {
 	var _db   = require("./db.js");
 	var pix_setsection = "setsection_";
 	var pix_addsection = "addsection_";
+	this.dataView      = "";
+	this.layout        = "";
+	this.islayout      = false;
+	this.stringViewtoView = "";
 	this.load = new _load();
 	this.db   = new _db();
 	this.request;
@@ -29,6 +33,8 @@ function Phoenix(argument) {
 		this.info.controller = [];
 		this.info.error      = [];
 		this.listSection     = {};
+		this.dataView        = "";
+		this.layout          = "";
 		this.response.end();
 	}
 	this.info = {};
@@ -37,7 +43,7 @@ function Phoenix(argument) {
 	this.info.controller = [];
 	this.info.error      = [];
 	this.__construct = function(){
-		//console.log(this);
+		this.response.writeHead(200, { 'Content-Type': 'text/html' });
 	}
 	this.__destructors =  function(){
 		var that = this; 
@@ -59,7 +65,7 @@ function Phoenix(argument) {
 	}
 
 	this.loadview = function($file, $data = null){
-		var DataString = "";
+		this.islayout = false;
 		var view = this.readFlie(_F_views + $file);
 		if(view != false){
 			var evalString = "";
@@ -79,19 +85,15 @@ function Phoenix(argument) {
 	            var evalArg ;
 	            for (var i = 0; i <= (countArg -1); i++) {
 	  				if (view[i].indexOf("?>") == "-1") {
-						DataString += view[i];
+						this.dataView += view[i];
 					}else{
 						var evalArg = view[i].split("?>");
 						evalString  = evalArg[0].trim();
-						evalString  = evalString.replaceAll("write", "DataString += ");
-						evalString  = evalString.replaceAll("this.ExtenLayout", "DataString += this.ExtenLayout");
-						evalString  = evalString.replaceAll("this.LayoutSection", "DataString += this.LayoutSection");
-						evalString  = evalString.replaceAll("this.LayoutendSection", "DataString += this.LayoutendSection");
-						evalString  = evalString.replaceAll("this.LayoutSetSection", "DataString += this.LayoutSetSection");
-						evalString  = evalString.replaceAll("this.load.view", "DataString += this.load.viewToview");
+						evalString  = evalString.replaceAll("write", "this.writeView");
+						evalString  = evalString.replaceAll("this.load.view", "this.load.viewToview");
 						try {
 							eval(evalString.trim());
-							DataString += evalArg[1];
+							this.dataView += evalArg[1];
 						} catch (e) {
 							if (e instanceof SyntaxError) this.info.error.push({detail:e ,message : e.message});
 							else this.info.error.push({detail:e ,message : e});
@@ -102,40 +104,29 @@ function Phoenix(argument) {
 			catch (e) {
 				if (e instanceof SyntaxError) this.info.error.push({detail:e ,message : e.message});
 				else this.info.error.push({detail:e ,message : e});
-			}
-			
+			}		
 		}
-		DataString = DataString.replace("\n", "");
-		DataString = DataString.replace("\g", "");
-		this.listSection.foreach(function($key,$val){
-			var setstart = "start_"+pix_setsection + $val;
-			var setend   = "end_"+pix_setsection + $val;
-			var start    = "start_"+pix_addsection + $val;
-			var end      = "end_"+pix_addsection + $val;
-			var testRE = DataString.match(setstart+"(.*)"+setend);
-			if(testRE != null){
-				try {
-					var customRegex = new RegExp(setstart + ".*" + setend, "g");
-					DataString = DataString.replaceAll(customRegex,"");
-					var customRegex = new RegExp(start + ".*" + end, "g");
-					DataString = DataString.replaceAll(customRegex,testRE[1]);
-				}catch(e) {
-					if (e instanceof SyntaxError) this.info.error.push({detail:e ,message : e.message});
-					else this.info.error.push({detail:e ,message : e});
-				}	
-			}
-			DataString = DataString.replaceAll(setend,""); 
-			DataString = DataString.replaceAll(setend,"");
-			DataString = DataString.replaceAll(start,"");
-			DataString = DataString.replaceAll(end,"");
+	    var that = this;
+		this.listSection.foreach(function(key,val){
+			console.log(val);
+			var setstart   = "[start_" + pix_setsection + val + "]";
+			var setend     = "[end_"   + pix_setsection + val + "]";
+			var start      = "[start_" + pix_addsection + val + "]";
+			var end        = "[end_"   + pix_addsection + val + "]";
+			that.dataView = that.dataView.replaceAll(setstart,""); 
+			that.dataView = that.dataView.replaceAll(setend,"");
+			that.dataView = that.dataView.replaceAll(start,"");
+			that.dataView = that.dataView.replaceAll(end,"");	
 		});
-		return DataString;
+		
+		this.islayout = true;
+		return this.dataView;
 	}
 	this.addSession = function($name,$val){
 
 	}
 	this.getSession = function($name){
-
+ 
 	}
 	this.distroySession = function($name){
 
@@ -156,25 +147,78 @@ function Phoenix(argument) {
 
 	}
 	this.LayoutSection = function($name){
-		this.setSection = false;
-		this.nameSection = ramdonString()+"_"+$name;
-		this.listSection[$name] = this.nameSection;
-		return "start_"+pix_addsection +this.nameSection;
+		this.setSection  = false;
+		this.nameSection = $name;
+		this.listSection[$name] = ramdonString()+"_"+ $name;
+		if(!this.islayout)
+			this.dataView += "[start_" + pix_addsection + this.listSection[$name] +"]";
+		else
+			this.layout += "[start_" + pix_addsection + this.listSection[$name] +"]";
 	}
 	this.LayoutendSection = function(){
-		if(this.setSection == true){
-			return "end_"+pix_setsection + this.nameSection;
+		if(!this.setSection){
+			if(!this.islayout)
+				this.dataView += "[end_"+pix_addsection + this.listSection[this.nameSection] + "]";
+			else
+				this.layout += "[end_"+pix_addsection + this.listSection[this.nameSection] + "]";
+		}else{
+			if(!this.islayout)
+				this.dataView += "[end_"+pix_setsection + this.listSection[this.nameSection] + "]";
+			else
+				this.layout += "[end_"+pix_setsection + this.listSection[this.nameSection] + "]";
 		}
-		return "end_"+pix_addsection + this.nameSection;
+		if(this.setSection){
+			var setstart   = "[start_" + pix_setsection + this.listSection[this.nameSection] + "]";
+			var setend     = "[end_"   + pix_setsection + this.listSection[this.nameSection] + "]";
+			var start      = "[start_" + pix_addsection + this.listSection[this.nameSection] + "]";
+			var end        = "[end_"   + pix_addsection + this.listSection[this.nameSection] + "]";
+			var testRE;
+			var layoutArg,searchString,replaceString;
+			if(!this.islayout){
+				layoutArg = this.dataView.split(setstart);
+				if(layoutArg != null){
+					replaceString  = layoutArg[1].split(setend);
+					replaceString  = replaceString[0];
+					if(replaceString != null){
+						layoutArg = this.dataView.split(start);
+						if(layoutArg != null){
+							searchString  = layoutArg[1].split(end);
+							searchString  = searchString[0];
+							this.dataView = this.dataView.replaceAll(replaceString,""); 
+							this.dataView = this.dataView.replaceAll(searchString,replaceString); 
+						}
+					}
+				}
+			}else{
+				layoutArg = this.layout.split(setstart);
+				if(layoutArg != null){
+					replaceString  = layoutArg[1].split(setend);
+					replaceString  = replaceString[0];
+					if(replaceString != null){
+						layoutArg = this.dataView.split(start);
+						if(layoutArg != null){
+							searchString  = layoutArg[1].split(end);
+							searchString  = searchString[0];
+							this.layout   = this.layout.replaceAll(replaceString,""); 
+							this.layout   = this.layout.replaceAll(searchString,replaceString);
+
+						}
+					}
+				}
+			}
+		}
 	}
 	this.LayoutSetSection = function($name){
-		this.setSection  = true;
-		this.nameSection = this.listSection[$name];
-		return "start_"+pix_setsection +this.nameSection;
+		this.setSection   = true;
+		this.nameSection  = $name;
+		if(!this.islayout)
+			this.dataView += "[start_" + pix_setsection + this.listSection[this.nameSection] + "]";
+		else
+			this.layout += "[start_" + pix_setsection + this.listSection[this.nameSection] + "]";
 	}
-	this.ExtenLayout = function($file){
+	this.ExtenLayout  = function($file){
+		this.islayout = true;
 		var view = this.readFlie(_F_views + $file);
-		var layout = "";
 		if(view != false){
 			try {
 				view = view.split("<?node");
@@ -182,19 +226,15 @@ function Phoenix(argument) {
 	            var evalArg ;
 	            for (var i = 0; i <= (countArg -1); i++) {
 	  				if (view[i].indexOf("?>") == "-1") {
-						layout += view[i];
+						this.layout += view[i];
 					}else{
 						var evalArg = view[i].split("?>");
 						evalString  = evalArg[0].trim();
-						evalString  = evalString.replaceAll("write", "layout += ");
-						evalString  = evalString.replaceAll("this.ExtenLayout", "layout += this.ExtenLayout");
-						evalString  = evalString.replaceAll("this.LayoutSection", "layout += this.LayoutSection");
-						evalString  = evalString.replaceAll("this.LayoutendSection", "layout += this.LayoutendSection");
-						evalString  = evalString.replaceAll("this.LayoutSetSection", "layout += this.LayoutSetSection");
-						evalString  = evalString.replaceAll("this.load.view", "layout += this.load.viewToview");
+						evalString  = evalString.replaceAll("write", "this.writeView");
+						evalString  = evalString.replaceAll("this.load.view", "this.viewToview");
 						try {
 							eval(evalString.trim());
-							layout += evalArg[1];
+							this.layout += evalArg[1];
 						} catch (e) {
 							if (e instanceof SyntaxError) this.info.error.push({detail:e ,message : e.message});
 							else this.info.error.push({detail:e ,message : e});
@@ -207,7 +247,8 @@ function Phoenix(argument) {
 				else this.info.error.push({detail:e ,message : e});
 			}
 		}
-		return layout;
+		this.islayout  = false;
+		this.dataView += this.layout;
 	}
 	this.readFlie = function($file){
 		if(_Fs.existsSync($file) == false){
@@ -215,8 +256,62 @@ function Phoenix(argument) {
 			return false;
 		}
 		var content = _Fs.readFileSync($file, 'utf8');
-		return content;
-		
+		return content;	
+	}
+	this.writeView = function($string){
+		if(!this.islayout)
+			this.dataView += $string;
+		else
+			this.layout += $string;
+	}
+
+	this.viewToview  = function($file = "", $data = {}){
+		var stringView = "";
+		var view = this.readFlie(_F_views + $file);
+		if(view != false){
+			var evalString = "";
+			if ($data != null) {
+				for (var key in $data ){
+					try {
+						eval("var " + key + " = $data[key];" );			
+					} catch (e) {
+						if (e instanceof SyntaxError) this.info.error.push({detail:e ,message : e.message});
+						else this.info.error.push({detail:e ,message : e});
+					}
+				}
+			}
+			try {
+				view = view.split("<?node");
+	            var countArg = view.length;
+	            var evalArg ;
+	            for (var i = 0; i <= (countArg -1); i++) {
+	  				if (view[i].indexOf("?>") == "-1") {
+						this.stringViewtoView += view[i];
+					}else{
+						var evalArg = view[i].split("?>");
+						evalString  = evalArg[0].trim();
+						evalString  = evalString.replaceAll("write", "this.writeView");
+						evalString  = evalString.replaceAll("this.load.view", "this.load.viewToview");
+						try {
+							eval(evalString.trim());
+							stringView += evalArg[1];
+						} catch (e) {
+							if (e instanceof SyntaxError) this.info.error.push({detail:e ,message : e.message});
+							else this.info.error.push({detail:e ,message : e});
+						}
+					}
+	            }
+			}
+			catch (e) {
+				if (e instanceof SyntaxError) this.info.error.push({detail:e ,message : e.message});
+				else this.info.error.push({detail:e ,message : e});
+			}		
+		}
+		if(!this.islayout)
+			this.dataView += this.stringViewtoView;
+		else
+			this.layout += this.stringViewtoView;
+		this.stringViewtoView = "";
 	}
 }
 module.exports = Phoenix;
