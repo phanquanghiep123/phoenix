@@ -82,8 +82,20 @@ end = function() {
 	return true;
 }
 
-base_url = function(url=""){
-	return (_Config.local.host +"/"+  url);
+base_url = function(url = null){
+	var base = _Config.local.host;
+	if(url != null){
+		var first_char = url.substring(0, 1);
+		if(first_char == "/"){
+			base =  (_Config.local.host +  url);
+		}else{
+			base =  (_Config.local.host + "/" + url);
+		}
+	}
+	base = base.replaceAll("////","");
+	base = base.replaceAll("///","");
+	base = base.replaceAll("//","");
+	return base;
 }
 HttpRequestPost = function($key = null){
 	if(_Method == "post"){

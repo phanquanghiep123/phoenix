@@ -2,6 +2,7 @@ function Phoenix(argument) {
 	var _load  = require("./loader.js");
 	var _db    = require("./db.js");
 	var _input = require("./input.js");
+	var _form  = require("./form.js");
 	var pix_setsection = "setsection_";
 	var pix_addsection = "addsection_";
 	this.dataView      = "";
@@ -10,6 +11,7 @@ function Phoenix(argument) {
 	this.load  = new _load();
 	this.db    = new _db();
 	this.input = new _input();
+	this.form  = new _form();
 	this.request;
 	this.response;
 	this.waitdding   = 0;
@@ -22,7 +24,10 @@ function Phoenix(argument) {
 	this.info.controller = [];
 	this.info.error      = [];
 	this.info.layout     = [];
+	this.info.routes     = [];
 	this.contentType     = "text/html";
+	this.data            = {};
+	this.data.title      = "Phoenix";
 	this.wait = function(){
 		this.waitdding++;
 	} 
@@ -42,6 +47,7 @@ function Phoenix(argument) {
 		this.info.error      = [];
 		this.info.layout     = [];
 		this.listSection     = {};
+		this.info.routes     = {};
 		this.dataView        = "";
 		this.layout          = "";
 		this.response.end();
@@ -188,7 +194,9 @@ function Phoenix(argument) {
 							searchString  = layoutArg[1].split(end);
 							searchString  = searchString[0];
 							this.dataView = this.dataView.replaceAll(setstart+replaceString+setend,""); 
-							this.dataView = this.dataView.replaceAll(searchString,replaceString); 
+							this.dataView = this.dataView.replaceAll(start+searchString+end,setstart+replaceString+setend);
+							this.dataView = this.dataView.replaceAll(setstart,"");  
+							this.dataView = this.dataView.replaceAll(setend,"");  
 						}
 					}
 				}
@@ -203,7 +211,9 @@ function Phoenix(argument) {
 							searchString  = layoutArg[1].split(end);
 							searchString  = searchString[0];
 							this.layout   = this.layout.replaceAll(setstart+replaceString+setend,""); 
-							this.layout   = this.layout.replaceAll(searchString,replaceString);
+							this.layout   = this.layout.replaceAll(start+searchString+end,setstart+replaceString+setend); 
+							this.layout   = this.layout.replaceAll(setstart,"");  
+							this.layout   = this.layout.replaceAll(setend,"");  
 						}
 					}
 				}
@@ -318,6 +328,18 @@ function Phoenix(argument) {
 			}		
 		}
 		 
+	}
+	this.route = function($name){
+		try {
+			if(typeof this.info.routes[$name] == "undefined")
+				this.info.error.push({detail:this.info.routes ,message : "Error: Route name not like any routes please check name !"});
+			else
+				return base_url(this.info.routes[$name]["url"]);
+		}
+		catch (e) {
+			this.info.error.push({detail:this.info.routes ,message : "Error: Route name not like any routes please check name !"});
+		}
+		return "";
 	}
 }
 module.exports = Phoenix;

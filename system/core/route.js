@@ -4,6 +4,8 @@ function Router(){
 		var c     = $Option.controller.toLowerCase().trim();
 		var a     = $Option.action.toLowerCase().trim();
 		var _this = this;
+		console.log(_Phoenix.info);
+		//_Phoenix.info.routes[$Option.name] = $Option;
 		_App[$Option.type]($Option.url,function(req,res,next){	
 			if($midellwell != null) $midellwell();
 			if($Option.midellwell != null) $Option.midellwell();
@@ -13,6 +15,7 @@ function Router(){
 		    _this.make(c,a) ;
 		    return true;
 		});
+
 	}
 	this.group = function ($Path,$Option,$midellwell = null){
 		var length = Object.keys($Option).length;

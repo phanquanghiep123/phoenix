@@ -1,5 +1,6 @@
 _Route.add(
-	{
+	{   
+		name       : "home.index", //unquie display name for url ex: (this.route("home.index"))
 		type       : "get",//put or post or get or all.
 		url        : "/",//listening request.
 		controller : "home", // controller url.
@@ -9,7 +10,7 @@ _Route.add(
 	}
 );
 _Route.add(
-	{
+	{   name       : "home.demomodel", //unquie display name for url ex: (this.route("home.demomodel"))
 		type       : "get",//put or post or get or all.
 		url        : "/demomodel",//listening request.
 		controller : "home", // controller url.
@@ -33,6 +34,7 @@ _Route.add(
 _Route.group("/admin",
 	[
 		{
+			name       : "admin.home.index" ,//unquie display name for url ex: (this.route("admin.home.index"))
 			type       : "get",//post or get or all.
 			url        : "/home",//listening request.
 			controller : "home", // controller url.
@@ -44,4 +46,28 @@ _Route.group("/admin",
 	],null
 );
 
+
+_Route.group("/auth",
+	[
+		{
+			name       : "auth.signup",
+			type       : "get",//post or get or all.
+			url        : "/signup",//listening request.
+			controller : "auth/signup", // controller url.
+			action     : "index",// action of funciton controller
+			midellwell : _Midellwell.auth(), // is function run before route this.
+			rule       : null // validate parameter passed from request url.
+		},
+		{
+			name       : "auth.signup",
+			type       : "post",//post or get or all.
+			url        : "/signup",//listening request.
+			controller : "auth/save", // controller url.
+			action     : "index",// action of funciton controller
+			midellwell : _Midellwell.auth(), // is function run before route this.
+			rule       : null // validate parameter passed from request url.
+		}
+		 
+	],null
+);
 //------------------------!group route------------------------
