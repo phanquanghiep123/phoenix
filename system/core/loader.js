@@ -6,18 +6,21 @@ function Loader() {
 			_Model.init($file);
 			_Controller[_Controller.info.controller][$file]= _Model[$file];
 		}catch (e){
-			if (e instanceof SyntaxError) _Controller.info.error.push({detail:e ,message : e.message});
-			else _Controller.info.error.push({detail:e ,message : e});
+			if (e instanceof SyntaxError) _Phoenix.info.error.push({detail:e ,message : e.message});
+			else _Phoenix.info.error.push({detail:e ,message : e});
 		}
 		return true;
 		
 	}
 	this.view  = function( $file = "", $data = {}, $return = false){
-		_Controller.info.view.push({file : $file});
+		_Phoenix.info.view.push({file : $file});
 		try {
 			var view = _Phoenix.loadview($file, $data, $return);
-			if($return === false)
-				write(view);
+			if($return === false){
+				if(Object.keys(_Phoenix.info.error).length == 0 ){
+					write(view);
+				}
+			}
 			else 
 				return view;
 		}catch (e){

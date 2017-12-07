@@ -4,8 +4,7 @@ function Router(){
 		var c     = $Option.controller.toLowerCase().trim();
 		var a     = $Option.action.toLowerCase().trim();
 		var _this = this;
-		console.log(_Phoenix.info);
-		//_Phoenix.info.routes[$Option.name] = $Option;
+		_Phoenix.info.routes[$Option.name] = $Option;
 		_App[$Option.type]($Option.url,function(req,res,next){	
 			if($midellwell != null) $midellwell();
 			if($Option.midellwell != null) $Option.midellwell();

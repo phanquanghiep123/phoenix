@@ -18,7 +18,7 @@
     overflow: hidden !important;
     -webkit-overflow-scrolling: touch;
 }
-body, html{
+#app-phoenix{
      height: 100%;
  	background-repeat: no-repeat;
  	background:url(https://i.ytimg.com/vi/4kfXjatgeEU/maxresdefault.jpg);
@@ -27,7 +27,7 @@ body, html{
 }
 
 .main{
- 	margin: 220px 0;
+ 	margin: 220px 0 0;
 }
 
 h1.title { 

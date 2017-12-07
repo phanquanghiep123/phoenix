@@ -5,7 +5,7 @@ _Config.database = {
 		host: "localhost",
 		user: "root",
 		password: "",
-		database: "phoenix"
+		database: "dezignwall"
 	},
 	NoSQL : {
 		host     : "127.0.0.1",

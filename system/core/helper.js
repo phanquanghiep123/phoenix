@@ -183,4 +183,14 @@ ramdonString = function($num = 10) {
   return "phoenix_" + text;
 }
 
- 
+Route = function($name){
+	try {
+		if(typeof _Phoenix.info.routes[$name] == "undefined")
+			_Phoenix.info.error.push({detail: "" ,message : "Error: Route `"+$name+"` not like any routes please check name !"});
+		else
+			return base_url(_Phoenix.info.routes[$name]["url"]);
+	}
+	catch (e) { 
+		_Phoenix.info.error.push({detail: "" ,message : "Error: Route `"+$name+"` not like any routes please check name !"});
+	}
+}

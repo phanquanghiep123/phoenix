@@ -19,14 +19,14 @@ function Phoenix(argument) {
 	this.listSection = {};
 	this.setSection  = false;
 	this.info = {};
+	this.data = {};
 	this.info.view       = [];
 	this.info.model      = [];
 	this.info.controller = [];
 	this.info.error      = [];
 	this.info.layout     = [];
-	this.info.routes     = [];
+	this.info.routes     = {};
 	this.contentType     = "text/html";
-	this.data            = {};
 	this.data.title      = "Phoenix";
 	this.wait = function(){
 		this.waitdding++;
@@ -40,23 +40,16 @@ function Phoenix(argument) {
 	this.end = function(){
 		this.load.views = "";
 		this.waitdding  = 0;
-		this.info = {};
 		this.info.view       = [];
 		this.info.model      = [];
 		this.info.controller = [];
 		this.info.error      = [];
 		this.info.layout     = [];
 		this.listSection     = {};
-		this.info.routes     = {};
 		this.dataView        = "";
 		this.layout          = "";
 		this.response.end();
 	}
-	this.info = {};
-	this.info.view       = [];
-	this.info.model      = [];
-	this.info.controller = [];
-	this.info.error      = [];
 	this.__construct = function(){
 		this.response.writeHead(200, { 'Content-Type': this.contentType });
 	}
@@ -329,17 +322,6 @@ function Phoenix(argument) {
 		}
 		 
 	}
-	this.route = function($name){
-		try {
-			if(typeof this.info.routes[$name] == "undefined")
-				this.info.error.push({detail:this.info.routes ,message : "Error: Route name not like any routes please check name !"});
-			else
-				return base_url(this.info.routes[$name]["url"]);
-		}
-		catch (e) {
-			this.info.error.push({detail:this.info.routes ,message : "Error: Route name not like any routes please check name !"});
-		}
-		return "";
-	}
+	
 }
 module.exports = Phoenix;

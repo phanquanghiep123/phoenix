@@ -15,6 +15,19 @@ function Form() {
         this.attrForm    = $attr;
 		this.Status      = false;
 		this.addStarFrom = true;
+		var attString;
+		if(this.attrForm != null){
+			for(var i in this.attrForm){
+				if(typeof(this.attrForm[i]) !== "function"){
+					attString += i +" = \"" + this.attrForm[i] +"\" ";
+				}
+			}
+		}
+		if(!_Phoenix.islayout){
+			_Phoenix.dataView += '<form name="'+this.CurentName+'" '+attString+'>';
+		}else{
+			_Phoenix.layout += '<form name="'+this.CurentName+'" '+attString+'>';
+		}
 		return true;
 	}
 	this.inputText = function($name = null,$attr = {}){
@@ -27,6 +40,19 @@ function Form() {
 			attr : $attr,
 			type : "text"
 		});
+		var attString = "";
+    	if($attr != null){
+			for(var i in $attr){
+				if(typeof($attr[i]) !== "function"){
+					attString += i +" = \"" + $attr[i] +"\" ";
+				}
+			}
+		}
+		if(!_Phoenix.islayout){
+			_Phoenix.dataView += '<input type="text" class="form-control" name="'+$name+'" '+attString+'>';
+		}else{
+			_Phoenix.layout += '<input type="text" class="form-control" name="'+$name+'" '+attString+'>';
+		}
 		return true;
 	}
 	this.inputEmail= function($name = null,$attr = {}){
@@ -39,6 +65,19 @@ function Form() {
 			attr : $attr,
 			type : "email"
 		});
+		var attString = "";
+    	if($attr != null){
+			for(var i in $attr){
+				if(typeof($attr[i]) !== "function"){
+					attString += i +" = \"" + $attr[i] +"\" ";
+				}
+			}
+		}
+		if(!_Phoenix.islayout){
+			_Phoenix.dataView += '<input type="email" class="form-control" name="'+$name+'" '+attString+'>';
+		}else{
+			_Phoenix.layout += '<input type="email" class="form-control" name="'+$name+'" '+attString+'>';
+		}
 		return true;
 	}
 	this.inputTextarea = function($name = null,$attr = {}){
@@ -63,6 +102,19 @@ function Form() {
 			attr : $attr,
 			type : "password"
 		});
+		var attString = "";
+    	if($attr != null){
+			for(var i in $attr){
+				if(typeof($attr[i]) !== "function"){
+					attString += i +" = \"" + $attr[i] +"\" ";
+				}
+			}
+		}
+		if(!_Phoenix.islayout){
+			_Phoenix.dataView += '<input type="password" class="form-control" name="'+$name+'" '+attString+'>';
+		}else{
+			_Phoenix.layout += '<input type="password" class="form-control" name="'+$name+'" '+attString+'>';
+		}
 		return true;
 	}
 	this.inputMoth = function($name = null,$attr = {}){
@@ -145,34 +197,15 @@ function Form() {
 			_Phoenix.info.error.push({detail:this ,message : "Error: Please start form before end form!"});
 			return false;
 		}
-		this.reader();
+		if(!_Phoenix.islayout){
+			_Phoenix.dataView += '</form>';
+		}else{
+			_Phoenix.layout += '</form>';
+		}
 		
 		return true;
 	}
-	this.reader = function  (){
-		var attString = "";
-		if(this.attrForm != null){
-			for(var i in this.attrForm){
-				if(typeof(this.attrForm[i]) !== "function"){
-					attString += i +" = \"" + this.attrForm[i] +"\" ";
-				}
-			}
-		}
-        _Phoenix.dataView += '<form name="'+this.CurentName+'" '+attString+'>';
-		this.ListForm[this.CurentName].foreach(function(key,value){
-			console.log(this.ListForm[this.CurentName]);
-		});
-		_Phoenix.dataView += '</form>';
-		/*if(!_Phoenix.islayout){
-			_Phoenix.dataView +="gfdgfdgfd";
-		}else{
-			_Phoenix.layout +="dfgfd";
-		}*/
-		this.CurentName  = null;
-		this.stringFrom  = "";
-		this.Status      = true;
-		this.addStarFrom = false;
-	}
-
+	 
+     
 }
 module.exports = Form;
