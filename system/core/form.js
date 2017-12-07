@@ -4,29 +4,27 @@ function Form() {
 	this.CurentName  = null;
 	this.Status      = true;
 	this.addStarFrom = false;
-	this.attrForm    = {};
 	this.start = function($name = null,$attr = {}){
 		if(this.Status == false && this.CurentName == null){
 			_Phoenix.info.error.push({detail:this ,message : "Error: Please end form before start form!"});
 			return false;
 		}
-		this.CurentName = $name;
-		this.ListForm[this.CurentName] = [];
-        this.attrForm    = $attr;
+		this.ListForm[$name] = [];
+		this.CurentName  = $name;
 		this.Status      = false;
 		this.addStarFrom = true;
-		var attString;
-		if(this.attrForm != null){
-			for(var i in this.attrForm){
-				if(typeof(this.attrForm[i]) !== "function"){
-					attString += i +" = \"" + this.attrForm[i] +"\" ";
+		var attString = "";
+		if($attr != null){
+			for(var i in $attr){
+				if(typeof($attr[i]) !== "function"){
+					attString += i +" = \"" + $attr[i] +"\" ";
 				}
 			}
 		}
 		if(!_Phoenix.islayout){
-			_Phoenix.dataView += '<form name="'+this.CurentName+'" '+attString+'>';
+			_Phoenix.dataView += '<form name="'+$name+'" '+attString+'>';
 		}else{
-			_Phoenix.layout += '<form name="'+this.CurentName+'" '+attString+'>';
+			_Phoenix.layout += '<form name="'+$name+'" '+attString+'>';
 		}
 		return true;
 	}
@@ -49,9 +47,9 @@ function Form() {
 			}
 		}
 		if(!_Phoenix.islayout){
-			_Phoenix.dataView += '<input type="text" class="form-control" name="'+$name+'" '+attString+'>';
+			_Phoenix.dataView += '<input type="text" name="'+$name+'" '+attString+'>';
 		}else{
-			_Phoenix.layout += '<input type="text" class="form-control" name="'+$name+'" '+attString+'>';
+			_Phoenix.layout += '<input type="text" name="'+$name+'" '+attString+'>';
 		}
 		return true;
 	}
@@ -74,9 +72,9 @@ function Form() {
 			}
 		}
 		if(!_Phoenix.islayout){
-			_Phoenix.dataView += '<input type="email" class="form-control" name="'+$name+'" '+attString+'>';
+			_Phoenix.dataView += '<input type="email" name="'+$name+'" '+attString+'>';
 		}else{
-			_Phoenix.layout += '<input type="email" class="form-control" name="'+$name+'" '+attString+'>';
+			_Phoenix.layout += '<input type="email" name="'+$name+'" '+attString+'>';
 		}
 		return true;
 	}
@@ -111,9 +109,9 @@ function Form() {
 			}
 		}
 		if(!_Phoenix.islayout){
-			_Phoenix.dataView += '<input type="password" class="form-control" name="'+$name+'" '+attString+'>';
+			_Phoenix.dataView += '<input type="password" name="'+$name+'" '+attString+'>';
 		}else{
-			_Phoenix.layout += '<input type="password" class="form-control" name="'+$name+'" '+attString+'>';
+			_Phoenix.layout += '<input type="password" name="'+$name+'" '+attString+'>';
 		}
 		return true;
 	}
@@ -190,6 +188,44 @@ function Form() {
 			attr : $attr,
 			type : "file"
 		});
+		var attString = "";
+    	if($attr != null){
+			for(var i in $attr){
+				if(typeof($attr[i]) !== "function"){
+					attString += i +" = \"" + $attr[i] +"\" ";
+				}
+			}
+		}
+		if(!_Phoenix.islayout){
+			_Phoenix.dataView += '<input type="file" name="'+$name+'" '+attString+'>';
+		}else{
+			_Phoenix.layout += '<input type="file" name="'+$name+'" '+attString+'>';
+		}
+		return true;
+	}
+	this.inputSubmit = function($name,$attr = {}){
+		if(this.addStarFrom == false && this.CurentName == null){
+			_Phoenix.info.error.push({detail:this ,message : "Error: Please start form before add item form!"});
+			return false;
+		}
+		this.ListForm[this.CurentName].push({
+			name : $name,
+			attr : $attr,
+			type : "file"
+		});
+		var attString = "";
+    	if($attr != null){
+			for(var i in $attr){
+				if(typeof($attr[i]) !== "function"){
+					attString += i +" = \"" + $attr[i] +"\" ";
+				}
+			}
+		}
+		if(!_Phoenix.islayout){
+			_Phoenix.dataView += '<input type="submit" name="'+$name+'" '+attString+'>';
+		}else{
+			_Phoenix.layout += '<input type="submit" name="'+$name+'" '+attString+'>';
+		}
 		return true;
 	}
 	this.end = function(){
@@ -205,7 +241,5 @@ function Form() {
 		
 		return true;
 	}
-	 
-     
 }
 module.exports = Form;
