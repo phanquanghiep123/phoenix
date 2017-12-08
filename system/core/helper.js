@@ -188,7 +188,11 @@ Route = function($name){
 		if(typeof _Phoenix.info.routes[$name] == "undefined")
 			_Phoenix.info.error.push({detail: "" ,message : "Error: Route `"+$name+"` not like any routes please check name !"});
 		else
+<<<<<<< HEAD
 			return _Phoenix.info.routes[$name]["url"];
+=======
+			return (_Phoenix.info.routes[$name]["url"]);
+>>>>>>> 3eab16cf4d5a1fd8469e3664e9558a6eef84abb0
 	}
 	catch (e) { 
 		_Phoenix.info.error.push({detail: "" ,message : "Error: Route `"+$name+"` not like any routes please check name !"});

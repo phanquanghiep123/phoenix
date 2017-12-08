@@ -1,17 +1,19 @@
 function Phoenix(argument) {
-	var _load  = require("./loader.js");
-	var _db    = require("./db.js");
-	var _input = require("./input.js");
-	var _form  = require("./form.js");
+	var _load     = require("./loader.js");
+	var _db       = require("./db.js");
+	var _input    = require("./input.js");
+	var _form     = require("./form.js");
+	var _validate = require("./validate.js");
 	var pix_setsection = "setsection_";
 	var pix_addsection = "addsection_";
 	this.dataView      = "";
 	this.layout        = "";
 	this.islayout      = false;
-	this.load  = new _load();
-	this.db    = new _db();
-	this.input = new _input();
-	this.form  = new _form();
+	this.load     = new _load();
+	this.db       = new _db();
+	this.input    = new _input();
+	this.form     = new _form();
+	this.validate = new _validate();
 	this.request;
 	this.response;
 	this.waitdding   = 0;

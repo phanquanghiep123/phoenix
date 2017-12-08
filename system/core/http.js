@@ -6,11 +6,15 @@ function Http(){
 	const bodyParser = require('body-parser'); 
 	const fileUpload = require('express-fileupload');
 	_App 	       = express();
+	_App.use(fileUpload());
 	_App.use("/skins",express.static(_Path + '/skins'));
 	_App.use("/uploads",express.static(_Path + '/uploads'));
 	_App.use(bodyParser.json()); 
 	_App.use(bodyParser.urlencoded({ extended: true })); 
+<<<<<<< HEAD
 	_App.use(fileUpload()); 
+=======
+>>>>>>> 3eab16cf4d5a1fd8469e3664e9558a6eef84abb0
 	_App.listen(server_port, server_ip_address, function () {
 	  console.log( "Listening on " + server_ip_address + ", port " + server_port );
 	});

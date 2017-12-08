@@ -9,8 +9,13 @@ function Form() {
 			_Phoenix.info.error.push({detail:this ,message : "Error: Please end form before start form!"});
 			return false;
 		}
+<<<<<<< HEAD
 		this.CurentName = $name;
 		this.ListForm[this.CurentName] = [];
+=======
+		this.ListForm[$name] = [];
+		this.CurentName  = $name;
+>>>>>>> 3eab16cf4d5a1fd8469e3664e9558a6eef84abb0
 		this.Status      = false;
 		this.addStarFrom = true;
 		var attString = "";
@@ -22,9 +27,9 @@ function Form() {
 			}
 		}
 		if(!_Phoenix.islayout){
-			_Phoenix.dataView += '<form name="'+this.CurentName+'" '+attString+'>';
+			_Phoenix.dataView += '<form name="'+$name+'" '+attString+'>';
 		}else{
-			_Phoenix.layout += '<form name="'+this.CurentName+'" '+attString+'>';
+			_Phoenix.layout += '<form name="'+$name+'" '+attString+'>';
 		}
 		return true;
 	}
@@ -124,9 +129,15 @@ function Form() {
 			}
 		}
 		if(!_Phoenix.islayout){
+<<<<<<< HEAD
 			_Phoenix.dataView += '<textarea name="'+$name+'" '+attString+'>'+value+'</textarea>';
 		}else{
 			_Phoenix.layout += '<textarea name="'+$name+'" '+attString+'>'+value+'</textarea>';
+=======
+			_Phoenix.dataView += '<input type="password" name="'+$name+'" '+attString+'>';
+		}else{
+			_Phoenix.layout += '<input type="password" name="'+$name+'" '+attString+'>';
+>>>>>>> 3eab16cf4d5a1fd8469e3664e9558a6eef84abb0
 		}
 		return true;
 	}
@@ -296,6 +307,7 @@ function Form() {
 		return true;
 	}
 	this.inputSubmit = function($name,$attr = {}){
+<<<<<<< HEAD
 		this.ListForm[this.CurentName].push({
 			name : $name,
 			attr : $attr,
@@ -317,6 +329,8 @@ function Form() {
 		return true;
 	}
 	this.inputButton = function($name = null,$attr = {}){
+=======
+>>>>>>> 3eab16cf4d5a1fd8469e3664e9558a6eef84abb0
 		if(this.addStarFrom == false && this.CurentName == null){
 			_Phoenix.info.error.push({detail:this ,message : "Error: Please start form before add item form!"});
 			return false;
@@ -324,6 +338,7 @@ function Form() {
 		this.ListForm[this.CurentName].push({
 			name : $name,
 			attr : $attr,
+<<<<<<< HEAD
 			type : "textarea"
 		});
 		var attString = "";
@@ -333,13 +348,28 @@ function Form() {
 				if(typeof($attr[i]) !== "function"){
 					if(i == "label") label = $attr[i];
 					else attString += i +" = \"" + $attr[i] +"\" ";
+=======
+			type : "file"
+		});
+		var attString = "";
+    	if($attr != null){
+			for(var i in $attr){
+				if(typeof($attr[i]) !== "function"){
+					attString += i +" = \"" + $attr[i] +"\" ";
+>>>>>>> 3eab16cf4d5a1fd8469e3664e9558a6eef84abb0
 				}
 			}
 		}
 		if(!_Phoenix.islayout){
+<<<<<<< HEAD
 			_Phoenix.dataView += '<button name="'+$name+'" '+attString+'>'+label+'</button>';
 		}else{
 			_Phoenix.layout += '<button name="'+$name+'" '+attString+'>'+label+'</button>';
+=======
+			_Phoenix.dataView += '<input type="submit" name="'+$name+'" '+attString+'>';
+		}else{
+			_Phoenix.layout += '<input type="submit" name="'+$name+'" '+attString+'>';
+>>>>>>> 3eab16cf4d5a1fd8469e3664e9558a6eef84abb0
 		}
 		return true;
 	}
