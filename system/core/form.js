@@ -9,8 +9,8 @@ function Form() {
 			_Phoenix.info.error.push({detail:this ,message : "Error: Please end form before start form!"});
 			return false;
 		}
-		this.ListForm[$name] = [];
-		this.CurentName  = $name;
+		this.CurentName = $name;
+		this.ListForm[this.CurentName] = [];
 		this.Status      = false;
 		this.addStarFrom = true;
 		var attString = "";
@@ -22,9 +22,9 @@ function Form() {
 			}
 		}
 		if(!_Phoenix.islayout){
-			_Phoenix.dataView += '<form name="'+$name+'" '+attString+'>';
+			_Phoenix.dataView += '<form name="'+this.CurentName+'" '+attString+'>';
 		}else{
-			_Phoenix.layout += '<form name="'+$name+'" '+attString+'>';
+			_Phoenix.layout += '<form name="'+this.CurentName+'" '+attString+'>';
 		}
 		return true;
 	}
@@ -317,7 +317,6 @@ function Form() {
 		return true;
 	}
 	this.inputButton = function($name = null,$attr = {}){
- 
 		if(this.addStarFrom == false && this.CurentName == null){
 			_Phoenix.info.error.push({detail:this ,message : "Error: Please start form before add item form!"});
 			return false;
@@ -325,7 +324,7 @@ function Form() {
 		this.ListForm[this.CurentName].push({
 			name : $name,
 			attr : $attr,
-			type : "button"
+			type : "textarea"
 		});
 		var attString = "";
 		var label     = "";
@@ -333,8 +332,10 @@ function Form() {
 			for(var i in $attr){
 				if(typeof($attr[i]) !== "function"){
 					if(i == "label") label = $attr[i];
-						else attString += i +" = \"" + $attr[i] +"\" ";
-		}   	 
+					else attString += i +" = \"" + $attr[i] +"\" ";
+				}
+			}
+		}
 		if(!_Phoenix.islayout){
 			_Phoenix.dataView += '<button name="'+$name+'" '+attString+'>'+label+'</button>';
 		}else{

@@ -2,9 +2,11 @@ function Loader() {
 	this.model = function($file){
 		try {
 			_Controller.info.model.push({file : $file});
-			var model = require(_F_models + $file );
-			_Model.init($file);
-			_Controller[_Controller.info.controller][$file]= _Model[$file];
+			var _model = require(_F_models + $file );
+            var model  = new _model();
+            model = Object.assign(_Model,model);
+            _Controller[$file] = model;
+
 		}catch (e){
 			if (e instanceof SyntaxError) _Phoenix.info.error.push({detail:e ,message : e.message});
 			else _Phoenix.info.error.push({detail:e ,message : e});
