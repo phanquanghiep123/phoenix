@@ -3,11 +3,6 @@ function signup (){
 		this.data.title = "Phoenix | Signup";
 		this.load.view("frontend/auth/index.html",this.data);
 	}
-<<<<<<< HEAD
-	this.save = function(){
-		console.log(this.input.post());
-		console.log(this.input.file());
-=======
 	this.save = function (){
 		this.validate.addmessge({
 			email    : "Vui lòng nhập {$1} là email",
@@ -38,10 +33,7 @@ function signup (){
 		if($value.trim() != "" && $value != null){
 			return ($value.trim() == this.input.post("password").trim());
 		}
-		return true;
-		
-		
->>>>>>> 3eab16cf4d5a1fd8469e3664e9558a6eef84abb0
+		return true;	
 	}
 }
 module.exports = signup;
