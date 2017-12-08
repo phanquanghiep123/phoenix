@@ -62,8 +62,8 @@ _Route.group("/auth",
 			name       : "auth.signup",
 			type       : "post",//post or get or all.
 			url        : "/signup",//listening request.
-			controller : "auth/save", // controller url.
-			action     : "index",// action of funciton controller
+			controller : "auth/signup", // controller url.
+			action     : "save",// action of funciton controller
 			midellwell : _Midellwell.auth(), // is function run before route this.
 			rule       : null // validate parameter passed from request url.
 		}
