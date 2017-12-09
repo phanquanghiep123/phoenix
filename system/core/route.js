@@ -57,8 +57,8 @@ function Router(){
 			}
 		} catch (e) {
 			controller = Object.assign(_Controller,controller);
-			if (e instanceof SyntaxError) write(e.message);
-			else write(e);
+			if (e instanceof SyntaxError) _Controller.info.error.push({detail:e ,message : e.message});
+			else _Controller.info.error.push({detail:e ,message : e});
 		}
 		var StringEval = "controller['"+$Action+"']("+stringP+");";
 		_Controller.__construct();
@@ -68,8 +68,8 @@ function Router(){
 		try {
 			eval(StringEval.trim());
 		} catch (e) {
-			if (e instanceof SyntaxError) write(e.message);
-			else write(e);
+			if (e instanceof SyntaxError) _Controller.info.error.push({detail:e ,message : e.message});
+			else _Controller.info.error.push({detail:e ,message : e});
 		}
 		if(typeof controller.destructors === "function"){
 			controller.destructors();
