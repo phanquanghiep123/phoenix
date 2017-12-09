@@ -25,9 +25,10 @@ function Validate() {
 	}
 	this.check = function($arg = {} ,$option = {}){
 		var item,key,check,validate,messges,value,argvalidate,label,argparmeter,parmeter,numberparmeter,messgesError;
-		var that = this;
 		var validatecheck = true;
-		$arg.foreach(function(k,v){
+		var v;
+		for (var k in $arg){
+			v = $arg[k];
 			if(typeof(v) !== "function"){
 				item     = $option[k];
 				value    = v;
@@ -37,27 +38,28 @@ function Validate() {
 				if(typeof item.messges != "undefined") 
 					messges = item.messges;
 				else 
-					messges = that.messges;
+					messges = this.messges;
 				argvalidate = validate.split("|");
-				argvalidate.foreach(function(k,v){
+				for (var k in argvalidate){
+					v = argvalidate[k];
 					argparmeter = v.split(":");
 			 		numberparmeter = (argparmeter.length - 1);
 			 		try {
 						switch(numberparmeter) {
 						    case 0:
-						        check = that[argparmeter[0]](value);
+						        check = this[argparmeter[0]](value);
 						        break;
 						    case 1:
-						        check = that[argparmeter[0]](value,argparmeter[1]);
+						        check = this[argparmeter[0]](value,argparmeter[1]);
 						        break;
 						    case 2:
-						        check = that[argparmeter[0]](value,argparmeter[1],argparmeter[2]);
+						        check = this[argparmeter[0]](value,argparmeter[1],argparmeter[2]);
 						        break;
 						    case 3:
-						        check = that[argparmeter[0]](value,argparmeter[1],argparmeter[2],argparmeter[3]);
+						        check = this[argparmeter[0]](value,argparmeter[1],argparmeter[2],argparmeter[3]);
 						        break;
 						    case 4:
-						        check = that[argparmeter[0]](value,argparmeter[1],argparmeter[2],argparmeter[3],argparmeter[4]);
+						        check = this[argparmeter[0]](value,argparmeter[1],argparmeter[2],argparmeter[3],argparmeter[4]);
 						        break;
 						    default:
 						        _Phoenix.info.error.push({detail:item ,message : "Error: The number of parameters passed in exceeds the permission!"});
@@ -95,30 +97,31 @@ function Validate() {
 							        _Phoenix.info.error.push({detail:item ,message : "Error: The number of parameters passed in exceeds the permission!"});
 									return false;
 							}
-							that.allError.push(messgesError);
-							that.ListError[key] = messgesError;
-							that.ListDetailErrr.push(item);
+							this.allError.push(messgesError);
+							this.ListError[key] = messgesError;
+							this.ListDetailErrr.push(item);
 							validatecheck = false;
 						}		
 					} catch (e) {	
+						console.log(e);
 						_Phoenix.info.error.push({detail:e.TypeError, message : "Error: Please check data sent to validate!"});
 						return false;
 					}
-				});	 
+				};	 
 			}
-		});
+		};
 		return {validate : validatecheck, errors : this.ListError };
 	}
 	this.email = function($value){
         if($value.trim() != "" && $value != null){
             var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            return re.test($pramte2);
+            return re.test($value);
         }
         return true;
     }
     this.number = function($value){
         if($value.trim() != "" && $value != null){
-            return $.isNumeric($pramte2);
+            return $.isNumeric($value);
         }
         return true;
     }

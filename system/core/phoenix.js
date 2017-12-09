@@ -60,11 +60,13 @@ function Phoenix(argument) {
 	    setInterval(function(){
 	    	if(that.waitdding == 0){
 	    		var errors = that.info.error;
-		        if(Object.keys(errors).length > 0){
-		        	errors.foreach (function(key,val){
-			        	write("<p>"+val.message+"<br/></p>");
+		        if(ObjectLength(errors) > 0){
+		        	var val;
+		        	for (var key in errors){
+		        		val = errors[key];
+		        		write("<p>"+val.message+"<br/></p>");
 			        	write("<p>"+val.detail+"<br/></p>");
-			        });
+		        	}
 		        }else{
 		        	write(that.load.views);
 		        }
@@ -99,8 +101,8 @@ function Phoenix(argument) {
 					}else{
 						var evalArg = view[i].split("?>");
 						evalString  = evalArg[0].trim();
-						evalString  = evalString.replaceAll("write", "this.writeView");
-						evalString  = evalString.replaceAll("this.load.view", "this.viewToview");
+						evalString  = evalString.ReplaceAll("write", "this.writeView");
+						evalString  = evalString.ReplaceAll("this.load.view", "this.viewToview");
 						try {
 							eval(evalString.trim());
 							this.dataView += evalArg[1];
@@ -117,12 +119,16 @@ function Phoenix(argument) {
 			}		
 		}
 	    var that = this;
-		this.listSection.foreach(function(key,val){
-			var start      = "[start_" + pix_addsection + val + "]";
-			var end        = "[end_"   + pix_addsection + val + "]";
-			that.dataView  = that.dataView.replaceAll(start,"");
-			that.dataView  = that.dataView.replaceAll(end,"");	
-		});
+	    if(ObjectLength(this.listSection) > 0){
+	    	var val;
+	    	for (var key in this.listSection){
+	    		val = this.listSection[key];
+	    		var start      = "[start_" + pix_addsection + val + "]";
+				var end        = "[end_"   + pix_addsection + val + "]";
+				this.dataView  = this.dataView.ReplaceAll(start,"");
+				this.dataView  = this.dataView.ReplaceAll(end,"");
+	    	}
+	    }
 		this.islayout = true;
 		return this.dataView;
 	}
@@ -153,7 +159,7 @@ function Phoenix(argument) {
 	this.LayoutSection = function($name){
 		this.setSection  = false;
 		this.nameSection = $name;
-		this.listSection[$name] = ramdonString()+"_"+ $name;
+		this.listSection[$name] = RamdonString()+"_"+ $name;
 		if(!this.islayout)
 			this.dataView += "[start_" + pix_addsection + this.listSection[$name] +"]";
 		else
@@ -188,10 +194,10 @@ function Phoenix(argument) {
 						if(layoutArg != null){
 							searchString  = layoutArg[1].split(end);
 							searchString  = searchString[0];
-							this.dataView = this.dataView.replaceAll(setstart+replaceString+setend,""); 
-							this.dataView = this.dataView.replaceAll(start+searchString+end,setstart+replaceString+setend);
-							this.dataView = this.dataView.replaceAll(setstart,"");  
-							this.dataView = this.dataView.replaceAll(setend,"");  
+							this.dataView = this.dataView.ReplaceAll(setstart+replaceString+setend,""); 
+							this.dataView = this.dataView.ReplaceAll(start+searchString+end,setstart+replaceString+setend);
+							this.dataView = this.dataView.ReplaceAll(setstart,"");  
+							this.dataView = this.dataView.ReplaceAll(setend,"");  
 						}
 					}
 				}
@@ -205,10 +211,10 @@ function Phoenix(argument) {
 						if(layoutArg != null){
 							searchString  = layoutArg[1].split(end);
 							searchString  = searchString[0];
-							this.layout   = this.layout.replaceAll(setstart+replaceString+setend,""); 
-							this.layout   = this.layout.replaceAll(start+searchString+end,setstart+replaceString+setend); 
-							this.layout   = this.layout.replaceAll(setstart,"");  
-							this.layout   = this.layout.replaceAll(setend,"");  
+							this.layout   = this.layout.ReplaceAll(setstart+replaceString+setend,""); 
+							this.layout   = this.layout.ReplaceAll(start+searchString+end,setstart+replaceString+setend); 
+							this.layout   = this.layout.ReplaceAll(setstart,"");  
+							this.layout   = this.layout.ReplaceAll(setend,"");  
 						}
 					}
 				}
@@ -238,8 +244,8 @@ function Phoenix(argument) {
 					}else{
 						var evalArg = view[i].split("?>");
 						evalString  = evalArg[0].trim();
-						evalString  = evalString.replaceAll("write", "this.writeView");
-						evalString  = evalString.replaceAll("this.load.view", "this.viewToview");
+						evalString  = evalString.ReplaceAll("write", "this.writeView");
+						evalString  = evalString.ReplaceAll("this.load.view", "this.viewToview");
 						try {
 							eval(evalString.trim());
 							this.layout += evalArg[1];
@@ -302,8 +308,8 @@ function Phoenix(argument) {
 					}else{
 						var evalArg = view[i].split("?>");
 						evalString  = evalArg[0].trim();
-						evalString  = evalString.replaceAll("write", "this.writeView");
-						evalString  = evalString.replaceAll("this.load.view", "this.viewToview");
+						evalString  = evalString.ReplaceAll("write", "this.writeView");
+						evalString  = evalString.ReplaceAll("this.load.view", "this.viewToview");
 						try {
 							eval(evalString.trim());
 							if(!this.islayout)

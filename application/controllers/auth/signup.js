@@ -21,7 +21,7 @@ function signup (){
 		});
 		this.validate.confirm_password = this.confirm_password;
 		$check = this.validate.check(this.input.post(),{
-			"full_name"         : {validate : "required",label : "Full name"},
+			"full_name"         : {validate : "required",label : "Full name",messges : {required :"{$1} phải dc nhập"}},
 			"you_email"         : {validate : "required|email",label : "Email"},
 			"password"          : {validate : "required|mintext:6",label : "Password"},
 			"confirm_password"  : {validate : "confirm_password",label : "Confirm password"}
@@ -29,12 +29,11 @@ function signup (){
 		console.log($check);
 	}
 	this.confirm_password = function($value){
-		this.messges.confirm_password = "Vui lòng nhập {$1} giống với password";
+		this.messges.confirm_password = "Vui lòng nhập {$1} giống với Password";
 		if($value.trim() != "" && $value != null){
 			return ($value.trim() == this.input.post("password").trim());
 		}
 		return true;
-		
 		
 	}
 }

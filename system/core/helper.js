@@ -40,12 +40,12 @@ EscapeString = function(str) {
 		}
 	});
 }
-checkLogin = function() {
+CheckLogin = function() {
 	if (_SessionInfor.Username == undefined && _SessionInfor.Password == undefined) {
 		_Controller.response.redirect('/admin/login');
 	}
 }
-checkDoneLogin = function() {
+CheckDoneLogin = function() {
 	if (_SessionInfor.Username !== undefined && _SessionInfor.Password !== undefined) {
 		_Controller.response.redirect('/admin');
 	}
@@ -66,22 +66,6 @@ write = function(string) {
 	}
 	return false;
 }
-send = function(string) {
-	if(typeof string === "string"){
-		string = String(string);
-		_Controller.response.send(string);
-	}
-	else
-		return false;
-}
-start = function() {
-	return true;
-}
-end = function() {
-	_Controller.response.end();
-	return true;
-}
-
 base_url = function(url = null){
 	var base = _Config.local.host;
 	if(url != null){
@@ -118,30 +102,22 @@ HttpRequestGet = function($key = null){
 	return false;	
 }
 
-isAjaxRequest = function(){
+IsAjaxRequest = function(){
 	return(_Request.xhr);
 }
-String.prototype.replaceAll = function(search, replacement) {
+String.prototype.ReplaceAll = function(search, replacement) {
 	var target = this;
 	return target.split(search).join(replacement);
 }
-String.prototype.replaceKeyAll = function(array) {
+String.prototype.ReplaceKeyAll = function(array) {
 	var target = this;
 	for (var key in array) {
-		target = target.replaceAll(key, array[key]);
+		target = target.ReplaceAll(key, array[key]);
 	}
 	return target;
 }
-Array.prototype.clean = function(deleteValue) {
-	for (var i = 0; i < this.length; i++) {
-		if (this[i] == deleteValue) {
-			this.splice(i, 1);
-			i--;
-		}
-	}
-	return this;
-}
-String.prototype.addslashes = function() {
+
+String.prototype.Addslashes = function() {
     this.replace(/\\/g, '\\\\').
     replace(/\u0008/g, '\\b').
     replace(/\t/g, '\\t').
@@ -153,29 +129,19 @@ String.prototype.addslashes = function() {
     replace("'", "\'");
     return this;
 }
-Array.prototype.foreach = function($callback){
-	for(var i in this){
-		if(isNaN (i) === false){
-			$callback(i,this[i]);
+AutoloadMyController = function ($arg  = []){
+	var val;
+	if($arg.length > 0 ){
+		for (var key in $arg){
+			val = $arg[key];
+			var include = require(_F_core + val["file"]);
+			eval(val.name + " = new include(); "+val.name + " = Object.assign(_Controller,"+val.name+") ;");
 		}
 	}
-	return true;
-}
-Object.prototype.foreach = function($callback){
-	for(var i in this){
-		$callback(i,this[i]);
-	}
-	return true;
+	
 }
 
-autoloadMyController = function ($arg){
-	$arg.foreach(function(key,val){
-		var include = require(_F_core + val["file"]);
-		eval(val.name + " = new include(); "+val.name + " = Object.assign(_Controller,"+val.name+") ;");
-	});
-}
-
-ramdonString = function($num = 10) {
+RamdonString = function($num = 10) {
   var text = "";
   var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   for (var i = 0; i < $num; i++)
@@ -193,4 +159,7 @@ Route = function($name){
 	catch (e) { 
 		_Phoenix.info.error.push({detail: "" ,message : "Error: Route `"+$name+"` not like any routes please check name !"});
 	}
+}
+ObjectLength = function($o){
+	return Object.keys($o).length;
 }

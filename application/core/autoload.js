@@ -1,4 +1,4 @@
-autoloadMyController([
+AutoloadMyController([
 	//{name : "MyController",file: "MyController"}
 ]);
 /*autoloadMyModel([
