@@ -16,7 +16,13 @@ function Db() {
 		this.driver = new this.connectDriver(_Config.database[_Config.database.driver]); 
 	}
 	this.seclect = function(columns){
-		this.driver.seclect(columns)
+		try {
+			this.driver.seclect(columns);
+		}
+	    catch (e) {
+			if (e instanceof SyntaxError) _Controller.info.error.push({detail:e ,message : e.message});
+			else _Controller.info.error.push({detail:e ,message : e});
+		}	
 	}
 	this.from = function(table){
 		this.driver.from(table)
@@ -53,16 +59,35 @@ function Db() {
 		this.driver.printsql(); 
 	}
 	this.update = function(table,dataUpdate,where = null){
-		this.driver.update(table,dataUpdate,where); 
+		try {
+			this.driver.update(table,dataUpdate,where); 
+		}	
+		catch (e) {
+				if (e instanceof SyntaxError) _Controller.info.error.push({detail:e ,message : e.message});
+				else _Controller.info.error.push({detail:e ,message : e});
+		}	
+		
 	}
 	this.delete = function(table,where){
-		this.driver.delete(table,where);  
+		try {
+			this.driver.delete(table,where); 
+		}	
+		catch (e) {
+				if (e instanceof SyntaxError) _Controller.info.error.push({detail:e ,message : e.message});
+				else _Controller.info.error.push({detail:e ,message : e});
+		}	 
 	}
 	this.insert = function(table,data,callback){
-		this.driver.delete(table,data,callback);  
+		try {
+			this.driver.insert(table,data,callback);  
+		}	
+		catch (e) {
+			if (e instanceof SyntaxError) _Controller.info.error.push({detail:e ,message : e.message});
+			else _Controller.info.error.push({detail:e ,message : e});
+		}	
 	}
-	this.sql = function(sql,callback){
-		this.driver.sql(sql,callback);  
+	this.sql = function(sql){	
+		this.driver.sql(sql);  	
 	}
 	this.init();
 }

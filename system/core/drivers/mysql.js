@@ -9,6 +9,7 @@ function driverMysql(database){
 	var group           = "";
 	var relationship 	= [];
 	var condition 		= [];
+	var sqlPrint        = "";
 	this.connection = that.createConnection(database);
 	try{
 		this.connection.connect(function($err) {
@@ -20,15 +21,14 @@ function driverMysql(database){
 		if (e instanceof SyntaxError)  _Controller.info.error.push({detail:e ,message : e.message});
 		else  _Controller.info.error.push({detail:e ,message : e});
 	}
-	var sqlPrint = "";
 	this.select = function($columns){
 		var joinString = $columns.join("`,`");
-		joinString = joinString.replaceAll("````","`");
-		joinString = joinString.replaceAll("```","`");
-		joinString = joinString.replaceAll("``","`");
+		joinString = joinString.ReplaceAll("````","`");
+		joinString = joinString.ReplaceAll("```","`");
+		joinString = joinString.ReplaceAll("``","`");
 		joinString = "`"+joinString+"`";
-		joinString = joinString.replaceAll(".","`.`");
-		joinString = joinString.replaceAll("`*`","*");
+		joinString = joinString.ReplaceAll(".","`.`");
+		joinString = joinString.ReplaceAll("`*`","*");
 		columns    = joinString;
 		return true;
 	}
@@ -142,7 +142,9 @@ function driverMysql(database){
 				if (err) 
 					_Controller.info.error.push({detail:err ,message : err.sqlMessage});
 				else
-					$callback(rows, fields);
+					if(typeof $callback == "function" ){
+						$callback(rows, fields);
+					}	
 				_Controller.endwait();
 			});
 		}catch (e){
@@ -162,8 +164,11 @@ function driverMysql(database){
 	this.printsql = function(){
 		return sqlPrint;
 	}
-	this.update = function($table,$dataUpdate,$where = null){
-		var lengthArg = $dataUpdate.length;
+	this.update = function($table,$data,$where = null){
+		$table = $table.ReplaceAll("````","`");
+		$table = $table.ReplaceAll("```","`");
+		$table = $table.ReplaceAll("``","`");
+		$table = "`"+ $table +"`";
 		try{
 			var sql = "UPDATE FROM "+$table+" SET "; 
 			var i = 1;
@@ -186,13 +191,12 @@ function driverMysql(database){
 					i++;
 				}
 			}
-			connection.query(sql);
+			this.connection.query(sql);
 			return true;
-		}catch(e) {
-    		if (e instanceof SyntaxError) write(e.message);
-			else console.log(e);
-			return false;
-		}	
+		}catch (e){
+			if (e instanceof SyntaxError) _Controller.info.error.push({detail:e ,message : e.message});
+			else _Controller.info.error.push({detail:e ,message : e});
+		}
 		
 	}
 	this.delete = function($table,$where){
@@ -209,39 +213,62 @@ function driverMysql(database){
 				i++;
 			}
 			try{
-				connection.query(sql);
+				this.connection.query(sql);
 				sqlPrint += sql + "<br/>";
 				return true;
-			}catch(e) {
-    			if (e instanceof SyntaxError) write(e.message);
-				else console.log(e);
-				return false;
+			}catch (e){
+				if (e instanceof SyntaxError) _Controller.info.error.push({detail:e ,message : e.message});
+				else _Controller.info.error.push({detail:e ,message : e});
 			}
 		}
 	}
 	this.insert = function($table,$data,$callback){
-		try{
-			connection.query('INSERT INTO '+$table+' SET ?',$data, function(err, result) {
-			  	$callback(err, result);
-			});
-			return true;
-		}catch(e) {
-			if (e instanceof SyntaxError) write(e.message);
-			else console.log(e);
-			return false;
+		if(typeof($data) === "object"){
+			var argcolum = []; 
+			var argvalue = [];
+			for(var i in $data){
+				if(typeof(i) === "string"){
+					argcolum.push(i);
+					if(Number($data[i]) !== 'NaN')
+					 	argvalue.push("'"+$data [i]+"'");
+					else
+						argvalue.push($data[i]);
+				}	
+			}
+			argvalue = argvalue.join(",");
+			argcolum = argcolum.join("`,`");
+			argcolum = argcolum.ReplaceAll("````","`");
+			argcolum = argcolum.ReplaceAll("```","`");
+			argcolum = argcolum.ReplaceAll("``","`");
+			argcolum = "`"+argcolum+"`";
+			argcolum = "(" + argcolum + ")";
+			argvalue = "(" + argvalue + ")";
+			$table = $table.ReplaceAll("````","`");
+			$table = $table.ReplaceAll("```","`");
+			$table = $table.ReplaceAll("``","`");
+			$table = "`"+ $table +"`";
+			sql  = 'INSERT INTO '+ $table + " " + argcolum + " VALUE "+ argvalue;
+			try{
+				this.connection.query(sql, function(err, result) {
+				  	if (err) 
+						_Controller.info.error.push({detail:err ,message : err.sqlMessage});
+					else
+						if(typeof $callback == "function" ){
+							$callback (result);
+						}
+					});
+					return true;
+			}catch (e){
+				if (e instanceof SyntaxError) _Controller.info.error.push({detail:e ,message : e.message});
+				else _Controller.info.error.push({detail:e ,message : e});
+			}
+			sqlPrint += sql + "<br/>";
+		}else {
+			_Controller.info.error.push({detail:"" ,message : "The data sent to must be an object"});
 		}
 	}
-	this.sql = function($sql,$callback){
-		var options = {sql: $sql, nesttables: false};
-		try {	
-			this.connection.query(options,function(err, rows, fields){$callback(err, rows, fields);});
-			sqlPrint += sql + "<br/>";
-			return true;
-		}catch(e) {
-    		if (e instanceof SyntaxError) write(e.message);
-			else console.log(e);
-			return false;
-		}
+	this.sql = function($sql){
+		
 	}
 }
 module.exports = driverMysql;

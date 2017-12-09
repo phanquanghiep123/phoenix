@@ -27,7 +27,7 @@ function Validate() {
 		var k,v,item,key,check,validate,messges,value,argvalidate,label,argparmeter,parmeter,numberparmeter,messgesError;
 		var validatecheck = true;
 		for (k in $arg){
-			if(typeof($arg[k]) === "undefined" && typeof($option[k]) === "object"){
+			if(typeof($arg[k]) !== "undefined" && typeof($option[k]) === "object"){
 				v    = $arg[k];
 				item = $option[k];			
 				value    = v;
