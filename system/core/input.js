@@ -26,10 +26,8 @@ function Input (){
 			if(typeof _Phoenix.request.files[$name] !== "undefined")
 				return _Phoenix.request.files[$name];
 			else
-				return null;
-			 
+				return null;	 
 		}
 	}
 }
-
 module.exports = Input;

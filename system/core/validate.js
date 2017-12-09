@@ -24,23 +24,22 @@ function Validate() {
 		return this.messges;
 	}
 	this.check = function($arg = {} ,$option = {}){
-		var item,key,check,validate,messges,value,argvalidate,label,argparmeter,parmeter,numberparmeter,messgesError;
+		var k,v,item,key,check,validate,messges,value,argvalidate,label,argparmeter,parmeter,numberparmeter,messgesError;
 		var validatecheck = true;
-		var v;
-		for (var k in $arg){
-			v = $arg[k];
-			if(typeof(v) !== "function"){
-				item     = $option[k];
+		for (k in $arg){
+			if(typeof($arg[k]) === "undefined" && typeof($option[k]) === "object"){
+				v    = $arg[k];
+				item = $option[k];			
 				value    = v;
 				validate = item.validate;
 				label    = item.label;
 				key      = k;
-				if(typeof item.messges != "undefined") 
+				if(typeof item.messges == "string") 
 					messges = item.messges;
 				else 
 					messges = this.messges;
 				argvalidate = validate.split("|");
-				for (var k in argvalidate){
+				for (k in argvalidate){
 					v = argvalidate[k];
 					argparmeter = v.split(":");
 			 		numberparmeter = (argparmeter.length - 1);
@@ -65,70 +64,49 @@ function Validate() {
 						        _Phoenix.info.error.push({detail:item ,message : "Error: The number of parameters passed in exceeds the permission!"});
 								return false;
 						}
-						if (check == false) {
+							
+						if (check === false) {
 							messgesError = messges[argparmeter[0]];
 							switch(numberparmeter) {
 							    case 0:
-							        check = that[argparmeter[0]](value);
+							        messgesError = messgesError.ReplaceAll("{$1}",label);
 							        break;
 							    case 1:
-							        check = that[argparmeter[0]](value,argparmeter[1]);
+							        messgesError = messgesError.ReplaceAll("{$1}",label);
+							        messgesError = messgesError.ReplaceAll("{$2}",argparmeter[1]);
 							        break;
 							    case 2:
-							        check = that[argparmeter[0]](value,argparmeter[1],argparmeter[2]);
+							        messgesError = messgesError.ReplaceAll("{$1}",label);
+							        messgesError = messgesError.ReplaceAll("{$2}",argparmeter[1]);
+							        messgesError = messgesError.ReplaceAll("{$3}",argparmeter[2]);
 							        break;
 							    case 3:
-							        check = that[argparmeter[0]](value,argparmeter[1],argparmeter[2],argparmeter[3]);
+							        messgesError = messgesError.ReplaceAll("{$1}",label);
+							        messgesError = messgesError.ReplaceAll("{$2}",argparmeter[1]);
+							        messgesError = messgesError.ReplaceAll("{$3}",argparmeter[2]);
+							        messgesError = messgesError.ReplaceAll("{$4}",argparmeter[3]);
 							        break;
 							    case 4:
-							        check = that[argparmeter[0]](value,argparmeter[1],argparmeter[2],argparmeter[3],argparmeter[4]);
+							        messgesError = messgesError.ReplaceAll("{$1}",label);
+							        messgesError = messgesError.ReplaceAll("{$2}",argparmeter[1]);
+							        messgesError = messgesError.ReplaceAll("{$3}",argparmeter[2]);
+							        messgesError = messgesError.ReplaceAll("{$4}",argparmeter[3]);
+							        messgesError = messgesError.ReplaceAll("{$5}",argparmeter[4]);
 							        break;
 							    default:
 							        _Phoenix.info.error.push({detail:item ,message : "Error: The number of parameters passed in exceeds the permission!"});
 									return false;
 							}
-							if (check === false) {
-								messgesError = messges[argparmeter[0]];
-								switch(numberparmeter) {
-								    case 0:
-								        messgesError = messgesError.replaceAll("{$1}",label);
-								        break;
-								    case 1:
-								        messgesError = messgesError.replaceAll("{$1}",label);
-								        messgesError = messgesError.replaceAll("{$2}",argparmeter[1]);
-								        break;
-								    case 2:
-								        messgesError = messgesError.replaceAll("{$1}",label);
-								        messgesError = messgesError.replaceAll("{$2}",argparmeter[1]);
-								        messgesError = messgesError.replaceAll("{$3}",argparmeter[2]);
-								        break;
-								    case 3:
-								        messgesError = messgesError.replaceAll("{$1}",label);
-								        messgesError = messgesError.replaceAll("{$2}",argparmeter[1]);
-								        messgesError = messgesError.replaceAll("{$3}",argparmeter[2]);
-								        messgesError = messgesError.replaceAll("{$4}",argparmeter[3]);
-								        break;
-								    case 4:
-								        messgesError = messgesError.replaceAll("{$1}",label);
-								        messgesError = messgesError.replaceAll("{$2}",argparmeter[1]);
-								        messgesError = messgesError.replaceAll("{$3}",argparmeter[2]);
-								        messgesError = messgesError.replaceAll("{$4}",argparmeter[3]);
-								        messgesError = messgesError.replaceAll("{$5}",argparmeter[4]);
-								        break;
-								    default:
-								        _Phoenix.info.error.push({detail:item ,message : "Error: The number of parameters passed in exceeds the permission!"});
-										return false;
-								}
-								that.allError.push(messgesError);
-								that.ListError[key] = messgesError;
-								that.ListDetailErrr.push(item);
-								validatecheck = false;
-							}		
-						} catch (e) {	
-							if (e instanceof SyntaxError) _Phoenix.info.error.push({detail:e ,message : e.message});
-							else _Phoenix.info.error.push({detail:e ,message : e});				 
-							return false;
+							this.allError.push(messgesError);
+							this.ListError[key] = messgesError;
+							this.ListDetailErrr.push(item);
+							validatecheck = false;
 						}
+
+					} catch (e) {	
+						if (e instanceof SyntaxError) _Phoenix.info.error.push({detail:e ,message : e.message});
+						else _Phoenix.info.error.push({detail:e ,message : e});				 
+						return false;
 					}
 				}
 			}
