@@ -2,10 +2,10 @@ function signin(argument) {
 	this.extent   = MyController;
 	this.index = function(){
 		var user = this.load.model("users");
-		var a = user.leftjoin("abc",["id","=","user.id"]).
-		rightjoin("abc",["id","=","user.id"]).
+		var a = user.leftjoin("abc",[["id","=","user.id"]]).
+		rightjoin("abc",[["id","=","user.id"]]).
 		select(["id","full_name"]).
-		innerjoin("abc",["id","=","user.id"]).
+		innerjoin("abc",[["id","=","user.id"]]).
 		record();
 		this.data.title = "Phoenix | Signin";
 		return this.load.view("frontend/auth/signin.html");

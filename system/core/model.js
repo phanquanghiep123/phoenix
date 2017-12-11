@@ -26,7 +26,10 @@ function Model() {
 	}
 	this.select = function ($data = null){
 		if(typeof $data == "object"){
-			this._selects.push($data);
+			for (var i in $data){
+				this._selects.push($data);
+			}
+			
 		}else{
 			_Controller.info.error.push({detail:"" ,message : "The data sent to select function must be an array"});
 		}
@@ -90,9 +93,6 @@ function Model() {
 	}
 	this.result  = function($callback){
 		this.db.get(this,0,$callback);
-		return this;
-	}
-	this.update = function ($callback){
 		return this;
 	}
 	this.remove = function ($callback){

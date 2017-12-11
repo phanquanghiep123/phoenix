@@ -1,5 +1,5 @@
 function Users() {
-	this.table  = "users";
+	this.table  = "users AS tbl1";
 	this.key    = "id";
 	this.insert = function($data,$callback = null){
 		this.db.insert(this.table,$data,$callback);

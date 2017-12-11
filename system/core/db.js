@@ -30,17 +30,17 @@ function Db() {
 	this.join = function($table,$ondata,$type = ""){
 		this.driver.join($table,$ondata,$type);
 	}
-	this.$where = function($wheredata){
-		this.driver.$where($wheredata);
+	this.where = function($wheredata){
+		this.driver.where($wheredata);
 	}
-	this.$where_or = function($wheredata){
-		this.driver.$where_or($wheredata);
+	this.where_or = function($wheredata){
+		this.driver.where_or($wheredata);
 	}
-	this.$where_in = function($columns,$arg,$type = false){
-		this.driver.$where_in($columns,$arg,$type); 
+	this.where_in = function($columns,$arg,$type = false){
+		this.driver.where_in($columns,$arg,$type); 
 	}
-	this.$where_not_in = function($columns,$arg,$type = false){
-		this.driver.$where_not_in($columns,$arg,$type); 
+	this.where_not_in = function($columns,$arg,$type = false){
+		this.driver.where_not_in($columns,$arg,$type); 
 	}
 	this.start_group = function(){
 		this.driver.start_group($columns,$arg,$type); 
@@ -52,7 +52,8 @@ function Db() {
 		this.driver.limit($offset,$limit); 
 	}
 	this.get = function($model,$type,$callback){
-		_Controller.wait();
+		//_Controller.wait();
+		//console.log($model);
 		this.driver.get($model,$type,$callback); 
 	}
 	this.printsql = function(){
