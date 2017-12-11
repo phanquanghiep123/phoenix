@@ -4,15 +4,18 @@ function Loader() {
 			_Controller.info.model.push({file : $file});
 			var _model = require(_F_models + $file );
             var model  = new _model();
-            model = Object.assign(_Model,model);
+            var PModel = new _Autoload.model();
+            model      = Object.assign(PModel,model);
             _Controller[$file] = model;
+            var check = model.__construct();
+            if(check == true)
+            	return model;
+        	else return false;
 
 		}catch (e){
 			if (e instanceof SyntaxError) _Phoenix.info.error.push({detail:e ,message : e.message});
 			else _Phoenix.info.error.push({detail:e ,message : e});
 		}
-		return true;
-		
 	}
 	this.view  = function( $file = "", $data = {}, $return = false){
 		_Phoenix.info.view.push({file : $file});

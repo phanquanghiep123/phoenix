@@ -116,7 +116,15 @@ String.prototype.ReplaceKeyAll = function(array) {
 	}
 	return target;
 }
-
+cleanEmtyItemArray = function(array,deleteValue) {
+	var newArray = [];
+	for (var i = 0; i < array.length; i++) {
+		if (array[i] != deleteValue) {
+			newArray.push(array[i]);
+		}
+	}
+	return newArray;
+}
 String.prototype.Addslashes = function() {
     this.replace(/\\/g, '\\\\').
     replace(/\u0008/g, '\\b').
