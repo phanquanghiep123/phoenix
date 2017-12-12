@@ -37,7 +37,9 @@ function Model() {
 	}
 	this.where = function($data = null){
 		if(typeof $data == "object"){
-			this._where.push($data);
+			for(var i in $data){
+				this._where.push($data[i]);
+			}	
 		}else{
 			_Controller.info.error.push({detail:"" ,message : "The data sent to where function must be an array"});
 		}

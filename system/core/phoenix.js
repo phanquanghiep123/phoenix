@@ -48,6 +48,7 @@ function Phoenix(argument) {
 		        		val = errors[key];
 		        		write("<p>"+val.message+"<br/></p>");
 			        	write("<p>"+val.detail+"<br/></p>");
+			        	console.log(val.detail);
 		        	}
 		        }else{
 		        	write(that.load.views);

@@ -6,6 +6,7 @@ function signin(argument) {
 		rightjoin("abc",["id","=","user.id"],[["dfdfg","=","rtyrty"]]).
 		select(["id AS abc","full_name AS v","sbv.ưsđ","sdf.asd"]).
 		innerjoin("abc",["id","=","user.id"]).
+		where([["id","=","100"]]).where([["id","=","100"]]).
 		record();
 		this.data.title = "Phoenix | Signin";
 		return this.load.view("frontend/auth/signin.html");
