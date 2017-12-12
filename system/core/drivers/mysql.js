@@ -13,16 +13,18 @@ function driverMysql($SeverInfo){
 		_connection.connect(function($err) {
 				if ($err) {
 					_Controller.info.error.push({detail:$err ,message : $err.stack});
+				}else{
+					//console.log($err);
 				}
 			});
 		}catch(e){
 			if (e instanceof SyntaxError)  _Controller.info.error.push({detail:e ,message : e.message});
-			else  _Controller.info.error.push({detail:e ,message : e});
+			else  _Controller.info.error.push({detail:e ,message : e}); 
 		}
 	}
-	this.from = function($table){
-		var argTable = $table.split(" ");
-		argTable     = cleanEmtyItemArray(argTable,"");
+	this.from = function($table = null){
+		var argTable    = $table.split(" ");
+		argTable        = cleanEmtyItemArray(argTable,"");
 		var newargTable = [];
 		for (var i in argTable){
 			if(this._sqlKeyWord.indexOf(argTable[i].toLowerCase().trim()) == -1){
@@ -33,11 +35,11 @@ function driverMysql($SeverInfo){
 		}
 		this._table = newargTable.join(" ");
 	}
-	this.select = function($data){
+	this.select = function($data = []){
 		var selectString ;
 		if(typeof $data == "object"){
-			for (var i in $columns){
-				selectString = replacecolum($data[i])
+			for (var i in $data){
+				selectString = replacecolum($data[i]);
 				this._columns.push(selectString);
 			}
 			return this;
@@ -46,12 +48,12 @@ function driverMysql($SeverInfo){
 			return false;
 		}
 	}
-	this.get = function($model,$type,$callback){
-		
+	this.get = function($model = {},$type = 0 ,$callback = null){
 		if($model.table != null){
 			this.from($model.table);
 			this.select($model._selects);
 			console.log(this._columns);
+			return false;
 			try { 
 				this.connection.query(options,function(err, rows, fields){
 					if (err) 
@@ -69,16 +71,21 @@ function driverMysql($SeverInfo){
 			}
 		} 
 	}
-	const replacecolum  = function($column){
+	var replacecolum  = function($column = null){
+		console.log(this._sqlKeyWord);
+		var argString = $column.split(" ");
+		argString     = cleanEmtyItemArray(argString);
+		var keyString = "";
+		var argNew    = [];
+		var columString = "";
+		for (var i in argString){
+			if(this._sqlKeyWord.indexOf(argString[i].toLowerCase().trim()) == -1){
 
-		var keyString = $column.ReplaceAll("````","`");
-		keyString = keyString.ReplaceAll("```","`");
-		keyString = keyString.ReplaceAll("``","`");
-		keyString = "`"+keyString+"`";
-		keyString = keyString.ReplaceAll(".","`.`");
-		return 	keyString;
+			}
+		}
+		return 	argNew.join(" ");
 	}
-	const replacevalue = function($value = null){
+	var replacevalue = function($value = null){
 		var valueString
 		if($value == null) return "NULL";
 		if(Number($value) !== 'NaN')

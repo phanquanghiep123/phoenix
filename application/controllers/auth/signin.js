@@ -4,7 +4,7 @@ function signin(argument) {
 		var user = this.load.model("users");
 		var a = user.leftjoin("abc",[["id","=","user.id"]]).
 		rightjoin("abc",[["id","=","user.id"]]).
-		select(["id","full_name"]).
+		select(["id AS abc","full_name AS v","sbv.ưsđ","sdf.asd"]).
 		innerjoin("abc",[["id","=","user.id"]]).
 		record();
 		this.data.title = "Phoenix | Signin";

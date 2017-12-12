@@ -27,7 +27,7 @@ function Model() {
 	this.select = function ($data = null){
 		if(typeof $data == "object"){
 			for (var i in $data){
-				this._selects.push($data);
+				this._selects.push($data[i]);
 			}
 			
 		}else{
