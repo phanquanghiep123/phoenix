@@ -1,15 +1,21 @@
 function signin(argument) {
-	this.extent   = MyController;
-	this.index = function(){
-		var user = this.load.model("users");
-		var a = user.leftjoin("abc",["id","=","user.id"]).
-		rightjoin("abc",["id","=","user.id"],[["dfdfg","=","rtyrty"]]).
-		select(["id AS abc","full_name AS v","sbv.ưsđ","sdf.asd"]).
-		innerjoin("abc",["id","=","user.id"]).
-		where([["id","=","100"]]).where([["id","=","100"]]).
-		record();
+	this.extent = MyController;
+	this.index  = function(){
+		var that = this;
 		this.data.title = "Phoenix | Signin";
-		return this.load.view("frontend/auth/signin.html");
+		this.load.model("users");
+		this.users.id = 1;
+		this.users.email = "phanquanghiep@gmail.com";
+		this.users.full_name = "phanquanghiep@gmail.com";
+		this.users.password = "phanquanghiep@gmail.com";
+		this.users.find(1,function(){
+			that.users.email = "ghghjghjghjdsdsd";
+			that.users.save();
+		});
+		this.users.result(function(users){
+			return that.load.view("frontend/auth/signin.html",that.data);
+		});
+		
 	}
 	this.save = function(){
 		$check = this.validate.check(this.input.post(),{

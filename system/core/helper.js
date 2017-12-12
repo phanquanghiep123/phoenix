@@ -59,12 +59,9 @@ joinArray = function(InputArray, str) {
 	return string;
 }
 write = function(string) {
-	if(typeof string === "string"){
-		string = String(string);
-		_Controller.response.write(string);
-		return true;
-	}
-	return false;
+	string = String(string);
+	_Controller.response.write(string);
+	return true;
 }
 base_url = function(url = null){
 	var base = _Config.local.host;

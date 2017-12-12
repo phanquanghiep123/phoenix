@@ -2,14 +2,21 @@ function Loader() {
 	this.model = function($file){
 		try {
 			_Controller.info.model.push({file : $file});
-			var _model = require(_F_models + $file );
-            var model  = new _model();
-            var PModel = new _Autoload.model();
-            model      = Object.assign(PModel,model);
-            _Controller[$file] = model;
-            var check = model.__construct();
+			var _model  = require(_F_models + $file );
+            var model   = new _model();
+            var PModel  = new _Autoload.model();
+            var Megge   = new Object;
+            for (var i in PModel){
+            	Megge[i] = PModel[i];
+            }
+            for (var i in model){
+            	Megge[i] = model[i];
+            }
+            Megge._name = $file;
+            _Controller[$file] = Megge;
+            var check = Megge.__construct();
             if(check == true)
-            	return model;
+            	return Megge;
         	else return false;
 
 		}catch (e){

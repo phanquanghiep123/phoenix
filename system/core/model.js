@@ -1,6 +1,8 @@
 function Model() {
 	const _db      = require("./db.js");
 	const _input   = require("./input.js");
+	const _load    = require("./loader.js");
+	this.load      = new _load();
 	this.db        = new _db();
 	this.input     = new _input();
 	this.table     = null;
@@ -10,8 +12,10 @@ function Model() {
 	this._sql      = null;
 	this._selects  = [];
 	this._where    = [];
+	this._wherein  = [];
+	this._wherenotin  = [];
 	this._joins    = [];
-	this._limit    = {};
+	this._limit    = [];
 	this._order    = [];
 	this._group    = [];
 	this._having   = [];
@@ -20,7 +24,7 @@ function Model() {
 			_Phoenix.info.error.push({detail:"Model error" ,message : "Error: Please add name and key for table!"});
 			return false;
 		}else{
-			this[this.key] = [];
+			this[this.key] = 0;
 		}
 		return true;
 	}
@@ -43,6 +47,14 @@ function Model() {
 		}else{
 			_Controller.info.error.push({detail:"" ,message : "The data sent to where function must be an array"});
 		}
+		return this;
+	}
+	this.wherein  = function($key = null ,$in = []){
+		this._wherein.push({key:$key,in:$in});
+		return this;
+	}
+	this.wherenotin  = function($key = null ,$in = []){
+		this._wherenotin.push({key:$key,in:$in});
 		return this;
 	}
 	this.innerjoin = function($table,$ondata = null,$and = null){
@@ -69,12 +81,17 @@ function Model() {
 		}
 		return this;
 	}
-	this.limit = function($offset,$limit){
-		this.limit = {offset : $offset ,limit : $limit };
+	this.limit = function($offset = null,$limit = null){
+		if($limit != null && typeof $limit == "number"){
+			this._limit.push($limit);
+		}
+		if($offset != null && typeof $offset == "number"){
+			this._limit.push($offset);
+		}
 		return this;
 	}
 	this.orderby = function($order){
-		if(typeof $ondata == "object"){
+		if(typeof $order == "object"){
 			this._order.push($order);
 		}else{
 			_Controller.info.error.push({detail:"" ,message : "The data sent to orderpby function must be an array"});
@@ -82,7 +99,7 @@ function Model() {
 		return this;
 	}
 	this.groupby = function($group){
-		if(typeof $ondata == "object"){
+		if(typeof $group == "object"){
 			this._group.push($group);
 		}else{
 			_Controller.info.error.push({detail:"" ,message : "The data sent to groupby function must be an array"});
@@ -94,13 +111,14 @@ function Model() {
 		return this;
 	}
 	this.result  = function($callback){
-		this.db.get(this,0,$callback);
+		this.db.get(this,1,$callback);
 		return this;
 	}
 	this.remove = function ($callback){
 		return this;
 	}
 	this.save = function($callback){
+		this.db.save(this);
 		return this;
 	}
 	this.GeneratorSql = function (){
@@ -120,6 +138,9 @@ function Model() {
 		this.having    = [];
 		return this;
 	}
-
+	this.find = function($id,$callback = null){
+		this.db.find(this,$id,$callback);
+		return this;
+	}
 }
 module.exports = Model;
