@@ -117,7 +117,7 @@ function driverMysql($SeverInfo){
 			this._group.push(key);
 		}
 	}
-	this.get = function($model,$type = 0){
+	this.get = function($model, $type = 0,$connect = true){
 		if($model.table != null){
 			this.from($model.table);
 			this.select($model._selects);
@@ -154,48 +154,52 @@ function driverMysql($SeverInfo){
 			if($model._limit.length > 0){
 				this.limit($model._limit);
 			}
-			this.convertSql();
+			this._sql   = this.convertSql();
 			$model._sql = this._sql;
-			try { 
-				var options = {sql : this._sql, nesttables: false};
-				_connection.query(options,function(err, rows, fields){
-					if (err) 
-						_Controller.info.error.push({detail:err ,message : err.sqlMessage});
-					else
-						if($type == 0){
-							if(rows.length > 0 ){
-								var row = rows[0];
-								for (var i in row){
-									$model[i] = row[i];
+			if($connect == true){
+				try { 
+					var options = {sql : this._sql, nesttables: false};
+					_connection.query(options,function(err, rows, fields){
+						if (err) 
+							_Controller.info.error.push({detail:err ,message : err.sqlMessage});
+						else
+							if($type == 0){
+								if(rows.length > 0 ){
+									var row = rows[0];
+									for (var i in row){
+										$model[i] = row[i];
+									}
+								}
+								if(typeof $model.callback == "function"){
+									$model.toList(null);
+									$model.callback($model.callback = null);
+								}
+							}else{
+								var argModels = [];
+								for (var i in rows){
+									var row = rows[i];
+									var dataModel = new Object;
+									for (var i in $model){
+										dataModel[i] = $model[i];
+									}
+									for (var i in row){
+										dataModel[i] = row[i];
+									}
+									dataModel.reset();
+									argModels.push(dataModel);
+								}	
+								if(typeof $model.callback == "function"){
+									$model.callback($model.toList(argModels));
 								}
 							}
-							if(typeof $model.callback !== null){
-								$model.callback($model);
-							}
-						}else{
-							var argModels = [];
-							for (var i in rows){
-								var row = rows[i];
-								var dataModel = new Object;
-								for (var i in $model){
-									dataModel[i] = $model[i];
-								}
-								for (var i in row){
-									dataModel[i] = row[i];
-								}
-								argModels.push(dataModel);
-							}	
-							if(typeof $model.callback !== null){
-								$model.callback(argModels);
-							}
-						}
-							
+								
+						_Controller.endwait();
+					});
+				}catch (e){
+					if (e instanceof SyntaxError) _Controller.info.error.push({detail:e ,message : e.message});
+					else _Controller.info.error.push({detail:e ,message : e});
 					_Controller.endwait();
-				});
-			}catch (e){
-				if (e instanceof SyntaxError) _Controller.info.error.push({detail:e ,message : e.message});
-				else _Controller.info.error.push({detail:e ,message : e});
-				_Controller.endwait();
+				}
 			}
 		} 
 	}
@@ -283,9 +287,9 @@ function driverMysql($SeverInfo){
 				  	}
 				  	if($model[$model.key] == 0){
 				  		$model[$model.key] = result.insertId; 
-				  	} 
-					if(typeof $model.callback !== null){
-						$model.callback($model);
+				  	}
+					if(typeof $model.callback == "function"){
+						$model.callback($model.callback = null);
 					}
 				});
 			}	
@@ -306,7 +310,7 @@ function driverMysql($SeverInfo){
 					}
 				}
 			    if(typeof $model.callback !== null){
-					$model.callback($model);
+					$model.callback($model.callback = null);
 				}
 		  	}
 		  	
@@ -315,11 +319,11 @@ function driverMysql($SeverInfo){
 	this.convertSql = function(){
 		var selectString = joinString = stringWhere = groupString = orderString = limitString = "";
 		if(this._columns == null || this._columns.length < 1){
-			this._columns.push(" * ");
+			this._columns.push("*");
 		}
 		selectString = this._columns.join(" , ");
 		if(this._joins.length > 0){
-			joinString = this._joins.join(" ");
+			joinString = " " + this._joins.join(" ");
 		}
 		if(this._where.length > 0){
 			stringWhere = " WHERE " + this._where.join(" AND ") ;
@@ -334,7 +338,7 @@ function driverMysql($SeverInfo){
 			limitString = " LIMIT " + this._limit.join(" , ");
 		}
 		var sql = "SELECT " + selectString + " FROM " + this._table + joinString + stringWhere + groupString + orderString + limitString;
-		this._sql = sql;
+		return sql;
 	}
 	const replacecolum  = function($column = null){
 		const _sqlKeyWord  = ["%","=","*","/","+","-","like","in","not","or","on","and","left","end","as","right","inner"];

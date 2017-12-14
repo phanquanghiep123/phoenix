@@ -8,6 +8,7 @@ function Model() {
 	this.table     = null;
 	this.key       = null;
 	this.colums    = [];
+	this.list      = [];
 	this.callback  = null;
 	this.validate  = null;
 	this._sql      = null;
@@ -109,22 +110,39 @@ function Model() {
 		return this;
 	}
 	this.record  = function(){
-		this.db.get(this,0);
+		var that  = new Object;
+		for (var i in this){
+			that[i] = this[i];
+		}
+		this.db.get(that,0);
+		this.callback = null;
 		return this;
 	}
 	this.result  = function(){
-		this.db.get(this,1);
+		var that  = new Object;
+		for (var i in this){
+			that[i] = this[i];
+		}
+		this.db.get(that,1);
+		this.callback = null;
 		return this;
 	}
 	this.remove = function (){
 		return this;
 	}
 	this.save = function(){
-		this.db.save(this);
+		var that  = new Object;
+		for (var i in this){
+			that[i] = this[i];
+		}
+		this.db.save(that);
+		this.callback = null; 
 		return this;
 	}
 	this.reset = function(){
 		this._sql         = null;
+		this.callback     = null;
+		this.list 		  = null;
 		this._selects     = [];
 		this._where       = [];
 		this._wherein     = [];
@@ -137,7 +155,12 @@ function Model() {
 		return this;
 	}
 	this.find = function($id){
-		this.db.find(this,$id);
+		var that  = new Object;
+		for (var i in this){
+			that[i] = this[i];
+		}
+		this.db.find(that,$id);
+		this.callback = null;
 		return this;
 	}
 	this.addnew = function(){
@@ -157,8 +180,17 @@ function Model() {
 		that._group       = [];
 		that._having      = [];
 		that.callback     = null;
+		that.list         = null;
 		that.__construct(); 
 		return that;
+	}
+	this.toList = function($data){
+		this.list = $data;
+		return $data;
+	}
+	this.reader = function(){
+		this.db.reader(this);
+		return this;
 	}
 }
 module.exports = Model;

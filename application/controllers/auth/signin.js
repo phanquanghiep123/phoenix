@@ -4,14 +4,9 @@ function signin(argument) {
 		var that = this;
 		this.data.title = "Phoenix | Signin";
 	    this.load.model("users");
-	    var user = this.users.addnew();
-	    user.email = "jkhjkjhhjk";
-	    user.full_name ="jklkjljklkj";
-	    user.password  = "sdfsdfdsf";
-		user.callback = function(r){
-			this.save();
-		}
-		user.find(1);
+	    var user = this.users.addnew(); 
+	    user.leftjoin("product",["product.user_id","=","user.id"]).reader();
+	    console.log(user);
 	}
 	this.save = function(){
 		$check = this.validate.check(this.input.post(),{

@@ -17,13 +17,16 @@ function Db() {
 	}
 	this.get = function($model,$type,$callback){
 		_Controller.wait();
-		this.driver.get($model,$type,$callback); 
+		return this.driver.get($model,$type,$callback); 
 	}
 	this.save = function($model,$callback){
-		this.driver.save($model,$callback); 
+		return this.driver.save($model,$callback); 
 	}
 	this.find = function ($model,$id,$callback){
-		this.driver.find($model,$id,$callback); 
+		return this.driver.find($model,$id,$callback); 
+	}
+	this.reader = function($model){
+		return this.driver.get($model,0,false);
 	}
 	this.init();
 }
