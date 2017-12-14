@@ -170,9 +170,9 @@ function driverMysql($SeverInfo){
 										$model[i] = row[i];
 									}
 								}
-								if(typeof $model.callback == "function"){
+								if(typeof $model._callback == "function"){
 									$model.toList(null);
-									$model.callback($model.callback = null);
+									$model._callback($model._callback = null);
 								}
 							}else{
 								var argModels = [];
@@ -188,8 +188,8 @@ function driverMysql($SeverInfo){
 									dataModel.reset();
 									argModels.push(dataModel);
 								}	
-								if(typeof $model.callback == "function"){
-									$model.callback($model.toList(argModels));
+								if(typeof $model._callback == "function"){
+									$model._callback($model.toList(argModels));
 								}
 							}
 								
@@ -202,43 +202,6 @@ function driverMysql($SeverInfo){
 				}
 			}
 		} 
-	}
-	this.insert = function($table,$data){
-		if(typeof($data) === "object"){
-			var argcolum = []; 
-			var argvalue = [];
-			for(var i in $data){
-				if(typeof(i) === "string"){
-					argcolum.push(replacecolum(i));
-					argvalue.push(replacevalue($data [i]));
-				}	
-			}
-			var stringColum = argcolum.join(" , ");
-			var stringValue = argvalue.join(" , ");
-			$table = replacecolum($table);
-			sql  = 'INSERT INTO '+ $table + " " + stringColum + " VALUE "+ stringValue;
-			try{
-				_connection.query(sql, function(err, result) {
-				  	if (err) {
-				  		_Controller.info.error.push({detail:err ,message : err.sqlMessage});
-						return false;
-				  	}
-					else{
-						if(typeof $callback !== null){
-							$callback (result);
-						}
-					}
-				});
-				sqlPrint += sql + "<br/>";
-				return this;
-			}catch (e){
-				if (e instanceof SyntaxError) _Controller.info.error.push({detail:e ,message : e.message});
-				else _Controller.info.error.push({detail:e ,message : e});
-			}
-			
-		}else {
-			_Controller.info.error.push({detail:"" ,message : "The data sent to must be an object"});
-		}
 	}
 	this.save = function($model){
 		var options = {sql : "DESCRIBE " + replacecolum($model.table), nesttables: false};
@@ -288,8 +251,8 @@ function driverMysql($SeverInfo){
 				  	if($model[$model.key] == 0){
 				  		$model[$model.key] = result.insertId; 
 				  	}
-					if(typeof $model.callback == "function"){
-						$model.callback($model.callback = null);
+					if(typeof $model._callback == "function"){
+						$model._callback($model._callback = null);
 					}
 				});
 			}	
@@ -309,11 +272,30 @@ function driverMysql($SeverInfo){
 						$model[i] = row[i];
 					}
 				}
-			    if(typeof $model.callback !== null){
-					$model.callback($model.callback = null);
+			    if(typeof $model._callback !== null){
+					$model._callback($model._callback = null);
 				}
 		  	}
-		  	
+		});
+	}
+	this.destroy = function($model){
+		this._sql = "DELETE FROM " + replacecolum($model.table) + " WHERE " + replacecolum($model.key) +" = " + $model[$model.key];
+		var options = {sql : this._sql, nesttables: false};
+		_connection.query(options,function(err, rows){
+			if (err) {
+				_Controller.info.error.push({detail:err ,message : err.sqlMessage});
+		  	}else{
+		  		var row = null;
+		  		if(rows.length > 0 ){
+					row = rows[0];
+					for (var i in row){
+						$model[i] = row[i];
+					}
+				}
+			    if(typeof $model._callback  == "function"){
+					$model._callback(this);
+				}
+		  	}	
 		});
 	}
 	this.convertSql = function(){

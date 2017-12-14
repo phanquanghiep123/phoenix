@@ -25,6 +25,9 @@ function Db() {
 	this.find = function ($model,$id,$callback){
 		return this.driver.find($model,$id,$callback); 
 	}
+	this.destroy = function($model){
+		return this.driver.destroy($model);
+	}
 	this.reader = function($model){
 		return this.driver.get($model,0,false);
 	}

@@ -5,8 +5,10 @@ function signin(argument) {
 		this.data.title = "Phoenix | Signin";
 	    this.load.model("users");
 	    var user = this.users.addnew(); 
-	    user.leftjoin("product",["product.user_id","=","user.id"]).reader();
-	    console.log(user);
+	    user.where([["id","=",49]]).callback(function(){
+	    	console.log(this);
+	    }).record();
+	   
 	}
 	this.save = function(){
 		$check = this.validate.check(this.input.post(),{

@@ -9,7 +9,7 @@ function Model() {
 	this.key       = null;
 	this.colums    = [];
 	this.list      = [];
-	this.callback  = null;
+	this._callback = null;
 	this.validate  = null;
 	this._sql      = null;
 	this._new      = 0;
@@ -60,7 +60,7 @@ function Model() {
 		this._wherenotin.push({key:$key,in:$in});
 		return this;
 	}
-	this.innerjoin = function($table,$ondata = null,$and = null){
+	this.innerjoin = function($table, $ondata = null, $and = null){
 		if(typeof $ondata == "object"){
 			this._joins.push({table : $table, on : $ondata, and : $and, type: 0});
 		}else{
@@ -115,7 +115,7 @@ function Model() {
 			that[i] = this[i];
 		}
 		this.db.get(that,0);
-		this.callback = null;
+		this._callback = null;
 		return this;
 	}
 	this.result  = function(){
@@ -124,11 +124,22 @@ function Model() {
 			that[i] = this[i];
 		}
 		this.db.get(that,1);
-		this.callback = null;
+		this._callback = null;
 		return this;
 	}
-	this.remove = function (){
-		return this;
+	this.destroy = function (){
+		var that  = new Object;
+		for (var i in this){
+			that[i] = this[i];
+		}
+		if(that.list !== null){
+			for (var i in that.list ){
+				this.db.destroy(that.list[i]);
+			}
+		}
+		this.db.destroy(that);
+		this._callback = null; 
+		return this.addnew();
 	}
 	this.save = function(){
 		var that  = new Object;
@@ -136,12 +147,11 @@ function Model() {
 			that[i] = this[i];
 		}
 		this.db.save(that);
-		this.callback = null; 
-		return this;
+		this._callback = null; 
 	}
 	this.reset = function(){
 		this._sql         = null;
-		this.callback     = null;
+		this._callback    = null;
 		this.list 		  = null;
 		this._selects     = [];
 		this._where       = [];
@@ -160,7 +170,7 @@ function Model() {
 			that[i] = this[i];
 		}
 		this.db.find(that,$id);
-		this.callback = null;
+		this._callback = null;
 		return this;
 	}
 	this.addnew = function(){
@@ -179,7 +189,7 @@ function Model() {
 		that._order       = [];
 		that._group       = [];
 		that._having      = [];
-		that.callback     = null;
+		that._callback     = null;
 		that.list         = null;
 		that.__construct(); 
 		return that;
@@ -190,6 +200,10 @@ function Model() {
 	}
 	this.reader = function(){
 		this.db.reader(this);
+		return this;
+	}
+	this.callback = function($callback){
+		this._callback = $callback;
 		return this;
 	}
 }
