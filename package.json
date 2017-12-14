@@ -1,33 +1,30 @@
 {
-  "name": "scjs",
-  "version": "1.0.0",
-  "description": "mvc framword nodejs",
-  "main": "public/server.js",
+  "name": "nodejs-ex",
+  "version": "0.0.1",
+  "description": "Node.js sample app for OpenShift 3",
+  "main": "server.js",
   "dependencies": {
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
     "express-fileupload": "^0.3.0",
     "mysql": "^2.15.0",
-    "nodemon": "^1.12.1"
   },
-  "devDependencies": {
-    "nodemon": "^1.12.1"
+  "engine": {
+    "node": "*",
+    "npm": "*"
   },
   "scripts": {
-    "start": "node server.js"
+    "start": "node public/server.js",
+    "test": "IP=0.0.0.0 PORT=3030 mocha --timeout 5000 tests/*_test.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/phanquanghiep123/phoenix.git"
+    "url": "http://github.com/openshift/nodejs-ex.git"
   },
-  "author": "quanghiep",
-  "license": "ISC",
+  "author": "Steve Speicher <sspeiche@gmail.com>",
+  "license": "CC-BY-1.0",
   "bugs": {
-    "url": "https://github.com/phanquanghiep123/phoenix/issues"
+    "url": "http://github.com/openshift/nodejs-ex/issues"
   },
-  "homepage": "https://github.com/phanquanghiep123/phoenix#readme",
-  "keywords": [
-    "mvc",
-    "nodejs"
-  ]
+  "homepage": "http://github.com/openshift/nodejs-ex"
 }
