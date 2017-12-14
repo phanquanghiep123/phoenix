@@ -1,3 +1,6 @@
+console.log("Hiep");
+/*
+
 _Path         = __dirname + "/";
 _Fs   	      = require('fs');
 var _require  = require(_Path + '../system/autoload.js');
