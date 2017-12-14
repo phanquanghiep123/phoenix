@@ -3,19 +3,15 @@ function signin(argument) {
 	this.index  = function(){
 		var that = this;
 		this.data.title = "Phoenix | Signin";
-		this.load.model("users");
-		this.users.id = 1;
-		this.users.email = "phanquanghiep@gmail.com";
-		this.users.full_name = "phanquanghiep@gmail.com";
-		this.users.password = "phanquanghiep@gmail.com";
-		this.users.find(1,function(){
-			that.users.email = "ghghjghjghjdsdsd";
-			that.users.save();
-		});
-		this.users.result(function(users){
-			return that.load.view("frontend/auth/signin.html",that.data);
-		});
-		
+	    this.load.model("users");
+	    var user = this.users.addnew();
+	    user.email = "jkhjkjhhjk";
+	    user.full_name ="jklkjljklkj";
+	    user.password  = "sdfsdfdsf";
+		user.callback = function(r){
+			this.save();
+		}
+		user.find(1);
 	}
 	this.save = function(){
 		$check = this.validate.check(this.input.post(),{

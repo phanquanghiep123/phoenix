@@ -117,7 +117,7 @@ function driverMysql($SeverInfo){
 			this._group.push(key);
 		}
 	}
-	this.get = function($model = {},$type = 0 ,$callback = null){
+	this.get = function($model,$type = 0){
 		if($model.table != null){
 			this.from($model.table);
 			this.select($model._selects);
@@ -162,35 +162,34 @@ function driverMysql($SeverInfo){
 					if (err) 
 						_Controller.info.error.push({detail:err ,message : err.sqlMessage});
 					else
-						if(typeof $callback == "function" ){
-							if($type == 0){
-								if(rows.length > 0 ){
-									var row = rows[0];
-									for (var i in row){
-										$model[i] = row[i];
-									}
-									_Controller[$model._name] = $model
-									$callback(_Controller[$model._name]);
+						if($type == 0){
+							if(rows.length > 0 ){
+								var row = rows[0];
+								for (var i in row){
+									$model[i] = row[i];
 								}
-							}else{
-								var argModels = [];
-								for (var i in rows){
-									var row = rows[i];
-									var dataModel = new Object;
-									for (var i in $model){
-										dataModel[i] = $model[i];
-									}
-									for (var i in row){
-										dataModel[i] = row[i];
-									}
-									argModels.push(dataModel);
-								}
-								_Controller[$model._name] = argModels;
-								if(typeof $callback == "function" )
-									$callback(_Controller[$model._name]);
 							}
+							if(typeof $model.callback !== null){
+								$model.callback($model);
+							}
+						}else{
+							var argModels = [];
+							for (var i in rows){
+								var row = rows[i];
+								var dataModel = new Object;
+								for (var i in $model){
+									dataModel[i] = $model[i];
+								}
+								for (var i in row){
+									dataModel[i] = row[i];
+								}
+								argModels.push(dataModel);
+							}	
+							if(typeof $model.callback !== null){
+								$model.callback(argModels);
+							}
+						}
 							
-						}	
 					_Controller.endwait();
 				});
 			}catch (e){
@@ -200,7 +199,7 @@ function driverMysql($SeverInfo){
 			}
 		} 
 	}
-	this.insert = function($table,$data,$callback){
+	this.insert = function($table,$data){
 		if(typeof($data) === "object"){
 			var argcolum = []; 
 			var argvalue = [];
@@ -221,7 +220,7 @@ function driverMysql($SeverInfo){
 						return false;
 				  	}
 					else{
-						if(typeof $callback == "function" ){
+						if(typeof $callback !== null){
 							$callback (result);
 						}
 					}
@@ -237,7 +236,7 @@ function driverMysql($SeverInfo){
 			_Controller.info.error.push({detail:"" ,message : "The data sent to must be an object"});
 		}
 	}
-	this.save = function($model,$callback = null){
+	this.save = function($model){
 		var options = {sql : "DESCRIBE " + replacecolum($model.table), nesttables: false};
 		_connection.query(options,function(err, rows, fields){
 			if(err == null){
@@ -275,7 +274,7 @@ function driverMysql($SeverInfo){
 							keyString = i
 							argUpdate.push(replacecolum(i) + " = " +replacevalue(dataChange[i]));
 						}	
-					}
+					} 
 				    this._sql = "UPDATE "+ replacecolum($model.table)+ " SET " + argUpdate.join(" , ") + " WHERE " + replacecolum($model.key) + " = " +$model[$model.key];
 				}
 				_connection.query(this._sql, function(err, result) {
@@ -283,30 +282,31 @@ function driverMysql($SeverInfo){
 						_Controller.info.error.push({detail:err ,message : err.sqlMessage});
 				  	}
 				  	if($model[$model.key] == 0){
-				  		$model[$model.key] = result.insertId;
-				  	}
-				  	_Controller[$model._name] = Object.assign($model,dataChange);
-					if(typeof $callback == "function" )
-						$callback(_Controller[$model._name]);
+				  		$model[$model.key] = result.insertId; 
+				  	} 
+					if(typeof $model.callback !== null){
+						$model.callback($model);
+					}
 				});
 			}	
 		});
 	}
-	this.find = function ($model,$id,$callback){
+	this.find = function ($model,$id){
 		this._sql = "SELECT * FROM " + replacecolum($model.table) + " WHERE " + replacecolum($model.key) +" = " + $id + " LIMIT 0,1";
 		var options = {sql : this._sql, nesttables: false};
 		_connection.query(options,function(err, rows){
 			if (err) {
 				_Controller.info.error.push({detail:err ,message : err.sqlMessage});
 		  	}else{
+		  		var row = null;
 		  		if(rows.length > 0 ){
-					var row = rows[0];
+					row = rows[0];
 					for (var i in row){
 						$model[i] = row[i];
 					}
-					_Controller[$model._name] = $model;
-					if(typeof $callback == "function" )
-						$callback(_Controller[$model._name]);
+				}
+			    if(typeof $model.callback !== null){
+					$model.callback($model);
 				}
 		  	}
 		  	

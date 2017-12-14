@@ -13,7 +13,7 @@ function Db() {
 		        this.connectDriver = require("./drivers/postgresql");
 		   		break;
 		}
-		this.driver = new this.connectDriver(_Config.database[_Config.database.driver]); 
+		this.driver = new this.connectDriver(_Config.database[_Config.database.driver]);
 	}
 	this.get = function($model,$type,$callback){
 		_Controller.wait();

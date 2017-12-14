@@ -8,8 +8,10 @@ function Model() {
 	this.table     = null;
 	this.key       = null;
 	this.colums    = [];
+	this.callback  = null;
 	this.validate  = null;
 	this._sql      = null;
+	this._new      = 0;
 	this._selects  = [];
 	this._where    = [];
 	this._wherein  = [];
@@ -106,41 +108,57 @@ function Model() {
 		}
 		return this;
 	}
-	this.record  = function($callback){
-		this.db.get(this,0,$callback);
+	this.record  = function(){
+		this.db.get(this,0);
 		return this;
 	}
-	this.result  = function($callback){
-		this.db.get(this,1,$callback);
+	this.result  = function(){
+		this.db.get(this,1);
 		return this;
 	}
-	this.remove = function ($callback){
+	this.remove = function (){
 		return this;
 	}
-	this.save = function($callback){
+	this.save = function(){
 		this.db.save(this);
 		return this;
 	}
-	this.GeneratorSql = function (){
-		return this;
-	}
 	this.reset = function(){
-		this.table     = null;
-		this.key       = null;
-		this.colums    = [];
-		this.validate  = null;
-		this._sql      = null;
-		this._selects  = [];
-		this._joins    = [];
-		this._limit    = {};
-		this._order     = [];
-		this.group     = [];
-		this.having    = [];
+		this._sql         = null;
+		this._selects     = [];
+		this._where       = [];
+		this._wherein     = [];
+		this._wherenotin  = [];
+		this._joins       = [];
+		this._limit       = [];
+		this._order       = [];
+		this._group       = [];
+		this._having      = [];
 		return this;
 	}
-	this.find = function($id,$callback = null){
-		this.db.find(this,$id,$callback);
+	this.find = function($id){
+		this.db.find(this,$id);
 		return this;
+	}
+	this.addnew = function(){
+		var that  = new Object;
+		for (var i in this){
+			that[i] = this[i];
+		}
+		that._new         = 1;
+		that._sql         = null;
+		that._selects     = [];
+		that._where       = [];
+		that._wherein     = [];
+		that._wherenotin  = [];
+		that._joins       = [];
+		that._limit       = [];
+		that._order       = [];
+		that._group       = [];
+		that._having      = [];
+		that.callback     = null;
+		that.__construct(); 
+		return that;
 	}
 }
 module.exports = Model;
