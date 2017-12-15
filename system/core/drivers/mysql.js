@@ -154,7 +154,7 @@ function driverMysql($SeverInfo){
 			if($model._limit.length > 0){
 				this.limit($model._limit);
 			}
-			this._sql   = this.convertSql();
+			this._sql   = this.convertSql(0);
 			$model._sql = this._sql;
 			if($connect == true){
 				try { 
@@ -279,26 +279,39 @@ function driverMysql($SeverInfo){
 		});
 	}
 	this.destroy = function($model){
-		this._sql = "DELETE FROM " + replacecolum($model.table) + " WHERE " + replacecolum($model.key) +" = " + $model[$model.key];
+		if($model[$model.key] != 0){
+			this._sql = "DELETE FROM " + replacecolum($model.table) + " WHERE " + replacecolum($model.key) +" = " + $model[$model.key];
+		}else{
+			if($model._where.length > 0){
+				for(var i in $model._where){
+					this.where($model._where[i]);
+				}
+			}
+			if($model._wherein.length > 0){
+				for(var i in $model._wherein){
+					this.wherein($model._wherein[i]);
+				}
+			}
+			if($model._wherenotin.length > 0){
+				for(var i in $model._wherenotin){
+					this.wherenotin($model._wherenotin[i]);
+				}
+			}
+			var where = this.convertSql(1);
+			this._sql = "DELETE FROM " + replacecolum($model.table) + where;
+		}
 		var options = {sql : this._sql, nesttables: false};
 		_connection.query(options,function(err, rows){
 			if (err) {
 				_Controller.info.error.push({detail:err ,message : err.sqlMessage});
 		  	}else{
-		  		var row = null;
-		  		if(rows.length > 0 ){
-					row = rows[0];
-					for (var i in row){
-						$model[i] = row[i];
-					}
-				}
 			    if(typeof $model._callback  == "function"){
-					$model._callback(this);
+					$model._callback($model._callback = null);
 				}
 		  	}	
 		});
 	}
-	this.convertSql = function(){
+	this.convertSql = function(type){
 		var selectString = joinString = stringWhere = groupString = orderString = limitString = "";
 		if(this._columns == null || this._columns.length < 1){
 			this._columns.push("*");
@@ -319,7 +332,12 @@ function driverMysql($SeverInfo){
 		if(this._limit.length > 0){
 			limitString = " LIMIT " + this._limit.join(" , ");
 		}
-		var sql = "SELECT " + selectString + " FROM " + this._table + joinString + stringWhere + groupString + orderString + limitString;
+		if(type == 0){
+			var sql = "SELECT " + selectString + " FROM " + this._table + joinString + stringWhere + groupString + orderString + limitString;
+		}
+		if(type == 1){
+			var sql = stringWhere;
+		}
 		return sql;
 	}
 	const replacecolum  = function($column = null){

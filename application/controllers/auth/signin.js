@@ -4,11 +4,8 @@ function signin(argument) {
 		var that = this;
 		this.data.title = "Phoenix | Signin";
 	    this.load.model("users");
-	    var user = this.users.addnew(); 
-	    user.where([["id","=",49]]).callback(function(){
-	    	console.log(this);
-	    }).record();
-	   
+	    var user = this.users; 
+	    user.destroy();
 	}
 	this.save = function(){
 		$check = this.validate.check(this.input.post(),{

@@ -14,9 +14,9 @@ function Loader() {
             }
             Megge._name = $file;
             _Controller[$file] = Megge;
-            var check = Megge.__construct();
+            var check = _Controller[$file].__construct();
             if(check == true)
-            	return Megge;
+            	return _Controller[$file];
         	else return false;
 
 		}catch (e){

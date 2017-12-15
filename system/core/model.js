@@ -134,12 +134,13 @@ function Model() {
 		}
 		if(that.list !== null){
 			for (var i in that.list ){
-				this.db.destroy(that.list[i]);
+				that.db.destroy(that.list[i]);
 			}
 		}
-		this.db.destroy(that);
-		this._callback = null; 
-		return this.addnew();
+		that.db.destroy(that);
+		that._callback = null; 
+		that.addnew();
+		return that;
 	}
 	this.save = function(){
 		var that  = new Object;
