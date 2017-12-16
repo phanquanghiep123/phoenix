@@ -1,11 +1,13 @@
 function signin(argument) {
 	this.extent = MyController;
 	this.index  = function(){
-		var that = this;
-		this.data.title = "Phoenix | Signin";
-	    this.load.model("users");
-	    var user = this.users; 
-	    user.destroy();
+		this.load.model("users");
+		this.load.model("products");
+		this.load.model("categories");
+		this.load.model("product_category");
+		var categories = this.product_category;
+		console.log(categories);
+
 	}
 	this.save = function(){
 		$check = this.validate.check(this.input.post(),{

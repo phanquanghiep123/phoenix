@@ -22,12 +22,20 @@ function Model() {
 	this._order    = [];
 	this._group    = [];
 	this._having   = [];
+	this._subkey   = false;
  	this.__construct = function(){
 		if(this.table  == null || this.key == null){
 			_Phoenix.info.error.push({detail:"Model error" ,message : "Error: Please add name and key for table!"});
 			return false;
 		}else{
-			this[this.key] = 0;
+			if(typeof this.key == "string")
+				this[this.key] = 0; 
+			else if(typeof this.key == "object"){
+				for (var i in this.key){
+					this[this.key[i]] = 0;	
+				}
+				this._subkey = true;
+			}
 		}
 		return true;
 	}
@@ -170,6 +178,13 @@ function Model() {
 		for (var i in this){
 			that[i] = this[i];
 		}
+		if(that._subkey == false){
+			that._where.push([ $model[$model.key] ,"=" ,$id] );	
+		}else{
+		    for (var i in $id){
+		   		that._where.push([$model.key[i],"=",$id[i]]);
+		    }
+		}
 		this.db.find(that,$id);
 		this._callback = null;
 		return this;
@@ -207,5 +222,6 @@ function Model() {
 		this._callback = $callback;
 		return this;
 	}
+
 }
 module.exports = Model;

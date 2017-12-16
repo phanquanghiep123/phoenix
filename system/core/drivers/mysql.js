@@ -259,7 +259,13 @@ function driverMysql($SeverInfo){
 		});
 	}
 	this.find = function ($model,$id){
-		this._sql = "SELECT * FROM " + replacecolum($model.table) + " WHERE " + replacecolum($model.key) +" = " + $id + " LIMIT 0,1";
+		if($model._where.length > 0){
+			for(var i in $model._where){
+				this.where($model._where[i]);
+			}
+		}
+		var where = this.convertSql(1);
+		this._sql = "SELECT * FROM " + replacecolum($model.table) + where + " LIMIT 0,1";
 		var options = {sql : this._sql, nesttables: false};
 		_connection.query(options,function(err, rows){
 			if (err) {
