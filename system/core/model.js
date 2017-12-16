@@ -77,6 +77,8 @@ function Model() {
 		return this;
 	}
 	this.leftjoin = function($table,$ondata,$and = null){
+		console.log($table);
+		return false;
 		if(typeof $ondata == "object"){
 			this._joins.push({table : $table, on : $ondata, and : $and, type: 1});
 		}else{
@@ -155,7 +157,15 @@ function Model() {
 		for (var i in this){
 			that[i] = this[i];
 		}
+		if(that._subkey == false){
+			that._where.push([ that.key ,"=" ,that[that.key]] );	
+		}else{
+		    for (var i in that.key){
+		   		that._where.push([ that.key[i],"=",that[that.key[i]] ]);
+		    }
+		}
 		this.db.save(that);
+		this._new = 0;
 		this._callback = null; 
 	}
 	this.reset = function(){
@@ -171,6 +181,7 @@ function Model() {
 		this._order       = [];
 		this._group       = [];
 		this._having      = [];
+		this._new         = 0;
 		return this;
 	}
 	this.find = function($id){
@@ -194,19 +205,19 @@ function Model() {
 		for (var i in this){
 			that[i] = this[i];
 		}
-		that._new         = 1;
-		that._sql         = null;
-		that._selects     = [];
-		that._where       = [];
-		that._wherein     = [];
-		that._wherenotin  = [];
-		that._joins       = [];
-		that._limit       = [];
-		that._order       = [];
-		that._group       = [];
-		that._having      = [];
+		that._new          = 1;
+		that._sql          = null;
+		that._selects      = [];
+		that._where        = [];
+		that._wherein      = [];
+		that._wherenotin   = [];
+		that._joins        = [];
+		that._limit        = [];
+		that._order        = [];
+		that._group        = [];
+		that._having       = [];
 		that._callback     = null;
-		that.list         = null;
+		that.list          = null;
 		that.__construct(); 
 		return that;
 	}

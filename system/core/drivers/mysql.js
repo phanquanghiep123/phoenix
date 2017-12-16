@@ -21,6 +21,16 @@ function driverMysql($SeverInfo){
 			else  _Controller.info.error.push({detail:e ,message : e}); 
 		}
 	}
+	this.reset = function (){
+		this._table       = null;
+		this._columns     = [];
+	    this._joins       = [];
+	    this._order       = [];
+	    this._where       = [];
+	    this._group       = [];
+	    this._limit       = [];
+	    this._sql         = "";
+	}
 	this.from = function($table = null){
 		var argTable    = $table.split(" ");
 		argTable        = cleanEmtyItemArray(argTable,"");
@@ -154,11 +164,12 @@ function driverMysql($SeverInfo){
 			if($model._limit.length > 0){
 				this.limit($model._limit);
 			}
-			this._sql   = this.convertSql(0);
-			$model._sql = this._sql;
+			var sql   = this.convertSql(0);
+			$model._sql = sql;
+			this.reset();
 			if($connect == true){
 				try { 
-					var options = {sql : this._sql, nesttables: false};
+					var options = {sql : sql, nesttables: false};
 					_connection.query(options,function(err, rows, fields){
 						if (err) 
 							_Controller.info.error.push({detail:err ,message : err.sqlMessage});
@@ -204,6 +215,8 @@ function driverMysql($SeverInfo){
 		} 
 	}
 	this.save = function($model){
+		var that = this;
+		var sql  = "";
 		var options = {sql : "DESCRIBE " + replacecolum($model.table), nesttables: false};
 		_connection.query(options,function(err, rows, fields){
 			if(err == null){
@@ -221,7 +234,7 @@ function driverMysql($SeverInfo){
 						}
 					}
 				}
-				if($model[$model.key] == 0){
+				if($model._new == 1){
 					var argcolum = []; 
 					var argvalue = [];
 					for(var i in dataChange){
@@ -232,19 +245,26 @@ function driverMysql($SeverInfo){
 					}
 					var stringColum = argcolum.join(" , ");
 					var stringValue = argvalue.join(" , ");
-					this._sql  = 'INSERT INTO '+ replacecolum($model.table) + " ( " + stringColum + " ) VALUE ( "+ stringValue + " )";
+					sql  = 'INSERT INTO '+ replacecolum($model.table) + " ( " + stringColum + " ) VALUE ( "+ stringValue + " )";
 				}else{
 					var argUpdate = []; 
-					var keyString = "";
 					for(var i in dataChange){
 						if(typeof(i) === "string"){
-							keyString = i
 							argUpdate.push(replacecolum(i) + " = " +replacevalue(dataChange[i]));
 						}	
 					} 
-				    this._sql = "UPDATE "+ replacecolum($model.table)+ " SET " + argUpdate.join(" , ") + " WHERE " + replacecolum($model.key) + " = " +$model[$model.key];
+					if($model._where.length > 0){
+						for(var i in $model._where){
+							that.where($model._where[i]);
+						}
+					}
+					var where = that.convertSql(1);
+				    sql = "UPDATE "+ replacecolum($model.table)+ " SET " + argUpdate.join(" , ") + where ;
 				}
-				_connection.query(this._sql, function(err, result) {
+				$model._sql  = sql;
+				$model._new  = 0 ;
+				that.reset();
+				_connection.query(sql, function(err, result) {
 				  	if (err) {
 						_Controller.info.error.push({detail:err ,message : err.sqlMessage});
 				  	}
@@ -265,8 +285,10 @@ function driverMysql($SeverInfo){
 			}
 		}
 		var where = this.convertSql(1);
-		this._sql = "SELECT * FROM " + replacecolum($model.table) + where + " LIMIT 0,1";
-		var options = {sql : this._sql, nesttables: false};
+		var sql = "SELECT * FROM " + replacecolum($model.table) + where + " LIMIT 0,1";
+		var options = {sql : sql, nesttables: false};
+		$model._sql = sql;
+		this.reset();
 		_connection.query(options,function(err, rows){
 			if (err) {
 				_Controller.info.error.push({detail:err ,message : err.sqlMessage});
@@ -285,8 +307,9 @@ function driverMysql($SeverInfo){
 		});
 	}
 	this.destroy = function($model){
+		var sql = "";
 		if($model[$model.key] != 0){
-			this._sql = "DELETE FROM " + replacecolum($model.table) + " WHERE " + replacecolum($model.key) +" = " + $model[$model.key];
+			sql = "DELETE FROM " + replacecolum($model.table) + " WHERE " + replacecolum($model.key) +" = " + $model[$model.key];
 		}else{
 			if($model._where.length > 0){
 				for(var i in $model._where){
@@ -304,9 +327,11 @@ function driverMysql($SeverInfo){
 				}
 			}
 			var where = this.convertSql(1);
-			this._sql = "DELETE FROM " + replacecolum($model.table) + where;
+			sql = "DELETE FROM " + replacecolum($model.table) + where;
 		}
-		var options = {sql : this._sql, nesttables: false};
+		$model._sql = sql;
+		this.reset();
+		var options = {sql : sql, nesttables: false};
 		_connection.query(options,function(err, rows){
 			if (err) {
 				_Controller.info.error.push({detail:err ,message : err.sqlMessage});

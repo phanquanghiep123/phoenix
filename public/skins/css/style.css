@@ -1,6 +1,8 @@
 .row{display: block !important;}
 .construct-block{
 	position: relative;
+    float: left;
+    width: 100%;
 }
 .logo{text-align: center;width: 100%; float: left; margin-bottom: 20px;}
 .logo img{width: 200px ;}
@@ -27,7 +29,7 @@
 }
 
 .main{
- 	margin: 220px 0 0;
+ 	margin: 20px 0 0;
 }
 
 h1.title { 
