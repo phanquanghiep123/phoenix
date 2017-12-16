@@ -31,14 +31,18 @@ function driverMysql($SeverInfo){
 	    this._limit       = [];
 	    this._sql         = "";
 	}
-	this.from = function($table = null){
-		var argTable    = $table.split(" ");
+	this.from = function($model = null){
+		var argTable    = $model.table.split(" ");
 		argTable        = cleanEmtyItemArray(argTable,"");
 		var newargTable = [];
 		for (var i in argTable){
 			newargTable.push(replacecolum(argTable[i]));
 		}
-		this._table = newargTable.join(" ");
+		var asString = "";
+		if($model._as !== "false"){
+			asString = " AS `"+$model._as+"` ";
+		}
+		this._table = newargTable.join(" ") + asString;
 	}
 	this.select = function($data = []){
 		var selectString ;
@@ -55,15 +59,17 @@ function driverMysql($SeverInfo){
 	}
 	this.join = function ($data = {}){
 		var joinType = ["INNER","LEFT","RIGHT"];
-		var on = (typeof $data.on == "object") ? $data.on : null;
-		var and = (typeof $data.and == "object") ? $data.and : null;
-
+		var on    = (typeof $data.on == "object") ? $data.on : null;
+		var and   = (typeof $data.and == "object") ? $data.and : null;
+		var table = $data.table;
 		var stringOn = "";
 		var argOn    = [];
 		var argAnd   = [];
-		argOn.push(replacecolum(on[0]));
-		argOn.push(replacecolum(on[1]));
-		argOn.push(replacecolum(on[2]));
+		if(on != null){
+			argOn.push(replacecolum(on[0]));
+			argOn.push(replacecolum(on[1]));
+			argOn.push(replacecolum(on[2]));
+		}
 		var newAnd  = [];
 		var fixAnd  = "";
 		if(and != null){
@@ -76,27 +82,33 @@ function driverMysql($SeverInfo){
 				argAnd = [];
 			}
 		}
-		var stringjoin
-		if(typeof $data.table == "string"){
-			var table  = replacecolum($data.table);
-			stringjoin = joinType[$data.type] + " JOIN "+table+" ON " + argOn.join(" ") + fixAnd + newAnd.join(" AND ");
+		var stringjoin = "";
+		if(typeof table == "string"){
+			table  = replacecolum(table);
+			stringjoin = joinType[$data.type] + " JOIN " + table + " ON " + argOn.join(" ") + fixAnd + newAnd.join(" AND ");
 		}else if(typeof table == "object") {
-			table.reader();
-			var sql = table._sql;
-			console.log(sql);
+			if(table._as !== false){
+				table.reader();
+				var sql = table._sql;
+				stringjoin = joinType[$data.type] + " JOIN (" + sql + ") AS " + replacecolum(table._as) + " ON " + argOn.join(" ") + fixAnd + newAnd.join(" AND ");
+			}else{
+				_Controller.info.error.push({detail:null ,message : "Please Aliases model first join models!"});
+			}		
 		}
 		this._joins.push(stringjoin);
 	}
-	this.where = function($data = null){
-		var argAnd   = [];
+	this.where = function($model = null){
+		var argAnd  = [];
 		var newAnd  = [];
-		if($data != null){
-			argAnd.push(replacecolum($data[0]));
-			argAnd.push(replacecolum($data[1]));
-			argAnd.push(replacevalue($data[2]));
-		}
-		var stringwhere = argAnd.join(" ");
-		this._where.push(stringwhere);
+		for(var i in $model._where){
+			argAnd.push(replacecolum($model._where[i][0]));
+			argAnd.push($model._where[i][1]);
+			argAnd.push(replacevalue($model._where[i][2]));
+			var stringwhere = argAnd.join(" ");
+			this._where.push(stringwhere);
+			argAnd  = [];
+		    newAnd  = [];
+		}	
 	}
 	this.wherein = function($data = null){
 		var key      = replacecolum($data.key);
@@ -137,7 +149,7 @@ function driverMysql($SeverInfo){
 	}
 	this.get = function($model, $type = 0,$connect = true){
 		if($model.table != null){
-			this.from($model.table);
+			this.from($model);
 			this.select($model._selects);
 			if($model._joins.length > 0){
 				for(var i in $model._joins){
@@ -145,9 +157,7 @@ function driverMysql($SeverInfo){
 				}
 			}
 			if($model._where.length > 0){
-				for(var i in $model._where){
-					this.where($model._where[i]);
-				}
+				this.where($model);
 			}
 			if($model._wherein.length > 0){
 				for(var i in $model._wherein){
@@ -172,7 +182,7 @@ function driverMysql($SeverInfo){
 			if($model._limit.length > 0){
 				this.limit($model._limit);
 			}
-			var sql   = this.convertSql(0);
+			var sql     = this.convertSql(0);
 			$model._sql = sql;
 			this.reset();
 			if($connect == true){
@@ -204,14 +214,13 @@ function driverMysql($SeverInfo){
 									for (var i in row){
 										dataModel[i] = row[i];
 									}
-									dataModel.reset();
 									argModels.push(dataModel);
 								}	
 								if(typeof $model._callback == "function"){
-									$model._callback($model.toList(argModels));
+									$model.toList(argModels);
+									$model._callback($model);
 								}
-							}
-								
+							}	
 						_Controller.endwait();
 					});
 				}catch (e){
@@ -395,6 +404,7 @@ function driverMysql($SeverInfo){
 				columString  = columString.ReplaceAll("``","`");
 				columString  = "`"+columString+"`";
 				columString  = columString.ReplaceAll(".","`.`");
+				columString  = columString.ReplaceAll("`*`","*");
 			}
 			argNew.push(columString);
 		}

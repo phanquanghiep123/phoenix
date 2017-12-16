@@ -6,7 +6,16 @@ function signin(argument) {
 		var categories       = this.load.model("categories");
 		var product_category = this.load.model("product_category");
 		var metas            = this.load.model("metas");
-		users.leftjoin(products.select(["id","name"]).wherein("id",[1,2,3,4,5,67,8,9]),["products.user_id","=","users.id"]);
+		products.select(["tbl2.id","tbl2.name","tbl2.user_id"]).wherein("tbl2.id",[1,2,3,4,5,67,8,9]).as("tbl2");
+		product_category.as("tbl3").select(["tbl3.product_id","tbl3.category_id"]);
+		users.select(["tbl4.*"]).as("tbl1").
+		leftjoin(products,["tbl2.user_id","=","tbl1.id"]).
+		leftjoin(product_category,["tbl3.product_id","=","tbl2.id"]).
+		leftjoin(categories.as("tbl4"),["tbl4.id","=","tbl3.category_id"]).
+		where([["tbl4.name","is not",null]]).groupby(["tbl4.id"])
+		.callback(function(){
+			console.log(this.list);
+		}).result();
 	}
 	this.save = function(){
 		$check = this.validate.check(this.input.post(),{

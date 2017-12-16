@@ -24,6 +24,7 @@ function Model() {
 	this._having      = [];
 	this._subkey      = false;
 	this._modelkey    = false;
+	this._as          = false;
  	this.__construct = function(){
 		if(this.table  == null || this.key == null){
 			_Phoenix.info.error.push({detail:"Model error" ,message : "Error: Please add name and key for table!"});
@@ -40,6 +41,10 @@ function Model() {
 		}
 		this._modelskey = RamdonString(20);
 		return true;
+	}
+	this.as = function($asName){
+		this._as = $asName;
+		return this;
 	}
 	this.select = function ($data = null){
 		if(typeof $data == "object"){
@@ -71,7 +76,6 @@ function Model() {
 		return this;
 	}
 	this.innerjoin = function($table, $ondata = null, $and = null){
-
 		if(typeof $ondata == "object"){
 			this._joins.push({table : $table, on : $ondata, and : $and, type: 0});
 		}else{
@@ -79,7 +83,7 @@ function Model() {
 		}
 		return this;
 	}
-	this.leftjoin = function($table,$ondata,$and = null){
+	this.leftjoin = function($table, $ondata ,$and = null){
 		if(typeof $ondata == "object"){
 			this._joins.push({table : $table, on : $ondata, and : $and, type: 1});
 		}else{
