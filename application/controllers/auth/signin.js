@@ -6,10 +6,7 @@ function signin(argument) {
 		var categories       = this.load.model("categories");
 		var product_category = this.load.model("product_category");
 		var metas            = this.load.model("metas");
-		users.leftjoin(products.wherein("id",[1,2,3,4,5,67,8,9]),["products.user_id","=","users.i"])
-		users.callback(function(){
-			console.log(this);
-		}).result();
+		users.leftjoin(products.select(["id","name"]).wherein("id",[1,2,3,4,5,67,8,9]),["products.user_id","=","users.id"]);
 	}
 	this.save = function(){
 		$check = this.validate.check(this.input.post(),{

@@ -55,9 +55,9 @@ function driverMysql($SeverInfo){
 	}
 	this.join = function ($data = {}){
 		var joinType = ["INNER","LEFT","RIGHT"];
-		var table = replacecolum($data.table);
 		var on = (typeof $data.on == "object") ? $data.on : null;
 		var and = (typeof $data.and == "object") ? $data.and : null;
+
 		var stringOn = "";
 		var argOn    = [];
 		var argAnd   = [];
@@ -76,7 +76,15 @@ function driverMysql($SeverInfo){
 				argAnd = [];
 			}
 		}
-		var stringjoin = joinType[$data.type] + " JOIN "+table+" ON " + argOn.join(" ") + fixAnd + newAnd.join(" AND ");
+		var stringjoin
+		if(typeof $data.table == "string"){
+			var table  = replacecolum($data.table);
+			stringjoin = joinType[$data.type] + " JOIN "+table+" ON " + argOn.join(" ") + fixAnd + newAnd.join(" AND ");
+		}else if(typeof table == "object") {
+			table.reader();
+			var sql = table._sql;
+			console.log(sql);
+		}
 		this._joins.push(stringjoin);
 	}
 	this.where = function($data = null){

@@ -1,28 +1,29 @@
 function Model() {
-	const _db      = require("./db.js");
-	const _input   = require("./input.js");
-	const _load    = require("./loader.js");
-	this.load      = new _load();
-	this.db        = new _db();
-	this.input     = new _input();
-	this.table     = null;
-	this.key       = null;
-	this.colums    = [];
-	this.list      = [];
-	this._callback = null;
-	this.validate  = null;
-	this._sql      = null;
-	this._new      = 0;
-	this._selects  = [];
-	this._where    = [];
-	this._wherein  = [];
+	const _db         = require("./db.js");
+	const _input      = require("./input.js");
+	const _load       = require("./loader.js");
+	this.load         = new _load();
+	this.db           = new _db();
+	this.input        = new _input();
+	this.table        = null;
+	this.key          = null;
+	this.colums       = [];
+	this.list         = [];
+	this._callback    = null;
+	this.validate     = null;
+	this._sql         = null;
+	this._new         = 0;
+	this._selects     = [];
+	this._where       = [];
+	this._wherein     = [];
 	this._wherenotin  = [];
-	this._joins    = [];
-	this._limit    = [];
-	this._order    = [];
-	this._group    = [];
-	this._having   = [];
-	this._subkey   = false;
+	this._joins       = [];
+	this._limit       = [];
+	this._order       = [];
+	this._group       = [];
+	this._having      = [];
+	this._subkey      = false;
+	this._modelkey    = false;
  	this.__construct = function(){
 		if(this.table  == null || this.key == null){
 			_Phoenix.info.error.push({detail:"Model error" ,message : "Error: Please add name and key for table!"});
@@ -37,6 +38,7 @@ function Model() {
 				this._subkey = true;
 			}
 		}
+		this._modelskey = RamdonString(20);
 		return true;
 	}
 	this.select = function ($data = null){
@@ -69,6 +71,7 @@ function Model() {
 		return this;
 	}
 	this.innerjoin = function($table, $ondata = null, $and = null){
+
 		if(typeof $ondata == "object"){
 			this._joins.push({table : $table, on : $ondata, and : $and, type: 0});
 		}else{
@@ -77,12 +80,10 @@ function Model() {
 		return this;
 	}
 	this.leftjoin = function($table,$ondata,$and = null){
-		console.log($table);
-		return false;
 		if(typeof $ondata == "object"){
 			this._joins.push({table : $table, on : $ondata, and : $and, type: 1});
 		}else{
-			_Controller.info.error.push({detail:"" ,message : "The data sent to leftjoin function must be an array"});
+			_Controller.info.error.push({detail: "" ,message : "The data sent to leftjoin function must be an array"});
 		}
 		return this;
 	}
@@ -218,6 +219,7 @@ function Model() {
 		that._having       = [];
 		that._callback     = null;
 		that.list          = null;
+		that._modelkey     = false;
 		that.__construct(); 
 		return that;
 	}
