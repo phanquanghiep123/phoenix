@@ -84,6 +84,15 @@ _Route.group("/auth",
 			action     : "save",// action of funciton controller
 			midellwell : _Midellwell.auth(), // is function run before route this.
 			rule       : null // validate parameter passed from request url.
+		},
+		{
+			name       : "auth.addsample",
+			type       : "get",//post or get or all.
+			url        : "/addsample",//listening request.
+			controller : "auth/signin", // controller url.
+			action     : "addsample",// action of funciton controller
+			midellwell : _Midellwell.auth(), // is function run before route this.
+			rule       : null // validate parameter passed from request url.
 		}
 		 
 	],null

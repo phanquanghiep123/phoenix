@@ -39,8 +39,8 @@ function driverMysql($SeverInfo){
 			newargTable.push(replacecolum(argTable[i]));
 		}
 		var asString = "";
-		if($model._as !== "false"){
-			asString = " AS `"+$model._as+"` ";
+		if($model.phoenix_as !== "false"){
+			asString = " AS `"+$model.phoenix_as+"` ";
 		}
 		this._table = newargTable.join(" ") + asString;
 	}
@@ -89,21 +89,24 @@ function driverMysql($SeverInfo){
 		}else if(typeof table == "object") {
 			if(table._as !== false){
 				table.reader();
-				var sql = table._sql;
-				stringjoin = joinType[$data.type] + " JOIN (" + sql + ") AS " + replacecolum(table._as) + " ON " + argOn.join(" ") + fixAnd + newAnd.join(" AND ");
+				var sql    = table.phoenix_sql;
+				stringjoin = joinType[$data.type] + " JOIN (" + sql + ") AS " + replacecolum(table.phoenix_as) + " ON " + argOn.join(" ") + fixAnd + newAnd.join(" AND ");
 			}else{
 				_Controller.info.error.push({detail:null ,message : "Please Aliases model first join models!"});
 			}		
 		}
 		this._joins.push(stringjoin);
+
 	}
 	this.where = function($model = null){
+		console.log($model.phoenix_where);
+		return;
 		var argAnd  = [];
 		var newAnd  = [];
-		for(var i in $model._where){
-			argAnd.push(replacecolum($model._where[i][0]));
-			argAnd.push($model._where[i][1]);
-			argAnd.push(replacevalue($model._where[i][2]));
+		for(var i in $model.phoenix_where){
+			argAnd.push(replacecolum($model.phoenix_where[i][0]));
+			argAnd.push($model.phoenix_where[i][1]);
+			argAnd.push(replacevalue($model.phoenix_where[i][2]));
 			var stringwhere = argAnd.join(" ");
 			this._where.push(stringwhere);
 			argAnd  = [];
@@ -150,45 +153,50 @@ function driverMysql($SeverInfo){
 	this.get = function($model, $type = 0,$connect = true){
 		if($model.table != null){
 			this.from($model);
-			this.select($model._selects);
-			if($model._joins.length > 0){
-				for(var i in $model._joins){
-					this.join($model._joins[i]);
+			this.select($model.phoenix_selects);
+			if($model.phoenix_joins.length > 0){
+				for(var i in $model.phoenix_joins){
+					this.join($model.phoenix_joins[i]);
 				}
 			}
-			if($model._where.length > 0){
+			if($model.phoenix_where.length > 0){
 				this.where($model);
 			}
-			if($model._wherein.length > 0){
-				for(var i in $model._wherein){
-					this.wherein($model._wherein[i]);
+			if($model.phoenix_wherein.length > 0){
+				for(var i in $model.phoenix_wherein){
+					this.wherein($model.phoenix_wherein[i]);
 				}
 			}
-			if($model._wherenotin.length > 0){
-				for(var i in $model._wherenotin){
-					this.wherenotin($model._wherenotin[i]);
+			if($model.phoenix_wherenotin.length > 0){
+				for(var i in $model.phoenix_wherenotin){
+					this.wherenotin($model.phoenix_wherenotin[i]);
 				}
 			}
-			if($model._order.length > 0){
-				for(var i in $model._order){
-					this.orderby($model._order[i]);
+			if($model.phoenix_order.length > 0){
+				for(var i in $model.phoenix_order){
+					this.orderby($model.phoenix_order[i]);
 				}
 			}
-			if($model._group.length > 0){
-				for(var i in $model._group){
-					this.groupby($model._group[i]);
+			if($model.phoenix_group.length > 0){
+				for(var i in $model.phoenix_group){
+					this.groupby($model.phoenix_group[i]);
 				}
 			}
-			if($model._limit.length > 0){
-				this.limit($model._limit);
+			if($model.phoenix_limit.length > 0){
+				this.limit($model.phoenix_limit);
 			}
-			var sql     = this.convertSql(0);
-			$model._sql = sql;
+			var sql = this.convertSql(0);
+			$model.phoenix_sql = sql;
+			console.log(sql);
 			this.reset();
 			if($connect == true){
 				try { 
 					var options = {sql : sql, nesttables: false};
 					_connection.query(options,function(err, rows, fields){
+						if ($model.phoenix_tomodel != false) {
+							$model.phoenix_tomodel.phoenix_callback = $model.phoenix_callback;
+							$model = $model.phoenix_tomodel;
+						}
 						if (err) 
 							_Controller.info.error.push({detail:err ,message : err.sqlMessage});
 						else
@@ -199,9 +207,9 @@ function driverMysql($SeverInfo){
 										$model[i] = row[i];
 									}
 								}
-								if(typeof $model._callback == "function"){
-									$model.toList(null);
-									$model._callback($model._callback = null);
+								if(typeof $model.phoenix_callback == "function"){
+									$model.phoenix_list = null;
+									$model.phoenix_callback($model.phoenix_callback = null);
 								}
 							}else{
 								var argModels = [];
@@ -214,11 +222,11 @@ function driverMysql($SeverInfo){
 									for (var i in row){
 										dataModel[i] = row[i];
 									}
+									dataModel.reset();
 									argModels.push(dataModel);
 								}	
-								if(typeof $model._callback == "function"){
-									$model.toList(argModels);
-									$model._callback($model);
+								if(typeof $model.phoenix_callback == "function"){
+									$model.phoenix_callback($model.phoenix_list = argModels);
 								}
 							}	
 						_Controller.endwait();
@@ -251,7 +259,7 @@ function driverMysql($SeverInfo){
 						}
 					}
 				}
-				if($model._new == 1){
+				if($model.phoenix_new == 1){
 					var argcolum = []; 
 					var argvalue = [];
 					for(var i in dataChange){
@@ -270,16 +278,16 @@ function driverMysql($SeverInfo){
 							argUpdate.push(replacecolum(i) + " = " +replacevalue(dataChange[i]));
 						}	
 					} 
-					if($model._where.length > 0){
-						for(var i in $model._where){
-							that.where($model._where[i]);
+					if($model.phoenix_where.length > 0){
+						for(var i in $model.phoenix_where){
+							that.where($model.phoenix_where[i]);
 						}
 					}
 					var where = that.convertSql(1);
 				    sql = "UPDATE "+ replacecolum($model.table)+ " SET " + argUpdate.join(" , ") + where ;
 				}
-				$model._sql  = sql;
-				$model._new  = 0 ;
+				$model.phoenix_sql  = sql;
+				$model.phoenix_new  = 0 ;
 				that.reset();
 				_connection.query(sql, function(err, result) {
 				  	if (err) {
@@ -288,23 +296,23 @@ function driverMysql($SeverInfo){
 				  	if($model[$model.key] == 0){
 				  		$model[$model.key] = result.insertId; 
 				  	}
-					if(typeof $model._callback == "function"){
-						$model._callback($model._callback = null);
+					if(typeof $model.phoenix_callback == "function"){
+						$model.phoenix_callback($model.phoenix_callback = null);
 					}
 				});
 			}	
 		});
 	}
 	this.find = function ($model,$id){
-		if($model._where.length > 0){
-			for(var i in $model._where){
-				this.where($model._where[i]);
+		if($model.phoenix_where.length > 0){
+			for(var i in $model.phoenix_where){
+				this.where($model.phoenix_where[i]);
 			}
 		}
 		var where = this.convertSql(1);
 		var sql = "SELECT * FROM " + replacecolum($model.table) + where + " LIMIT 0,1";
 		var options = {sql : sql, nesttables: false};
-		$model._sql = sql;
+		$model.phoenix_sql = sql;
 		this.reset();
 		_connection.query(options,function(err, rows){
 			if (err) {
@@ -317,44 +325,40 @@ function driverMysql($SeverInfo){
 						$model[i] = row[i];
 					}
 				}
-			    if(typeof $model._callback !== null){
-					$model._callback($model._callback = null);
+			    if(typeof $model.phoenix_callback !== null){
+					$model.phoenix_callback($model.phoenix_callback = null);
 				}
 		  	}
 		});
 	}
 	this.destroy = function($model){
 		var sql = "";
-		if($model[$model.key] != 0){
-			sql = "DELETE FROM " + replacecolum($model.table) + " WHERE " + replacecolum($model.key) +" = " + $model[$model.key];
-		}else{
-			if($model._where.length > 0){
-				for(var i in $model._where){
-					this.where($model._where[i]);
-				}
+		if($model.phoenix_where.length > 0){
+			for(var i in $model.phoenix_where){
+				this.where($model.phoenix_where[i]);
 			}
-			if($model._wherein.length > 0){
-				for(var i in $model._wherein){
-					this.wherein($model._wherein[i]);
-				}
-			}
-			if($model._wherenotin.length > 0){
-				for(var i in $model._wherenotin){
-					this.wherenotin($model._wherenotin[i]);
-				}
-			}
-			var where = this.convertSql(1);
-			sql = "DELETE FROM " + replacecolum($model.table) + where;
 		}
-		$model._sql = sql;
+		if($model.phoenix_wherein.length > 0){
+			for(var i in $model.phoenix_wherein){
+				this.wherein($model.phoenix_wherein[i]);
+			}
+		}
+		if($model.phoenix_wherenotin.length > 0){
+			for(var i in $model.phoenix_wherenotin){
+				this.wherenotin($model.phoenix_wherenotin[i]);
+			}
+		}
+		var where = this.convertSql(1);
+		sql = "DELETE FROM " + replacecolum($model.table) + where;
+		$model.phoenix_sql = sql;
 		this.reset();
 		var options = {sql : sql, nesttables: false};
 		_connection.query(options,function(err, rows){
 			if (err) {
 				_Controller.info.error.push({detail:err ,message : err.sqlMessage});
 		  	}else{
-			    if(typeof $model._callback  == "function"){
-					$model._callback($model._callback = null);
+			    if(typeof $model.phoenix_callback  == "function"){
+					$model.phoenix_callback($model.phoenix_callback = null);
 				}
 		  	}	
 		});

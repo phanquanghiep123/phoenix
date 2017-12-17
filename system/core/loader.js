@@ -12,7 +12,7 @@ function Loader() {
             for (var i in model){
             	Megge[i] = model[i];
             }
-            Megge._name = $file;
+            Megge.phoenix_name = $file;
             _Controller[$file] = Megge;
             var check = _Controller[$file].__construct();
             if(check == true)
