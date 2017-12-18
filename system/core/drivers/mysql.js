@@ -193,6 +193,7 @@ function driverMysql($SeverInfo){
 										$model[i] = row[i];
 									}
 								}
+								$model.phoenix_list = [];
 								if(typeof $model.phoenix_callback == "function"){
 									$model.phoenix_callback(this.phoenix_list = null);
 								}
@@ -312,6 +313,7 @@ function driverMysql($SeverInfo){
 						$model[i] = row[i];
 					}
 				}
+				$model.phoenix_list = [];
 			    if(typeof $model.phoenix_callback !== null){
 					$model.phoenix_callback(this.phoenix_callback = null);
 				}

@@ -1,7 +1,6 @@
 function Controller() {
 	const _pix_setsection = "setsection_";
 	const _pix_addsection = "addsection_";
-	
 	this.loadview = function($file, $data = null){
 		this.islayout = false;
 		var view = this.readFlie(_F_views + $file);

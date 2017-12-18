@@ -65,7 +65,6 @@ function Phoenix(argument) {
 		        	} 
 		        }
 		        clearInterval(this);
-		        that.load.readers();
 		        that.end();
 	    	}
 	    }, 100); 
