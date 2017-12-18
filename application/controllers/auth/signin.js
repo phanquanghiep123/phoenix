@@ -1,30 +1,8 @@
 function signin(argument) {
 	this.extent = MyController;
 	this.index  = function(){
-		var that             = this;
+		var that = this;
 		return that.load.view("frontend/auth/signin.html",that.data);
-		var users            = this.load.model("users");
-		var products         = this.load.model("products");
-		var categories       = this.load.model("categories");
-		var product_category = this.load.model("product_category");
-		var metas            = this.load.model("metas");
-		users.as("tbl1")
-		.start_group()
-			.where_in("tbl1.id",[1,2,4])
-			.where(["tbl1.id","=",100])
-		.end_group()
-		.where_not_in("tbl1.id",[1])
-		.where_or(["tbl1.id","=",12])
-		.callback(function(){
-			products.as("tbl2").select("tbl2.id,tbl2.user_id,tbl2.name");
-			this.select(["tbl2.*"]).convert(products).left_join(products,["tbl2.user_id","=","tbl1.id"]).callback(function(){
-				this.select(["name"]).callback(function(){
-					this.callback(function(){
-						
-					}).find(5);
-				}).results();
-			}).results();
-		}).results();
 	}
 	this.addsample = function(){
 		var users = this.load.model("users");
@@ -62,19 +40,21 @@ function signin(argument) {
 		}
 	}
 	this.save = function(){ 
+		var that = this;
 		$check = this.validate.check(this.input.post(),{
 			"you_email"         : {validate : "required|email",label : "Email"},
 			"password"          : {validate : "required|mintext:6",label : "Password"},		
 		});
 		if($check.validate == true){
-			var where = {
-				email     : this.input.post("you_email"),
-				password  : this.input.post("password"),
-			}
+			var email = that.input.post("you_email"); 
+			var password = that.input.post("password");
 			this.load.model("users");
-			this.users.checkUser(where,function(r,f){
-				console.log(r);
-			});
+			this.users.where([["email","=",email],["password","=",password]]).callback(function(){
+				if(this.id != 0)
+					Redirect("/home");
+				else
+					console.log(this);
+			}).record();
 		}else{
 			console.log($check);
 		}

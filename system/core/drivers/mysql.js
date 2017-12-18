@@ -39,7 +39,7 @@ function driverMysql($SeverInfo){
 			newargTable.push(replacecolum(argTable[i]));
 		}
 		var asString = "";
-		if($model.phoenix_as !== "false"){
+		if($model.phoenix_as !== false){
 			asString = " AS `"+$model.phoenix_as+"` ";
 		}
 		this._table = newargTable.join(" ") + asString;

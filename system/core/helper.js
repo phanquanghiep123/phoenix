@@ -40,6 +40,9 @@ EscapeString = function(str) {
 		}
 	});
 }
+Redirect = function($url){
+	_Controller.response.redirect($url);
+}
 CheckLogin = function() {
 	if (_SessionInfor.Username == undefined && _SessionInfor.Password == undefined) {
 		_Controller.response.redirect('/admin/login');
@@ -164,6 +167,7 @@ Route = function($name){
 		_Phoenix.info.error.push({detail: e ,message : "Error: Route `"+$name+"` not like any routes please check name !"});
 	}
 }
+
 ObjectLength = function($o){
 	return Object.keys($o).length;
 }
