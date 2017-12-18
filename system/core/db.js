@@ -15,15 +15,15 @@ function Db() {
 		}
 		this.driver = new this.connectDriver(_Config.database[_Config.database.driver]);
 	}
-	this.get = function($model,$type,$callback){
+	this.get = function($model,$type){
 		_Controller.wait();
-		return this.driver.get($model,$type,$callback); 
+		return this.driver.get($model,$type); 
 	}
-	this.save = function($model,$callback){
-		return this.driver.save($model,$callback); 
+	this.save = function($model){
+		return this.driver.save($model); 
 	}
-	this.find = function ($model,$id,$callback){
-		return this.driver.find($model,$id,$callback); 
+	this.find = function ($model){
+		return this.driver.find($model); 
 	}
 	this.destroy = function($model){
 		return this.driver.destroy($model);

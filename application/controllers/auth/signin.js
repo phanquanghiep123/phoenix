@@ -6,30 +6,26 @@ function signin(argument) {
 		var categories       = this.load.model("categories");
 		var product_category = this.load.model("product_category");
 		var metas            = this.load.model("metas");
-		users.as("tbl1");
-		products.as("tbl2");
-		categories.as("tbl3");
-		product_category.as("tbl4");
-		users.select(["tbl1.*","tbl2.name AS products_name","tbl2.id AS product_id"]).innerjoin(products,["tbl2.user_id","=","tbl1.id"]).limit(100,0);
-		categories.select(["tbl3.*","tbl4.product_id"]).innerjoin(product_category,["tbl3.id","=","tbl4.category_id"]);
-		categories
-		.where([["id","=","6"],["id","=","6"]])
-	    .where(["id","=","6"])
-	    .where(["id","=","6"])
-		.select(["tbl1.*"])
-		.innerjoin(users,["tbl1.product_id","=","tbl4.product_id"])
+		users.as("tbl1")
+		.start_group()
+			.where_in("tbl1.id",[1,2,4])
+			.where(["tbl1.id","=",100])
+		.end_group()
+		.where_not_in("tbl1.id",[1])
+		.where_or(["tbl1.id","=",12])
 		.callback(function(){
-			//console.log(this);
+			products.as("tbl2").select("tbl2.id,tbl2.user_id,tbl2.name");
+			this.select(["tbl2.*"]).convert(products).left_join(products,["tbl2.user_id","=","tbl1.id"]).callback(function(){
+				this.select(["name"]).callback(function(){
+					this.callback(function(){
+						this.data = {};
+						this.data.title = "Phoenix | Signup";
+						this.load.view("frontend/auth/signin.html",this.data);
+						this.load.view("frontend/auth/signin.html",this.data);
+					}).find(5);
+				}).result();
+			}).result();
 		}).result();
-		return false;
-		products.select(["tbl2.id","tbl2.name","tbl2.user_id"]).as("tbl2");
-		product_category.as("tbl3").select(["tbl3.product_id","tbl3.category_id"]);
-		var ct = users.convert(products).select(["tbl2.*"]).as("tbl1").
-		rightjoin(products,["tbl2.user_id","=","tbl1.id"]).
-		leftjoin(product_category,["tbl3.product_id","=","tbl2.id"]).
-		leftjoin(categories.as("tbl4"),["tbl4.id","=","tbl3.category_id"]).
-		where([["tbl4.name","is not",null]]).groupby(["tbl4.id"])
-		console.log(users.reader());
 	}
 	this.addsample = function(){
 		var users = this.load.model("users");

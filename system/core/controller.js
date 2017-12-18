@@ -66,8 +66,13 @@ function Controller() {
 				var end        = "[end_"   + _pix_addsection + val + "]";
 				this.dataView  = this.dataView.ReplaceAll(start,"");
 				this.dataView  = this.dataView.ReplaceAll(end,"");
+				var start      = "[start_" + _pix_addsection + val + "]";
+				var end        = "[end_"   + _pix_addsection + val + "]";
+				this.dataView  = this.dataView.ReplaceAll(start,"");
+				this.dataView  = this.dataView.ReplaceAll(end,""); 
 	    	}
 	    }
+
 		this.islayout = true;
 		return this.dataView;
 	}

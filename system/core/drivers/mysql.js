@@ -99,40 +99,37 @@ function driverMysql($SeverInfo){
 
 	}
 	this.where = function($model = null){
-		console.log($model.phoenix_where);
-		return;
+		var typewhere = ["AND","OR","","IN","NOT IN"];
 		var argAnd  = [];
-		var newAnd  = [];
+		var data ,type ;
 		for(var i in $model.phoenix_where){
-			argAnd.push(replacecolum($model.phoenix_where[i][0]));
-			argAnd.push($model.phoenix_where[i][1]);
-			argAnd.push(replacevalue($model.phoenix_where[i][2]));
-			var stringwhere = argAnd.join(" ");
-			this._where.push(stringwhere);
 			argAnd  = [];
-		    newAnd  = [];
-		}	
-	}
-	this.wherein = function($data = null){
-		var key      = replacecolum($data.key);
-		var dataIn   = $data.in;
-		var argIn    = [];
-		for (var i in dataIn ){
-			argIn.push(replacevalue(dataIn[i]))
+			type = $model.phoenix_where[i].type;
+			data = $model.phoenix_where[i].data;
+			if(type == 2){
+				this._where.push($model.phoenix_where[i].data);
+			}else if(type == 0 || type == 1){	
+				if(i != 0){
+					argAnd.push(typewhere[type]);
+				}
+				argAnd.push(replacecolum(data[0]));
+				argAnd.push(data[1]);
+				argAnd.push(replacevalue(data[2]));
+				var stringwhere = argAnd.join(" ");
+				this._where.push(stringwhere);
+			}else if(type == 3 || type == 4){
+				var key      = replacecolum($model.phoenix_where[i].key);
+				var dataIn   = data;
+				var argIn    = [];
+				for (var i in dataIn ){
+					argIn.push(replacevalue(dataIn[i]))
+				}
+				var stringwhere = "AND " + key + " "+typewhere[type]+" ( " + argIn.join(" , ") +" ) ";
+				this._where.push(stringwhere);
+			}
 		}
-		var stringwhere = key + " IN ( " + argIn.join(" , ") +" ) ";
-		this._where.push(stringwhere);
 	}
-	this.wherenotin = function($data = null){
-		var key      = replacecolum($data.key);
-		var dataIn   = $data.in;
-		var argIn    = [];
-		for (var i in dataIn ){
-			argIn.push(replacevalue(dataIn[i]))
-		}
-		var stringwhere = key + " NOT IN ( " + argIn.join(" , ") +" ) ";
-		this._where.push(stringwhere);
-	}
+
 	this.limit = function($limit = null){
 	    this._limit = $limit;
 	}
@@ -162,16 +159,6 @@ function driverMysql($SeverInfo){
 			if($model.phoenix_where.length > 0){
 				this.where($model);
 			}
-			if($model.phoenix_wherein.length > 0){
-				for(var i in $model.phoenix_wherein){
-					this.wherein($model.phoenix_wherein[i]);
-				}
-			}
-			if($model.phoenix_wherenotin.length > 0){
-				for(var i in $model.phoenix_wherenotin){
-					this.wherenotin($model.phoenix_wherenotin[i]);
-				}
-			}
 			if($model.phoenix_order.length > 0){
 				for(var i in $model.phoenix_order){
 					this.orderby($model.phoenix_order[i]);
@@ -187,7 +174,6 @@ function driverMysql($SeverInfo){
 			}
 			var sql = this.convertSql(0);
 			$model.phoenix_sql = sql;
-			console.log(sql);
 			this.reset();
 			if($connect == true){
 				try { 
@@ -208,8 +194,7 @@ function driverMysql($SeverInfo){
 									}
 								}
 								if(typeof $model.phoenix_callback == "function"){
-									$model.phoenix_list = null;
-									$model.phoenix_callback($model.phoenix_callback = null);
+									$model.phoenix_callback(this.phoenix_list = null);
 								}
 							}else{
 								var argModels = [];
@@ -226,7 +211,8 @@ function driverMysql($SeverInfo){
 									argModels.push(dataModel);
 								}	
 								if(typeof $model.phoenix_callback == "function"){
-									$model.phoenix_callback($model.phoenix_list = argModels);
+									$model.phoenix_list = argModels;
+									$model.phoenix_callback(this.phoenix_callback = null);
 								}
 							}	
 						_Controller.endwait();
@@ -297,16 +283,16 @@ function driverMysql($SeverInfo){
 				  		$model[$model.key] = result.insertId; 
 				  	}
 					if(typeof $model.phoenix_callback == "function"){
-						$model.phoenix_callback($model.phoenix_callback = null);
+						$model.phoenix_callback(this.phoenix_callback = null);
 					}
 				});
 			}	
 		});
 	}
-	this.find = function ($model,$id){
+	this.find = function ($model){
 		if($model.phoenix_where.length > 0){
 			for(var i in $model.phoenix_where){
-				this.where($model.phoenix_where[i]);
+				this.where($model);
 			}
 		}
 		var where = this.convertSql(1);
@@ -326,7 +312,7 @@ function driverMysql($SeverInfo){
 					}
 				}
 			    if(typeof $model.phoenix_callback !== null){
-					$model.phoenix_callback($model.phoenix_callback = null);
+					$model.phoenix_callback(this.phoenix_callback = null);
 				}
 		  	}
 		});
@@ -364,6 +350,14 @@ function driverMysql($SeverInfo){
 		});
 	}
 	this.convertSql = function(type){
+		var replayKey = {
+			"(  AND" : "AND (",
+			"(  OR" : "OR (",
+			"WHERE  AND" : "WHERE",
+			"WHERE  OR" : "WHERE",
+			"OR WHERE" : "OR",
+			"AND WHERE" : "AND",
+		};
 		var selectString = joinString = stringWhere = groupString = orderString = limitString = "";
 		if(this._columns == null || this._columns.length < 1){
 			this._columns.push("*");
@@ -373,7 +367,7 @@ function driverMysql($SeverInfo){
 			joinString = " " + this._joins.join(" ");
 		}
 		if(this._where.length > 0){
-			stringWhere = " WHERE " + this._where.join(" AND ") ;
+			stringWhere = " WHERE " + this._where.join(" ") ;
 		}
 		if(this._group.length > 0){
 			groupString = " GROUP BY " + this._group.join(" , ");
@@ -389,7 +383,8 @@ function driverMysql($SeverInfo){
 		}
 		if(type == 1){
 			var sql = stringWhere;
-		}
+		}	
+		sql = sql.ReplaceKeyAll(replayKey);
 		return sql;
 	}
 	const replacecolum  = function($column = null){
