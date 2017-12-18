@@ -20,12 +20,15 @@ function Db() {
 		return this.driver.get($model,$type); 
 	}
 	this.save = function($model){
+		_Controller.wait();
 		return this.driver.save($model); 
 	}
 	this.find = function ($model){
+		_Controller.wait();
 		return this.driver.find($model); 
 	}
 	this.destroy = function($model){
+		_Controller.wait();
 		return this.driver.destroy($model);
 	}
 	this.reader = function($model){

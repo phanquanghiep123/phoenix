@@ -1,23 +1,15 @@
 function Loader() {
-	this._phoenix_allView = "";
 	this.model = function($file){
 		try {
 			_Controller.info.model.push({file : $file});
-			var _model  = require(_F_models + $file );
-            var model   = new _model();
-            var PModel  = new _Autoload.model();
-            var Megge   = new Object;
-            for (var i in PModel){
-            	Megge[i] = PModel[i];
-            }
-            for (var i in model){
-            	Megge[i] = model[i];
-            }
-            Megge.phoenix_name = $file;
-            _Controller[$file] = Megge;
-            var check = _Controller[$file].__construct();
+			var _model = require(_F_models + $file );
+            var model  = new _model();
+            var PModel = new _Autoload.model();
+            model      = Object.assign(PModel,model);
+            _Controller[$file] = model;
+            var check = model.__construct();
             if(check == true)
-            	return _Controller[$file];
+            	return model;
         	else return false;
 
 		}catch (e){

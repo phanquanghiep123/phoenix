@@ -68,7 +68,6 @@ function Controller() {
 				this.dataView  = this.dataView.ReplaceAll(end,"");
 	    	}
 	    }
-
 		this.islayout = true;
 		return this.dataView;
 	}

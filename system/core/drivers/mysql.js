@@ -285,6 +285,7 @@ function driverMysql($SeverInfo){
 					if(typeof $model.phoenix_callback == "function"){
 						$model.phoenix_callback(this.phoenix_callback = null);
 					}
+					_Controller.endwait();
 				});
 			}	
 		});
@@ -314,6 +315,7 @@ function driverMysql($SeverInfo){
 			    if(typeof $model.phoenix_callback !== null){
 					$model.phoenix_callback(this.phoenix_callback = null);
 				}
+				_Controller.endwait();
 		  	}
 		});
 	}
@@ -346,7 +348,8 @@ function driverMysql($SeverInfo){
 			    if(typeof $model.phoenix_callback  == "function"){
 					$model.phoenix_callback($model.phoenix_callback = null);
 				}
-		  	}	
+		  	}
+		  	_Controller.endwait();	
 		});
 	}
 	this.convertSql = function(type){

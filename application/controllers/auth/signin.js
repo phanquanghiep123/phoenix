@@ -18,10 +18,14 @@ function signin(argument) {
 			this.select(["tbl2.*"]).convert(products).left_join(products,["tbl2.user_id","=","tbl1.id"]).callback(function(){
 				this.select(["name"]).callback(function(){
 					this.callback(function(){
-						this.data = {};
-						this.data.title = "Phoenix | Signup";
-						this.load.view("frontend/auth/signin.html",this.data);
-						this.load.view("frontend/auth/signin.html",this.data);
+						var data = {};
+						data.header = {
+							title : "Phoenix | Signup"
+						};
+						data.footer = {
+							title : "Phoenix | Signup"
+						};
+						this.load.view("frontend/auth/signin.html",data);
 					}).find(5);
 				}).result();
 			}).result();
