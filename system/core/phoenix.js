@@ -1,9 +1,23 @@
 function Phoenix(argument) {
-	const _db    = require("./db.js");
-	const _input = require("./input.js");
-	this.db      = new _db();
-	this.input   = new _input();
-	this.waitdding = 0;
+	const _db        = require("./db.js");
+	const _input     = require("./input.js");
+	const _form      = require("./form.js");
+	const _load      =  require("./loader.js");
+	const _validate  = require("./validate.js");
+	this.request     = null;
+	this.response    = null;
+	this.dataView    = "";
+	this.layout      = "";
+	this.nameSection = ""; 
+	this.listSection = {};
+	this.setSection  = false;
+	this.islayout    = false;
+	this.load        = new _load();
+	this.form        = new _form();
+	this.validate    = new _validate();
+	this.db          = new _db();
+	this.input       = new _input();
+	this.waitdding   = 0;
 	this.info = {};
 	this.info.view       = [];
 	this.info.model      = [];
@@ -48,9 +62,10 @@ function Phoenix(argument) {
 		        		val = errors[key];
 		        		write("<p>"+val.message+"<br/></p>");
 			        	write("<p>"+val.detail+"<br/></p>");
-		        	}
+		        	} 
 		        }
 		        clearInterval(this);
+		        that.load.readers();
 		        that.end();
 	    	}
 	    }, 100); 

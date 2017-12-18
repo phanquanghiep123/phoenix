@@ -1,4 +1,6 @@
 function Loader() {
+	this.phoenix_views = [];
+	this.phoenix_datas = []
 	this.model = function($file){
 		try {
 			_Controller.info.model.push({file : $file});
@@ -22,16 +24,19 @@ function Loader() {
 		try {
 			var view = _Phoenix.loadview($file, $data, $return);
 			if($return === false){
-				if(Object.keys(_Phoenix.info.error).length == 0 ){
-					write(view);
-				}
+				this.phoenix_datas.push($data);
+			    this.phoenix_views.push($file);
 			}
-			else 
+			else {
 				return view;
+			}
 		}catch (e){
 			if (e instanceof SyntaxError) _Controller.info.error.push({detail:e ,message : e.message});
 			else _Controller.info.error.push({detail:e ,message : e});
-		}	
+		}
+	}
+	this.readers = function(){
+		console.log(this.phoenix_views); 
 	}
 }
 module.exports = Loader;

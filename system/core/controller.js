@@ -1,20 +1,7 @@
 function Controller() {
-	const _form   = require("./form.js");
-	const _load   = require("./loader.js");
-	const _validate = require("./validate.js");
 	const _pix_setsection = "setsection_";
 	const _pix_addsection = "addsection_";
-	this.request     = null;
-	this.response    = null;
-	this.dataView    = "";
-	this.layout      = "";
-	this.nameSection = "";
-	this.listSection = {};
-	this.setSection  = false;
-	this.islayout    = false;
-	this.load        = new _load();
-	this.form        = new _form();
-	this.validate    = new _validate();
+	
 	this.loadview = function($file, $data = null){
 		this.islayout = false;
 		var view = this.readFlie(_F_views + $file);
@@ -68,7 +55,6 @@ function Controller() {
 				this.dataView  = this.dataView.ReplaceAll(end,"");
 	    	}
 	    }
-
 		this.islayout = true;
 		return this.dataView;
 	}
