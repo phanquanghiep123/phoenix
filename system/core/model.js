@@ -1,10 +1,6 @@
 function Model() {
 	const _db         = require("./db.js");
-	const _input      = require("./input.js");
-	const _load       = require("./loader.js");
-	this.load         = new _load();
 	this.db           = new _db();
-	this.input        = new _input();
 	this.table        = null;
 	this.key          = null;
 	this.colums       = [];
@@ -218,7 +214,7 @@ function Model() {
 		this.db.get(this,0);
 		return this;
 	}
-	this.result  = function(){
+	this.results  = function(){
 		this.db.get(this,1);
 		return this;
 	}

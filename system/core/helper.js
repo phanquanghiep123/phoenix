@@ -143,7 +143,6 @@ AutoloadMyController = function ($arg  = []){
 			eval(val.name + " = new include(); "+val.name + " = Object.assign(_Controller,"+val.name+") ;");
 		}
 	}
-	
 }
 
 RamdonString = function($num = 10) {

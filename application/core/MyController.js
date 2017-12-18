@@ -2,6 +2,7 @@ function MyController (){
 	this.data = {};
 	this.construct = function(){
 		this.data.abc = 1;
+		this.data.title = "Phoenix | Signup";
 		this.validate.addmessge({
 			email    : "Vui lòng nhập {$1} là email",
 			number   : "Hãy nhập {$1} là số",

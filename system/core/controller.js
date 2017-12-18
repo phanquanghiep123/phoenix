@@ -9,7 +9,7 @@ function Controller() {
 			if ($data != null) {
 				for (var key in $data ){
 					try {
-						eval("var " + key + " = $data[key];" );			
+						eval(key + " = $data[key];" );	
 					} catch (e) {
 						if (e instanceof SyntaxError) this.info.error.push({detail:e ,message : e.message});
 						else this.info.error.push({detail:e ,message : e});
@@ -43,7 +43,6 @@ function Controller() {
 				else this.info.error.push({detail:e ,message : e});
 			}		
 		}
-	    var that = this;
 	    if(ObjectLength(this.listSection) > 0){
 	    	var val;
 	    	for (var key in this.listSection){

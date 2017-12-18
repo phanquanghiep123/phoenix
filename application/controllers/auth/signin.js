@@ -1,6 +1,8 @@
 function signin(argument) {
 	this.extent = MyController;
 	this.index  = function(){
+		var that             = this;
+		return that.load.view("frontend/auth/signin.html",that.data);
 		var users            = this.load.model("users");
 		var products         = this.load.model("products");
 		var categories       = this.load.model("categories");
@@ -18,18 +20,11 @@ function signin(argument) {
 			this.select(["tbl2.*"]).convert(products).left_join(products,["tbl2.user_id","=","tbl1.id"]).callback(function(){
 				this.select(["name"]).callback(function(){
 					this.callback(function(){
-						var data = {};
-						data.header = {
-							title : "Phoenix | Signup"
-						};
-						data.footer = {
-							title : "Phoenix | Signup"
-						};
-						this.load.view("frontend/auth/signin.html",data);
+						
 					}).find(5);
-				}).result();
-			}).result();
-		}).result();
+				}).results();
+			}).results();
+		}).results();
 	}
 	this.addsample = function(){
 		var users = this.load.model("users");
