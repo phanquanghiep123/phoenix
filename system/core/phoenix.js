@@ -1,7 +1,4 @@
 function Phoenix(argument) {
-	const _pix_setsection = "setsection_";
-	const _pix_addsection = "addsection_";
-	const _load      =  require("./loader.js");
 	this.request     = null;
 	this.response    = null;
 	this.dataView    = "";
@@ -10,15 +7,19 @@ function Phoenix(argument) {
 	this.listSection = {};
 	this.setSection  = false;
 	this.islayout    = false;
+	const _load      = require("./loader.js");
+	const _session   = require("./sessions.js");
 	this.load        = new _load();
+	this.session     = new _session();
 	this.waitdding   = 0;
 	this.info = {};
-	this.info.view       = [];
+	this.info.views      = [];
 	this.info.model      = [];
 	this.info.controller = [];
 	this.info.error      = [];
 	this.info.layout     = [];
 	this.info.routes     = {};
+	this.phoenix_ramkey_section   = "";
 	this.contentType     = "text/html";
 	this.wait = function(){
 		this.waitdding++;
@@ -43,7 +44,12 @@ function Phoenix(argument) {
 		return this.response.end();
 	}
 	this.__construct = function(){
-		//this.response.writeHead(200, { 'Content-Type': this.contentType });
+        if(this.session.get("phoenix_sc")!= false){
+        	this.phoenix_ramkey_section = this.session.get("phoenix_sc");
+        }else{
+        	this.phoenix_ramkey_section = RamdonString();
+        	this.session.add("phoenix_sc",this.phoenix_ramkey_section);
+        }
 	}
 	this.__destructors =  function(){
 		var that = this; 
@@ -58,22 +64,10 @@ function Phoenix(argument) {
 			        	write("<p>"+val.detail+"<br/></p>");
 		        	} 
 		        }
-		        if(typeof that.session != "undefined"){
-		        	var flags = that.session.common;
-		        	var keept = that.session.common.phoenix_not_flags;
-		        	for (var i in flags){
-		        		if(typeof keept.indexOf(i) != -1){
-		        			delete flags[i];
-		        		}
-		        	}
-		        	that.session.phoenix_flags = [];
-		        	console.log(flags);
-		        }
 		        clearInterval(this);
 		        that.end();
 	    	}
 	    }, 100); 
 	}
-	
 }
 module.exports = Phoenix;

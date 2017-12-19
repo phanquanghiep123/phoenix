@@ -62,8 +62,7 @@ joinArray = function(InputArray, str) {
 	return string;
 }
 write = function(string) {
-	string = String(string);
-	_Controller.response.write(string);
+	_Phoenix.info.views.push({type: "string" ,content : string });
 	return true;
 }
 base_url = function(url = null){
