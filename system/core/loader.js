@@ -32,6 +32,7 @@ function Loader() {
 			if($return === false){
 				if(Object.keys(_Phoenix.info.error).length == 0 ){
 					write(view);
+					_Phoenix.end();
 				}
 			}
 			else 
@@ -40,6 +41,31 @@ function Loader() {
 			if (e instanceof SyntaxError) _Controller.info.error.push({detail:e ,message : e.message});
 			else _Controller.info.error.push({detail:e ,message : e});
 		}	
+	}
+	this.db = function(){
+		var _load      =  require("./loader.js");
+		_Controller.db = new _load();
+		return _Controller.db;
+	}
+	this.form = function(){
+		var _form        =  require("./form.js");
+		_Controller.form = new _form();
+		return _Controller.form;
+	}
+	this.validate = function(){
+		var _validate        =  require("./validate.js");
+		_Controller.validate = new _validate();
+		return _Controller.validate;
+	}
+	this.session = function(){
+		var _session        = require("./sessions.js");
+	    _Controller.session = new _session();
+		return _Controller.session;
+	}
+	this.input = function(){
+	    var _input         = require("./input.js");
+	    _Controller.input  = new _input();
+		return _Controller.input;
 	}
 }
 module.exports = Loader;

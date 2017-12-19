@@ -1,9 +1,7 @@
 function Phoenix(argument) {
-	const _db        = require("./db.js");
-	const _input     = require("./input.js");
-	const _form      = require("./form.js");
+	const _pix_setsection = "setsection_";
+	const _pix_addsection = "addsection_";
 	const _load      =  require("./loader.js");
-	const _validate  = require("./validate.js");
 	this.request     = null;
 	this.response    = null;
 	this.dataView    = "";
@@ -13,10 +11,6 @@ function Phoenix(argument) {
 	this.setSection  = false;
 	this.islayout    = false;
 	this.load        = new _load();
-	this.form        = new _form();
-	this.validate    = new _validate();
-	this.db          = new _db();
-	this.input       = new _input();
 	this.waitdding   = 0;
 	this.info = {};
 	this.info.view       = [];
@@ -33,7 +27,7 @@ function Phoenix(argument) {
 		this.waitdding--;
 	}
 	this.next = function(){
-		this.response.next();
+		return this.response.next();
 	}
 	this.end = function(){
 		this.load.views = "";
@@ -46,10 +40,10 @@ function Phoenix(argument) {
 		this.listSection     = {};
 		this.dataView        = "";
 		this.layout          = "";
-		this.response.end();
+		return this.response.end();
 	}
 	this.__construct = function(){
-		this.response.writeHead(200, { 'Content-Type': this.contentType });
+		//this.response.writeHead(200, { 'Content-Type': this.contentType });
 	}
 	this.__destructors =  function(){
 		var that = this; 
@@ -63,6 +57,17 @@ function Phoenix(argument) {
 		        		write("<p>"+val.message+"<br/></p>");
 			        	write("<p>"+val.detail+"<br/></p>");
 		        	} 
+		        }
+		        if(typeof that.session != "undefined"){
+		        	var flags = that.session.common;
+		        	var keept = that.session.common.phoenix_not_flags;
+		        	for (var i in flags){
+		        		if(typeof keept.indexOf(i) != -1){
+		        			delete flags[i];
+		        		}
+		        	}
+		        	that.session.phoenix_flags = [];
+		        	console.log(flags);
 		        }
 		        clearInterval(this);
 		        that.end();

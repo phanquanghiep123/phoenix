@@ -5,8 +5,10 @@
   "main": "public/server.js",
   "dependencies": {
     "body-parser": "^1.18.2",
+    "cookie-parser": "^1.4.3",
     "express": "^4.16.2",
     "express-fileupload": "^0.3.0",
+    "express-session": "^1.15.6",
     "mysql": "^2.15.0",
     "nodemon": "^1.12.1"
   },

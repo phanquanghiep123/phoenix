@@ -1,6 +1,9 @@
 function MyController (){
 	this.data = {};
 	this.construct = function(){
+		this.load.validate();
+		this.load.form();
+		this.load.input();
 		this.data.abc = 1;
 		this.data.title = "Phoenix | Signup";
 		this.validate.addmessge({

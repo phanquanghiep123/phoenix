@@ -34,6 +34,9 @@ function Db() {
 	this.reader = function($model){
 		return this.driver.get($model,0,false);
 	}
+	this.end = function(){
+		return this.driver.end();
+	}
 	this.init();
 }
 module.exports = Db;

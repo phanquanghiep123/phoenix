@@ -40,7 +40,7 @@ EscapeString = function(str) {
 		}
 	});
 }
-Redirect = function($url){
+redirect = function($url){
 	_Controller.response.redirect($url);
 }
 CheckLogin = function() {
@@ -156,7 +156,7 @@ RamdonString = function($num = 10) {
   return "phoenix_" + text;
 }
 
-Route = function($name){
+route = function($name,$data = {}){
 	try {
 		if(typeof _Phoenix.info.routes[$name] == "undefined")
 			_Phoenix.info.error.push({detail: "" ,message : "Error: Route `"+$name+"` not like any routes please check name !"});

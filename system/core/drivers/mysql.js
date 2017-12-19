@@ -392,6 +392,9 @@ function driverMysql($SeverInfo){
 		sql = sql.ReplaceKeyAll(replayKey);
 		return sql;
 	}
+	this.end = function (){
+		_connection.end();
+	}
 	const replacecolum  = function($column = null){
 		const _sqlKeyWord  = ["%","=","*","/","+","-","like","in","not","or","on","and","left","end","as","right","inner"];
 		var argString = $column.split(" ");
