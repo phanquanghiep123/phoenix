@@ -6,7 +6,7 @@ function Form() {
 	this.addStarFrom = false;
 	this.start = function($name = null,$attr = {}){
 		if(this.Status == false && this.CurentName == null){
-			_Phoenix.info.error.push({detail:this ,message : "Error: Please end form before start form!"});
+			_Phoenix.phoenix_info.error.push({detail:this ,message : "Error: Please end form before start form!"});
 			return false;
 		}
 		this.CurentName = $name;
@@ -30,7 +30,7 @@ function Form() {
 	}
 	this.inputText = function($name = null,$attr = {}){
 		if(this.addStarFrom == false && this.CurentName == null){
-			_Phoenix.info.error.push({detail:this ,message : "Error: Please start form before add item form!"});
+			_Phoenix.phoenix_info.error.push({detail:this ,message : "Error: Please start form before add item form!"});
 			return false;
 		}
 		this.ListForm[this.CurentName].push({
@@ -55,7 +55,7 @@ function Form() {
 	}
 	this.inputEmail= function($name = null,$attr = {}){
 		if(this.addStarFrom == false && this.CurentName == null){
-			_Phoenix.info.error.push({detail:this ,message : "Error: Please start form before add item form!"});
+			_Phoenix.phoenix_info.error.push({detail:this ,message : "Error: Please start form before add item form!"});
 			return false;
 		}
 		this.ListForm[this.CurentName].push({
@@ -80,7 +80,7 @@ function Form() {
 	}
 	this.inputNumber= function($name = null,$attr = {}){
 		if(this.addStarFrom == false && this.CurentName == null){
-			_Phoenix.info.error.push({detail:this ,message : "Error: Please start form before add item form!"});
+			_Phoenix.phoenix_info.error.push({detail:this ,message : "Error: Please start form before add item form!"});
 			return false;
 		}
 		this.ListForm[this.CurentName].push({
@@ -105,7 +105,7 @@ function Form() {
 	}
 	this.inputTextarea = function($name = null,$attr = {}){
 		if(this.addStarFrom == false && this.CurentName == null){
-			_Phoenix.info.error.push({detail:this ,message : "Error: Please start form before add item form!"});
+			_Phoenix.phoenix_info.error.push({detail:this ,message : "Error: Please start form before add item form!"});
 			return false;
 		}
 		this.ListForm[this.CurentName].push({
@@ -132,7 +132,7 @@ function Form() {
 	}
 	this.inputPassword = function($name = null,$attr = {}){
 		if(this.addStarFrom == false && this.CurentName == null){
-			_Phoenix.info.error.push({detail:this ,message : "Error: Please start form before add item form!"});
+			_Phoenix.phoenix_info.error.push({detail:this ,message : "Error: Please start form before add item form!"});
 			return false;
 		}
 		this.ListForm[this.CurentName].push({
@@ -157,7 +157,7 @@ function Form() {
 	}
 	this.inputDate = function($name = null,$attr = {}){
 		if(this.addStarFrom == false && this.CurentName == null){
-			_Phoenix.info.error.push({detail:this ,message : "Error: Please start form before add item form!"});
+			_Phoenix.phoenix_info.error.push({detail:this ,message : "Error: Please start form before add item form!"});
 			return false;
 		}
 		this.ListForm[this.CurentName].push({
@@ -182,7 +182,7 @@ function Form() {
 	}
 	this.inputCheckbox = function($name = null,$attr = {}){
 		if(this.addStarFrom == false && this.CurentName == null){
-			_Phoenix.info.error.push({detail:this ,message : "Error: Please start form before add item form!"});
+			_Phoenix.phoenix_info.error.push({detail:this ,message : "Error: Please start form before add item form!"});
 			return false;
 		}
 		this.ListForm[this.CurentName].push({
@@ -207,7 +207,7 @@ function Form() {
 	}
 	this.inputRadio = function($name = null,$attr = {}){
 		if(this.addStarFrom == false && this.CurentName == null){
-			_Phoenix.info.error.push({detail:this ,message : "Error: Please start form before add item form!"});
+			_Phoenix.phoenix_info.error.push({detail:this ,message : "Error: Please start form before add item form!"});
 			return false;
 		}
 		this.ListForm[this.CurentName].push({
@@ -232,7 +232,7 @@ function Form() {
 	}
 	this.inputSelect = function($name = null,$attr = {},$table = null, $key_value,$key_label,$active = null){
 		if(this.addStarFrom == false && this.CurentName == null){
-			_Phoenix.info.error.push({detail:this ,message : "Error: Please start form before add item form!"});
+			_Phoenix.phoenix_info.error.push({detail:this ,message : "Error: Please start form before add item form!"});
 			return false;
 		}
 		this.ListForm[this.CurentName].push({
@@ -272,7 +272,7 @@ function Form() {
 	}
 	this.inputFile = function($name,$attr = {}){
 		if(this.addStarFrom == false && this.CurentName == null){
-			_Phoenix.info.error.push({detail:this ,message : "Error: Please start form before add item form!"});
+			_Phoenix.phoenix_info.error.push({detail:this ,message : "Error: Please start form before add item form!"});
 			return false;
 		}
 		this.ListForm[this.CurentName].push({
@@ -318,7 +318,7 @@ function Form() {
 	}
 	this.inputButton = function($name = null,$attr = {}){
 		if(this.addStarFrom == false && this.CurentName == null){
-			_Phoenix.info.error.push({detail:this ,message : "Error: Please start form before add item form!"});
+			_Phoenix.phoenix_info.error.push({detail:this ,message : "Error: Please start form before add item form!"});
 			return false;
 		}
 		this.ListForm[this.CurentName].push({
@@ -345,7 +345,7 @@ function Form() {
 	}
 	this.end = function(){
 		if(this.addStarFrom == false && this.CurentName == null){
-			_Phoenix.info.error.push({detail:this ,message : "Error: Please start form before end form!"});
+			_Phoenix.phoenix_info.error.push({detail:this ,message : "Error: Please start form before end form!"});
 			return false;
 		}
 		if(!_Phoenix.islayout){

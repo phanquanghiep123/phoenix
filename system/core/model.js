@@ -25,7 +25,7 @@ function Model() {
 	this.phoenix_keyword     = ["phoenix_name","phoenix_modelskey","phoenix_callback", "phoenix_sql", "phoenix_new", "phoenix_selects", "phoenix_where ", "phoenix_wherein", "phoenix_wherenotin", "phoenix_joins", "phoenix_limit", "phoenix_order", "phoenix_group", "phoenix_having", "phoenix_subkey", "phoenix_modelkey", "phoenix_as", "phoenix_tomodel", "key", "table", "colums", "phoenix_list", "validate"];
  	this.__construct = function(){
 		if(this.table  == null || this.key == null){
-			_Phoenix.info.error.push({detail:"Model error" ,message : "Error: Please add name and key for table!"});
+			_Phoenix.phoenix_info.error.push({detail:"Model error" ,message : "Error: Please add name and key for table!"});
 			return false;
 		}else{
 			if(typeof this.key == "string")
@@ -48,7 +48,7 @@ function Model() {
 		if(typeof $model == "object" ){
 			this.phoenix_tomodel = $model;
 		}else{
-			_Controller.info.error.push({detail:"" ,message : "The data sent to convert function must be an model"});
+			_Controller.phoenix_info.error.push({detail:"" ,message : "The data sent to convert function must be an model"});
 		}
 		return this;
 	}
@@ -64,7 +64,7 @@ function Model() {
 				this.phoenix_selects.push($data[i]);
 			}
 		}else{
-			_Controller.info.error.push({detail:"" ,message : "The data sent to select function must be an array or string"});
+			_Controller.phoenix_info.error.push({detail:"" ,message : "The data sent to select function must be an array or string"});
 		}
 		return this;
 	}
@@ -79,7 +79,7 @@ function Model() {
 				}		
 			}	
 		}else{ 
-			_Controller.info.error.push({detail:"" ,message : "The data sent to where function must be an array"});
+			_Controller.phoenix_info.error.push({detail:"" ,message : "The data sent to where function must be an array"});
 		}
 		return this;
 	}
@@ -102,17 +102,17 @@ function Model() {
 				}			
 			}	
 		}else{ 
-			_Controller.info.error.push({detail:"" ,message : "The data sent to where function must be an array"});
+			_Controller.phoenix_info.error.push({detail:"" ,message : "The data sent to where function must be an array"});
 		}
 		return this;
 	} 
 	this.where_in  = function($key = null ,$in = []){
 		if(typeof $key != "string"){
-			_Controller.info.error.push({detail:"" ,message : "The data key sent to where_in function must be an string"});
+			_Controller.phoenix_info.error.push({detail:"" ,message : "The data key sent to where_in function must be an string"});
 			return this;	
 		}
 		if(typeof $in != "object"){
-			_Controller.info.error.push({detail:"" ,message : "The data in sent to where_in function must be an  array"});
+			_Controller.phoenix_info.error.push({detail:"" ,message : "The data in sent to where_in function must be an  array"});
 			return this;	
 		}
 		this.phoenix_where.push({ type : 3 ,data :$in, key: $key });
@@ -120,11 +120,11 @@ function Model() {
 	}
 	this.where_not_in  = function($key = null ,$in = []){
 		if(typeof $key != "string"){
-			_Controller.info.error.push({detail:"" ,message : "The data key sent to where_not_in function must be an string"});
+			_Controller.phoenix_info.error.push({detail:"" ,message : "The data key sent to where_not_in function must be an string"});
 			return this;	
 		}
 		if(typeof $in != "object"){
-			_Controller.info.error.push({detail:"" ,message : "The data not in sent to where_not_in function must be an array"});
+			_Controller.phoenix_info.error.push({detail:"" ,message : "The data not in sent to where_not_in function must be an array"});
 			return this;	
 		}
 		this.phoenix_where.push({ type : 4 ,data :$in, key: $key });
@@ -133,15 +133,15 @@ function Model() {
 	this.inner_join = function($table, $ondata = null, $and = null){
 		if(typeof $table == "string" || typeof $table == "object" ){
 			if(typeof $ondata != "object"){
-				_Controller.info.error.push({detail:"" ,message : "The data on sent to inner_join function must be an array"});
+				_Controller.phoenix_info.error.push({detail:"" ,message : "The data on sent to inner_join function must be an array"});
 				return this;
 			}
 			if($and != null && typeof $and != "object"){
-				_Controller.info.error.push({detail:"" ,message : "The data and sent to inner_join function must be an array"});
+				_Controller.phoenix_info.error.push({detail:"" ,message : "The data and sent to inner_join function must be an array"});
 				return this;
 			}
 		}else{
-			_Controller.info.error.push({detail:"" ,message : "The data table sent to inner_join function must be an string or model"});
+			_Controller.phoenix_info.error.push({detail:"" ,message : "The data table sent to inner_join function must be an string or model"});
 			return this;
 		}
 		this.phoenix_joins.push({table : $table, on : $ondata, and : $and, type: 0});
@@ -150,15 +150,15 @@ function Model() {
 	this.left_join = function($table, $ondata ,$and = null){
 		if(typeof $table == "string" || typeof $table == "object" ){
 			if(typeof $ondata != "object"){
-				_Controller.info.error.push({detail:"" ,message : "The data on sent to left_join function must be an array"});
+				_Controller.phoenix_info.error.push({detail:"" ,message : "The data on sent to left_join function must be an array"});
 				return this;
 			}
 			if($and != null && typeof $and != "object"){
-				_Controller.info.error.push({detail:"" ,message : "The data and sent to left_join function must be an array"});
+				_Controller.phoenix_info.error.push({detail:"" ,message : "The data and sent to left_join function must be an array"});
 				return this;
 			}
 		}else{
-			_Controller.info.error.push({detail:"" ,message : "The data table sent to left_join function must be an string or model"});
+			_Controller.phoenix_info.error.push({detail:"" ,message : "The data table sent to left_join function must be an string or model"});
 			return this;
 		}
 		this.phoenix_joins.push({table : $table, on : $ondata, and : $and, type: 1});
@@ -167,15 +167,15 @@ function Model() {
 	this.right_join = function($table,$ondata,$and = null){
 		if(typeof $table == "string" || typeof $table == "object" ){
 			if(typeof $ondata != "object"){
-				_Controller.info.error.push({detail:"" ,message : "The data on sent to right_join function must be an array"});
+				_Controller.phoenix_info.error.push({detail:"" ,message : "The data on sent to right_join function must be an array"});
 				return this;
 			}
 			if($and != null && typeof $and != "object"){
-				_Controller.info.error.push({detail:"" ,message : "The data and sent to right_join function must be an array"});
+				_Controller.phoenix_info.error.push({detail:"" ,message : "The data and sent to right_join function must be an array"});
 				return this;
 			}
 		}else{
-			_Controller.info.error.push({detail:"" ,message : "The data table sent to right_join function must be an string or model"});
+			_Controller.phoenix_info.error.push({detail:"" ,message : "The data table sent to right_join function must be an string or model"});
 			return this;
 		}
 		this.phoenix_joins.push({table : $table, on : $ondata, and : $and, type: 2});
@@ -183,11 +183,11 @@ function Model() {
 	}
 	this.limit = function($limit = null,$offset = null){
 		if($offset != null && typeof $offset != "number"){
-			_Controller.info.error.push({detail: "" ,message : "The data offset sent to limit function must be an number"});
+			_Controller.phoenix_info.error.push({detail: "" ,message : "The data offset sent to limit function must be an number"});
 			return this;
 		}
 		if(typeof $limit != "number"){
-			_Controller.info.error.push({detail: "" ,message : "The data limit sent to limit function must be an number"});
+			_Controller.phoenix_info.error.push({detail: "" ,message : "The data limit sent to limit function must be an number"});
 			return this;
 		}
 		this.phoenix_limit.push($limit);
@@ -198,7 +198,7 @@ function Model() {
 		if(typeof $order == "object"){
 			this.phoenix_order.push($order);
 		}else{
-			_Controller.info.error.push({detail:"" ,message : "The data sent to order_by function must be an array"});
+			_Controller.phoenix_info.error.push({detail:"" ,message : "The data sent to order_by function must be an array"});
 		}
 		return this;
 	}
@@ -206,7 +206,7 @@ function Model() {
 		if(typeof $group == "object"){
 			this.phoenix_group.push($group);
 		}else{
-			_Controller.info.error.push({detail:"" ,message : "The data sent to group_by function must be an array"});
+			_Controller.phoenix_info.error.push({detail:"" ,message : "The data sent to group_by function must be an array"});
 		}
 		return this;
 	}

@@ -61,7 +61,7 @@ function Validate() {
 						        check = this[argparmeter[0]](value,argparmeter[1],argparmeter[2],argparmeter[3],argparmeter[4]);
 						        break;
 						    default:
-						        _Phoenix.info.error.push({detail:item ,message : "Error: The number of parameters passed in exceeds the permission!"});
+						        _Phoenix.phoenix_info.error.push({detail:item ,message : "Error: The number of parameters passed in exceeds the permission!"});
 								return false;
 						}
 							
@@ -94,7 +94,7 @@ function Validate() {
 							        messgesError = messgesError.ReplaceAll("{$5}",argparmeter[4]);
 							        break;
 							    default:
-							        _Phoenix.info.error.push({detail:item ,message : "Error: The number of parameters passed in exceeds the permission!"});
+							        _Phoenix.phoenix_info.error.push({detail:item ,message : "Error: The number of parameters passed in exceeds the permission!"});
 									return false;
 							}
 							this.allError.push(messgesError);
@@ -104,8 +104,8 @@ function Validate() {
 						}
 
 					} catch (e) {	
-						if (e instanceof SyntaxError) _Phoenix.info.error.push({detail:e ,message : e.message});
-						else _Phoenix.info.error.push({detail:e ,message : e});				 
+						if (e instanceof SyntaxError) _Phoenix.phoenix_info.error.push({detail:e ,message : e.message});
+						else _Phoenix.phoenix_info.error.push({detail:e ,message : e});				 
 						return false;
 					}
 				}

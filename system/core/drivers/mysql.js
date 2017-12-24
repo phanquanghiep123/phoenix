@@ -13,12 +13,12 @@ function driverMysql($SeverInfo){
 		try{
 		_connection.connect(function($err) {
 			if ($err) {
-					_Controller.info.error.push({detail:$err ,message : $err.stack});
+					_Controller.phoenix_info.error.push({detail:$err ,message : $err.stack});
 				}
 			});
 		}catch(e){
-			if (e instanceof SyntaxError)  _Controller.info.error.push({detail:e ,message : e.message});
-			else  _Controller.info.error.push({detail:e ,message : e}); 
+			if (e instanceof SyntaxError)  _Controller.phoenix_info.error.push({detail:e ,message : e.message});
+			else  _Controller.phoenix_info.error.push({detail:e ,message : e}); 
 		}
 	}
 	this.reset = function (){
@@ -53,7 +53,7 @@ function driverMysql($SeverInfo){
 			}
 			return this;
 		}else{
-			_Controller.info.error.push({detail:"" ,message : "The data sent to select must be an object"});
+			_Controller.phoenix_info.error.push({detail:"" ,message : "The data sent to select must be an object"});
 			return false;
 		}
 	}
@@ -92,7 +92,7 @@ function driverMysql($SeverInfo){
 				var sql    = table.phoenix_sql;
 				stringjoin = joinType[$data.type] + " JOIN (" + sql + ") AS " + replacecolum(table.phoenix_as) + " ON " + argOn.join(" ") + fixAnd + newAnd.join(" AND ");
 			}else{
-				_Controller.info.error.push({detail:null ,message : "Please Aliases model first join models!"});
+				_Controller.phoenix_info.error.push({detail:null ,message : "Please Aliases model first join models!"});
 			}		
 		}
 		this._joins.push(stringjoin);
@@ -184,7 +184,7 @@ function driverMysql($SeverInfo){
 							$model = $model.phoenix_tomodel;
 						}
 						if (err) 
-							_Controller.info.error.push({detail:err ,message : err.sqlMessage});
+							_Controller.phoenix_info.error.push({detail:err ,message : err.sqlMessage});
 						else
 							if($type == 0){
 								if(rows.length > 0 ){
@@ -219,8 +219,8 @@ function driverMysql($SeverInfo){
 						_Controller.endwait();
 					});
 				}catch (e){
-					if (e instanceof SyntaxError) _Controller.info.error.push({detail:e ,message : e.message});
-					else _Controller.info.error.push({detail:e ,message : e});
+					if (e instanceof SyntaxError) _Controller.phoenix_info.error.push({detail:e ,message : e.message});
+					else _Controller.phoenix_info.error.push({detail:e ,message : e});
 					_Controller.endwait();
 				}
 			}
@@ -278,7 +278,7 @@ function driverMysql($SeverInfo){
 				that.reset();
 				_connection.query(sql, function(err, result) {
 				  	if (err) {
-						_Controller.info.error.push({detail:err ,message : err.sqlMessage});
+						_Controller.phoenix_info.error.push({detail:err ,message : err.sqlMessage});
 				  	}
 				  	if($model[$model.key] == 0){
 				  		$model[$model.key] = result.insertId; 
@@ -304,7 +304,7 @@ function driverMysql($SeverInfo){
 		this.reset();
 		_connection.query(options,function(err, rows){
 			if (err) {
-				_Controller.info.error.push({detail:err ,message : err.sqlMessage});
+				_Controller.phoenix_info.error.push({detail:err ,message : err.sqlMessage});
 		  	}else{
 		  		var row = null;
 		  		if(rows.length > 0 ){
@@ -345,7 +345,7 @@ function driverMysql($SeverInfo){
 		var options = {sql : sql, nesttables: false};
 		_connection.query(options,function(err, rows){
 			if (err) {
-				_Controller.info.error.push({detail:err ,message : err.sqlMessage});
+				_Controller.phoenix_info.error.push({detail:err ,message : err.sqlMessage});
 		  	}else{
 			    if(typeof $model.phoenix_callback  == "function"){
 					$model.phoenix_callback($model.phoenix_callback = null);

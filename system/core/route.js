@@ -4,7 +4,7 @@ function Router(){
 		var c     = $Option.controller.toLowerCase().trim();
 		var a     = $Option.action.toLowerCase().trim();
 		var _this = this;
-		_Phoenix.info.routes[$Option.name] = $Option;
+		_Phoenix.phoenix_info.routes[$Option.name] = $Option;
 		_App[$Option.type]($Option.url,function(req,res,next){	
 			if($midellwell != null) $midellwell();
 			if($Option.midellwell != null) $Option.midellwell();
@@ -29,9 +29,9 @@ function Router(){
 		var argUrrl = c.split("/");
 		var $Controller = argUrrl[(argUrrl.length -1 )];
 		var $Action     = a;
-		_Controller.info.file = c;
-		_Controller.info.controller = $Controller;
-		_Controller.info.action     = $Action;
+		_Controller.phoenix_info.file = c;
+		_Controller.phoenix_info.controller = $Controller;
+		_Controller.phoenix_info.action     = $Action;
 		var params    = _Controller.request.params;
 		var stringP   = "";
 		var argparams = [];
@@ -58,25 +58,25 @@ function Router(){
 		} catch (e) {
 			controller = Object.assign(_Controller,controller);
 			if (e instanceof SyntaxError) 
-				_Controller.info.error.push({detail:e ,message : e.message});
+				_Controller.phoenix_info.error.push({detail:e ,message : e.message});
 			else 
-				_Controller.info.error.push({detail:e ,message : e});
+				_Controller.phoenix_info.error.push({detail:e ,message : e});
 		}
 		var StringEval = "controller['"+$Action+"']("+stringP+");";
-		_Controller.__construct();
+		_Controller._phoenix_construct();
 		if(typeof controller.construct === "function"){
 			controller.construct();
 		}  
 		try {
 			eval(StringEval.trim());
 		} catch (e) {
-			if (e instanceof SyntaxError) _Controller.info.error.push({detail:e ,message : e.message});
-			else _Controller.info.error.push({detail:e ,message : e});
+			if (e instanceof SyntaxError) _Controller.phoenix_info.error.push({detail:e ,message : e.message});
+			else _Controller.phoenix_info.error.push({detail:e ,message : e});
 		}
 		if(typeof controller.destructors === "function"){
 			controller.destructors();
 		} 
-		_Controller.__destructors();	
+		_Controller._phoenix_destructors();	
 	}
 }
 module.exports = Router;

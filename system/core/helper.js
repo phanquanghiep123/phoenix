@@ -62,7 +62,7 @@ joinArray = function(InputArray, str) {
 	return string;
 }
 write = function(string) {
-	_Phoenix.info.views.push({type: "string" ,content : string });
+	_Phoenix.phoenix_info.views.push({type: "string" ,content : string });
 	return true;
 }
 base_url = function(url = null){
@@ -157,13 +157,13 @@ RamdonString = function($num = 10) {
 
 route = function($name,$data = {}){
 	try {
-		if(typeof _Phoenix.info.routes[$name] == "undefined")
-			_Phoenix.info.error.push({detail: "" ,message : "Error: Route `"+$name+"` not like any routes please check name !"});
+		if(typeof _Phoenix.phoenix_info.routes[$name] == "undefined")
+			_Phoenix.phoenix_info.error.push({detail: "" ,message : "Error: Route `"+$name+"` not like any routes please check name !"});
 		else 
-			return _Phoenix.info.routes[$name]["url"];
+			return _Phoenix.phoenix_info.routes[$name]["url"];
 	}
 	catch (e) { 
-		_Phoenix.info.error.push({detail: e ,message : "Error: Route `"+$name+"` not like any routes please check name !"});
+		_Phoenix.phoenix_info.error.push({detail: e ,message : "Error: Route `"+$name+"` not like any routes please check name !"});
 	}
 }
 

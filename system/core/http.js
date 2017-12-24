@@ -1,10 +1,9 @@
 function Http(){
 	const server_port       = _Config.local.port;
 	const server_ip_address = _Config.local.host;
-	const express    = require('express');
-	const http 	     = require('http');
-	const bodyParser = require('body-parser'); 
-	const fileUpload = require('express-fileupload');
+	const express      = require('express');
+	const bodyParser   = require('body-parser'); 
+	const fileUpload   = require('express-fileupload');
 	const cookieParser = require('cookie-parser');
 	const session      = require('express-session');
 	_App = express();

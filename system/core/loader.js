@@ -1,7 +1,8 @@
 function Loader() {
+	this.phoenix_loadviews = [];
 	this.model = function($file){
 		try {
-			_Phoenix.info.model.push({file : $file});
+			_Phoenix.phoenix_info.model.push({file : $file});
 			var _model  = require(_F_models + $file );
             var model   = new _model();
             var PModel  = new _Autoload.model();
@@ -19,13 +20,14 @@ function Loader() {
             	return _Phoenix[$file];
         	else return false;
 		}catch (e){
-			if (e instanceof SyntaxError) _Phoenix.info.error.push({detail:e ,message : e.message});
-			else _Phoenix.info.error.push({detail:e ,message : e});
+			if (e instanceof SyntaxError) _Phoenix.phoenix_info.error.push({detail:e ,message : e.message});
+			else _Phoenix.phoenix_info.error.push({detail:e ,message : e});
 		}
 	}
 	this.view = function( $file = "", $data = {}, $return = false){
+		this.phoenix_loadviews.push({type: "file" ,file : $file , data : $data });
 		if( $return == false){
-			_Phoenix.info.views.push({type: "file" ,file : $file , data : $data });
+			
 		}else{
 
 		}
