@@ -2,12 +2,6 @@
 <?node this.LayoutSetSection("main");?>
 <div class="container">
   <div class="row main">
-    <?node
-    var error = this.session.getflag("error");
-    write('<p>Hãy nhập Email không được rổng</p>');
-    write('<p>Hãy nhập Email không được rổng</p>');
-    write('<p>Hãy nhập Email không được rổng</p>');
-    ?>
     <div class="main-login main-center">
       <?node 
         this.form.start("signup",{"method": "post","action": route("auth.signin"),enctype : "multipart/form-data"});

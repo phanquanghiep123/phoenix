@@ -21,10 +21,10 @@ function Form() {
 				}
 			}
 		}
-		if(!_Phoenix.islayout){
-			_Phoenix.dataView += '<form name="'+this.CurentName+'" '+attString+'>';
+		if(!_Phoenix.phoenix_islayout){
+			_Phoenix.phoenix_dataviews += '<form name="'+this.CurentName+'" '+attString+'>';
 		}else{
-			_Phoenix.layout += '<form name="'+this.CurentName+'" '+attString+'>';
+			_Phoenix.phoenix_datalayouts += '<form name="'+this.CurentName+'" '+attString+'>';
 		}
 		return true;
 	}
@@ -46,10 +46,10 @@ function Form() {
 				}
 			}
 		}
-		if(!_Phoenix.islayout){
-			_Phoenix.dataView += '<input type="text" name="'+$name+'" '+attString+'>';
+		if(!_Phoenix.phoenix_islayout){
+			_Phoenix.phoenix_dataviews += '<input type="text" name="'+$name+'" '+attString+'>';
 		}else{
-			_Phoenix.layout += '<input type="text" name="'+$name+'" '+attString+'>';
+			_Phoenix.phoenix_datalayouts += '<input type="text" name="'+$name+'" '+attString+'>';
 		}
 		return true;
 	}
@@ -71,10 +71,10 @@ function Form() {
 				}
 			}
 		}
-		if(!_Phoenix.islayout){
-			_Phoenix.dataView += '<input type="email" name="'+$name+'" '+attString+'>';
+		if(!_Phoenix.phoenix_islayout){
+			_Phoenix.phoenix_dataviews += '<input type="email" name="'+$name+'" '+attString+'>';
 		}else{
-			_Phoenix.layout += '<input type="email" name="'+$name+'" '+attString+'>';
+			_Phoenix.phoenix_datalayouts += '<input type="email" name="'+$name+'" '+attString+'>';
 		}
 		return true;
 	}
@@ -96,10 +96,10 @@ function Form() {
 				}
 			}
 		}
-		if(!_Phoenix.islayout){
-			_Phoenix.dataView += '<input type="number" name="'+$name+'" '+attString+'>';
+		if(!_Phoenix.phoenix_islayout){
+			_Phoenix.phoenix_dataviews += '<input type="number" name="'+$name+'" '+attString+'>';
 		}else{
-			_Phoenix.layout += '<input type="number" name="'+$name+'" '+attString+'>';
+			_Phoenix.phoenix_datalayouts += '<input type="number" name="'+$name+'" '+attString+'>';
 		}
 		return true;
 	}
@@ -123,10 +123,10 @@ function Form() {
 				}
 			}
 		}
-		if(!_Phoenix.islayout){
-			_Phoenix.dataView += '<textarea name="'+$name+'" '+attString+'>'+value+'</textarea>';
+		if(!_Phoenix.phoenix_islayout){
+			_Phoenix.phoenix_dataviews += '<textarea name="'+$name+'" '+attString+'>'+value+'</textarea>';
 		}else{
-			_Phoenix.layout += '<textarea name="'+$name+'" '+attString+'>'+value+'</textarea>';
+			_Phoenix.phoenix_datalayouts += '<textarea name="'+$name+'" '+attString+'>'+value+'</textarea>';
 		}
 		return true;
 	}
@@ -148,10 +148,10 @@ function Form() {
 				}
 			}
 		}
-		if(!_Phoenix.islayout){
-			_Phoenix.dataView += '<input type="password" name="'+$name+'" '+attString+'>';
+		if(!_Phoenix.phoenix_islayout){
+			_Phoenix.phoenix_dataviews += '<input type="password" name="'+$name+'" '+attString+'>';
 		}else{
-			_Phoenix.layout += '<input type="password" name="'+$name+'" '+attString+'>';
+			_Phoenix.phoenix_datalayouts += '<input type="password" name="'+$name+'" '+attString+'>';
 		}
 		return true;
 	}
@@ -173,10 +173,10 @@ function Form() {
 				}
 			}
 		}
-		if(!_Phoenix.islayout){
-			_Phoenix.dataView += '<input type="date" name="'+$name+'" '+attString+'>';
+		if(!_Phoenix.phoenix_islayout){
+			_Phoenix.phoenix_dataviews += '<input type="date" name="'+$name+'" '+attString+'>';
 		}else{
-			_Phoenix.layout += '<input type="date" name="'+$name+'" '+attString+'>';
+			_Phoenix.phoenix_datalayouts += '<input type="date" name="'+$name+'" '+attString+'>';
 		}
 		return true;
 	}
@@ -198,10 +198,10 @@ function Form() {
 				}
 			}
 		}
-		if(!_Phoenix.islayout){
-			_Phoenix.dataView += '<input type="checkbox" name="'+$name+'" '+attString+'>';
+		if(!_Phoenix.phoenix_islayout){
+			_Phoenix.phoenix_dataviews += '<input type="checkbox" name="'+$name+'" '+attString+'>';
 		}else{
-			_Phoenix.layout += '<input type="checkbox" name="'+$name+'" '+attString+'>';
+			_Phoenix.phoenix_datalayouts += '<input type="checkbox" name="'+$name+'" '+attString+'>';
 		}
 		return true;
 	}
@@ -223,10 +223,10 @@ function Form() {
 				}
 			}
 		}
-		if(!_Phoenix.islayout){
-			_Phoenix.dataView += '<input type="radio" name="'+$name+'" '+attString+'>';
+		if(!_Phoenix.phoenix_islayout){
+			_Phoenix.phoenix_dataviews += '<input type="radio" name="'+$name+'" '+attString+'>';
 		}else{
-			_Phoenix.layout += '<input type="radio" name="'+$name+'" '+attString+'>';
+			_Phoenix.phoenix_datalayouts += '<input type="radio" name="'+$name+'" '+attString+'>';
 		}
 		return true;
 	}
@@ -263,10 +263,10 @@ function Form() {
 			});	
 		}
 		stringOption += '</select>';
-		if(!_Phoenix.islayout){
-			_Phoenix.dataView += stringOption;
+		if(!_Phoenix.phoenix_islayout){
+			_Phoenix.phoenix_dataviews += stringOption;
 		}else{
-			_Phoenix.layout += stringOption;
+			_Phoenix.phoenix_datalayouts += stringOption;
 		}
 		return true;
 	}
@@ -288,10 +288,10 @@ function Form() {
 				}
 			}
 		}
-		if(!_Phoenix.islayout){
-			_Phoenix.dataView += '<input type="file" name="'+$name+'" '+attString+'>';
+		if(!_Phoenix.phoenix_islayout){
+			_Phoenix.phoenix_dataviews += '<input type="file" name="'+$name+'" '+attString+'>';
 		}else{
-			_Phoenix.layout += '<input type="file" name="'+$name+'" '+attString+'>';
+			_Phoenix.phoenix_datalayouts += '<input type="file" name="'+$name+'" '+attString+'>';
 		}
 		return true;
 	}
@@ -309,10 +309,10 @@ function Form() {
 				}
 			}
 		}
-		if(!_Phoenix.islayout){
-			_Phoenix.dataView += '<input type="submit" name="'+$name+'" '+attString+'>';
+		if(!_Phoenix.phoenix_islayout){
+			_Phoenix.phoenix_dataviews += '<input type="submit" name="'+$name+'" '+attString+'>';
 		}else{
-			_Phoenix.layout += '<input type="submit" name="'+$name+'" '+attString+'>';
+			_Phoenix.phoenix_datalayouts += '<input type="submit" name="'+$name+'" '+attString+'>';
 		}
 		return true;
 	}
@@ -336,10 +336,10 @@ function Form() {
 				}
 			}
 		}
-		if(!_Phoenix.islayout){
-			_Phoenix.dataView += '<button name="'+$name+'" '+attString+'>'+label+'</button>';
+		if(!_Phoenix.phoenix_islayout){
+			_Phoenix.phoenix_dataviews += '<button name="'+$name+'" '+attString+'>'+label+'</button>';
 		}else{
-			_Phoenix.layout += '<button name="'+$name+'" '+attString+'>'+label+'</button>';
+			_Phoenix.phoenix_datalayouts += '<button name="'+$name+'" '+attString+'>'+label+'</button>';
 		}
 		return true;
 	}
@@ -348,10 +348,10 @@ function Form() {
 			_Phoenix.phoenix_info.error.push({detail:this ,message : "Error: Please start form before end form!"});
 			return false;
 		}
-		if(!_Phoenix.islayout){
-			_Phoenix.dataView += '</form>';
+		if(!_Phoenix.phoenix_islayout){
+			_Phoenix.phoenix_dataviews += '</form>';
 		}else{
-			_Phoenix.layout += '</form>';
+			_Phoenix.phoenix_datalayouts += '</form>';
 		}
 		
 		return true;

@@ -25,11 +25,10 @@ function Loader() {
 		}
 	}
 	this.view = function( $file = "", $data = {}, $return = false){
-		this.phoenix_loadviews.push({type: "file" ,file : $file , data : $data });
-		if( $return == false){
-			
-		}else{
-
+		var view = _Phoenix.loadview($file, $data, $return);
+		_Phoenix.phoenix_info.view.push({type: "file" ,file : $file , data : $data });
+		if( $return == true){
+			return view;
 		}
 		return true;
 	}

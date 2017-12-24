@@ -1,7 +1,7 @@
 function signin(argument) {
 	this.extent = MyController;
 	this.index  = function(){
-		return this.load.view("frontend/auth/signin.html",this.data);
+		this.load.view("frontend/auth/signin.html",this.data);
 	}
 	this.save = function(){ 
 		var that = this;

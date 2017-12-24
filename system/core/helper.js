@@ -62,7 +62,10 @@ joinArray = function(InputArray, str) {
 	return string;
 }
 write = function(string) {
-	_Phoenix.phoenix_info.views.push({type: "string" ,content : string });
+	if(!_Phoenix.phoenix_islayout)
+		_Phoenix.phoenix_dataviews += string;
+	else
+		_Phoenix.phoenix_datalayouts += string;
 	return true;
 }
 base_url = function(url = null){
@@ -167,6 +170,9 @@ route = function($name,$data = {}){
 	}
 }
 
-ObjectLength = function($o){
+ObjectLength = function($o = null){
+	console.log($o);
+	return 0;
+	if(typeof $o != "object") return 0;
 	return Object.keys($o).length;
 }

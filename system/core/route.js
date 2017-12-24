@@ -63,7 +63,7 @@ function Router(){
 				_Controller.phoenix_info.error.push({detail:e ,message : e});
 		}
 		var StringEval = "controller['"+$Action+"']("+stringP+");";
-		_Controller._phoenix_construct();
+		_Controller.phoenix_construct();
 		if(typeof controller.construct === "function"){
 			controller.construct();
 		}  
@@ -76,7 +76,7 @@ function Router(){
 		if(typeof controller.destructors === "function"){
 			controller.destructors();
 		} 
-		_Controller._phoenix_destructors();	
+		_Controller.phoenix_destructors();	
 	}
 }
 module.exports = Router;
