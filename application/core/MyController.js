@@ -1,11 +1,14 @@
 function MyController (){
 	this.data = {};
+	this.auth = new Object; 
 	this.construct = function(){
 		this.load.validate();
 		this.load.form();
 		this.load.input();
 		this.data.abc = 1;
 		this.data.title = "Phoenix | Signup";
+		var auth = this.session.get("Auth");
+		if(auth) this.auth = auth;
 		/*this.validate.addmessge({
 			email    : "Vui lòng nhập {$1} là email",
 			number   : "Hãy nhập {$1} là số",

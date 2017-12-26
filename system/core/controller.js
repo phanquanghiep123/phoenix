@@ -30,12 +30,16 @@ function Controller() {
 		return this.response.end();
 	}
 	this.phoenix_construct = function(){
-        if(this.session.get("phoenix_sc")!= false){
+        if(this.session.get("phoenix_sc") != false){
         	this.phoenix_ramkey_section = this.session.get("phoenix_sc");
         }else{
         	this.phoenix_ramkey_section = RamdonString();
         	this.session.add("phoenix_sc",this.phoenix_ramkey_section);
         }
+         
+	}
+	this.redirect = function($url){
+		this.phoneix_redirect = $url;
 	}
 	this.phoenix_destructors =  function(){
 		var that = this;  

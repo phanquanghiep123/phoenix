@@ -5,23 +5,38 @@ _Route.add(
 		url        : "/",//listening request.
 		controller : "home", // controller url.
 		action     : "index",// action of funciton controller
-		midellwell : _Midellwell.auth(), // is function run before route this.
+		midellwell : "notlogin", // is function run before route this.
 		rule       : {"id" : "0-9+","member" : "A-Z,a-z"} // validate parameter passed from request url.
 	}
 );
-_Route.add(
-	{   name       : "home.demomodel", //unquie display name for url ex: (this.route("home.demomodel"))
-		type       : "get",//put or post or get or all.
-		url        : "/demomodel",//listening request.
-		controller : "home", // controller url.
-		action     : "demomodel",// action of funciton controller
-		midellwell : _Midellwell.auth(), // is function run before route this.
-		rule       : {"id" : "0-9+","member" : "A-Z,a-z"} // validate parameter passed from request url.
-	}
+//------------------------group route post------------------------//
+_Route.group("/post",
+	[
+		{
+			name       : "post.index",
+			type       : "get",//post or get or all.
+			url        : "/",//listening request.
+			controller : "post", // controller url.
+			action     : "index",// action of funciton controller
+			midellwell : null, // is function run before route this.
+			rule       : null // validate parameter passed from request url.
+		},
+		{
+			name       : "post.view",
+			type       : "get",//post or get or all.
+			url        : "/view/:id",//listening request.
+			controller : "post", // controller url.
+			action     : "view",// action of funciton controller
+			midellwell : null, // is function run before route this.
+			rule       : null // validate parameter passed from request url.
+		},	
+	],"notlogin"
 );
-//------------------------!add route------------------------
 
-//------------------------group route------------------------
+//------------------------group route post------------------------//
+
+
+//--------------------------group route-----------------------------//
 
 /*
 	@parameter 1 ($admin is format string ) is url before all items child of this group. 
@@ -30,23 +45,6 @@ _Route.add(
 
 	@parameter 3 ($midellwell is format function ) it is run before route group.
 */
-
-_Route.group("/admin",
-	[
-		{
-			name       : "admin.home.index" ,//unquie display name for url ex: (this.route("admin.home.index"))
-			type       : "get",//post or get or all.
-			url        : "/home",//listening request.
-			controller : "home", // controller url.
-			action     : "index",// action of funciton controller
-			midellwell : true, // is function run before route this.
-			rule       : null // validate parameter passed from request url.
-		}
-		 
-	],null
-);
-
-
 _Route.group("/auth",
 	[
 		{
@@ -55,7 +53,7 @@ _Route.group("/auth",
 			url        : "/signup",//listening request.
 			controller : "auth/signup", // controller url.
 			action     : "index",// action of funciton controller
-			midellwell : _Midellwell.auth(), // is function run before route this.
+			midellwell : null, // is function run before route this.
 			rule       : null // validate parameter passed from request url.
 		},
 		{
@@ -64,7 +62,7 @@ _Route.group("/auth",
 			url        : "/signup",//listening request.
 			controller : "auth/signup", // controller url.
 			action     : "save",// action of funciton controller
-			midellwell : _Midellwell.auth(), // is function run before route this.
+			midellwell : null, // is function run before route this.
 			rule       : null // validate parameter passed from request url.
 		},
 		{
@@ -73,7 +71,7 @@ _Route.group("/auth",
 			url        : "/signin",//listening request.
 			controller : "auth/signin", // controller url.
 			action     : "index",// action of funciton controller
-			midellwell : _Midellwell.auth(), // is function run before route this.
+			midellwell : null, // is function run before route this.
 			rule       : null // validate parameter passed from request url.
 		},
 		{
@@ -82,19 +80,10 @@ _Route.group("/auth",
 			url        : "/signin",//listening request.
 			controller : "auth/signin", // controller url.
 			action     : "save",// action of funciton controller
-			midellwell : _Midellwell.auth(), // is function run before route this.
-			rule       : null // validate parameter passed from request url.
-		},
-		{
-			name       : "auth.addsample",
-			type       : "get",//post or get or all.
-			url        : "/addsample",//listening request.
-			controller : "auth/signin", // controller url.
-			action     : "addsample",// action of funciton controller
-			midellwell : _Midellwell.auth(), // is function run before route this.
+			midellwell : null, // is function run before route this.
 			rule       : null // validate parameter passed from request url.
 		}
 		 
-	],null
+	],"islogin"
 );
 //------------------------!group route------------------------

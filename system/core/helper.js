@@ -153,8 +153,7 @@ AutoloadMyController = function ($arg  = []){
 RamdonString = function($num = 10) {
   var text = "";
   var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  for (var i = 0; i < $num; i++)
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
+  for (var i = 0; i < $num; i++) text += possible.charAt(Math.floor(Math.random() * possible.length));
   return "phoenix_" + text;
 }
 
@@ -171,8 +170,6 @@ route = function($name,$data = {}){
 }
 
 ObjectLength = function($o = null){
-	console.log($o);
-	return 0;
 	if(typeof $o != "object") return 0;
 	return Object.keys($o).length;
 }

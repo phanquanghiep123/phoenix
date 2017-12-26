@@ -32,11 +32,14 @@ _F_core       = _Path + ".." + _Setup._F_core;
 	_Http        = new _Autoload.http();
 	_Midellwell  = new _Autoload.midellwell();
 	_Controller  = new _Autoload.controller();
-	_Controller  = Object.assign(_Phoenix,_Route,_Http,_App,_Midellwell,_Controller);
+	_Controller  = Object.assign(_Phoenix,_Controller);
 	//----------------------------------------------!load libelary--------------------------------------------;
 
 //-----------------------------------------------Add custom route---------------------------------;
 require(_F_core  + "autoload.js");
-require(_F_https + "midellwell.js");
 require(_F_https + "route.js");
+var midellwell = require(_F_https + "midellwell.js");
+midellwell     = new midellwell();
+Object.assign(_Midellwell,midellwell);
+
 //-----------------------------------------------!Add custom route---------------------------------;

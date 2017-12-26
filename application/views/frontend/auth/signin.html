@@ -2,13 +2,14 @@
 <?node this.LayoutSetSection("main");?>
 <div class="container">
   <div class="row main">
-    <?node 
-      var error = this.session.getflash("error");
-      if(error){
-        write("<p>"+error+"</p>");
-      }
-    ?>
+    
     <div class="main-login main-center">
+      <?node 
+        var error = this.session.getflash("error");
+        if(error){
+          write("<p>"+error+"</p>");
+        }
+      ?>
       <?node this.form.start("signup",{"method": "post","action": route("auth.signin"),enctype : "multipart/form-data"});?>
       <div class="form-group">
         <label for="name" class="cols-sm-2 control-label">Your Email</label>

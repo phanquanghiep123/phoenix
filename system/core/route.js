@@ -6,20 +6,14 @@ function Router(){
 		var _this = this;
 		_Phoenix.phoenix_info.routes[$Option.name] = $Option;
 		_App[$Option.type]($Option.url,function(req,res,next){
-			if($midellwell != null) $midellwell();
-			if($Option.midellwell != null) $Option.midellwell();
 		    _Controller.request  = req;
 		    _Controller.response = res;
-		    _Controller.next     = next;
-		    if($Option.type.trim() == "get"){
-		    	_Controller.session.addflash("phoenix_sent_get",_Controller.request.query);
-		    }else{
-		    	_Controller.session.addflash("phoenix_sent_" + $Option.type,_Controller.request.body);
-		    }
-		    _this.make(c,a) ;
+		    _Controller.next     = next;	   
+		    if(typeof _Midellwell[$midellwell] == "function") _Midellwell[$midellwell]();
+			if(typeof _Midellwell[$Option.midellwell]  == "function") _Midellwell[$Option.midellwell]();
+		    _this.make(c,a,$Option.type) ;
 		    return true;
 		});
-
 	}
 	this.group = function ($Path,$Option,$midellwell = null){
 		var length = Object.keys($Option).length;
@@ -30,7 +24,7 @@ function Router(){
 			this.add(item,$midellwell);
 		}
 	}
-	this.make = function(c,a){
+	this.make = function(c,a,t){
 		var argUrrl = c.split("/");
 		var $Controller = argUrrl[(argUrrl.length -1 )];
 		var $Action     = a;
@@ -69,6 +63,11 @@ function Router(){
 		}
 		var StringEval = "controller['"+$Action+"']("+stringP+");";
 		_Controller.phoenix_construct();
+        if(t.trim() == "get"){
+	    	_Controller.session.add("sent_get",_Controller.request.query);
+	    }else{
+	    	_Controller.session.add("sent_post",_Controller.request.body);
+	    }
 		if(typeof controller.construct === "function"){
 			controller.construct();
 		}  

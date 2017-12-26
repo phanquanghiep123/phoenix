@@ -13,17 +13,19 @@ function signin(argument) {
 		if($check.validate == true){
 			var email = that.input.post("you_email"); 
 			var password = that.input.post("password");
-			this.load.model("users");
-			this.users.where([["email","=",email],["password","=",password]]).callback(function(){
+			var users = this.load.model("users");
+			users.where([["email","=",email],["password","=",password]]).callback(function(){
 				if(this.id != 0){
 					that.session.add("Auth",this);
+					return that.redirect(route("home.index"));
 				}
 				else {
-					that.session.addflash("error","Email or password not match!")
+					that.session.addflash("error","Email or password not match!");
+					return that.redirect(route("auth.signin"));
 				}
 			}).record();
 		}else{
-			redirect(route("auth.signin"))
+			return this.redirect(route("auth.signin"));
 		}
 	}
 }

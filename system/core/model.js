@@ -219,7 +219,6 @@ function Model() {
 		return this;
 	}
 	this.destroy = function (){
-		 
 		if(this.phoenix_list !== null){
 			for (var i in this.phoenix_list ){
 				if(this.phoenix_list[i].phoenix_subkey == false){

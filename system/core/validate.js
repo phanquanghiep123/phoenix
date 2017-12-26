@@ -224,6 +224,11 @@ function Validate() {
 	this.getAllError = function(){
 		return this.ListDetailErrr;
 	}
+	this.adderror = function ($key,$value){
+		this.ListError[$key] = $value;
+		_Phoenix.session.addflash("phoenix_validate_errors",this.ListError);
+		return true;
+	}
 	this.phoneix_validate_init();
 }
 module.exports = Validate;

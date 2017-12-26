@@ -11,7 +11,7 @@ function driverMysql($SeverInfo){
     this._sql         = "";
 	const init = function(){
 		try{
-		_connection.connect(function($err) {
+		    _connection.connect(function($err) {
 			if ($err) {
 					_Controller.phoenix_info.error.push({detail:$err ,message : $err.stack});
 				}
@@ -192,6 +192,7 @@ function driverMysql($SeverInfo){
 									for (var i in row){
 										$model[i] = row[i];
 									}
+
 								}
 								$model.phoenix_list = [];
 								if(typeof $model.phoenix_callback == "function"){
@@ -213,7 +214,7 @@ function driverMysql($SeverInfo){
 								}	
 								if(typeof $model.phoenix_callback == "function"){
 									$model.phoenix_list = argModels;
-									$model.phoenix_callback(this.phoenix_callback = null);
+									$model.phoenix_callback($model.phoenix_callback = null);
 								}
 							}	
 						_Controller.endwait();
@@ -246,7 +247,19 @@ function driverMysql($SeverInfo){
 						}
 					}
 				}
-				if($model.phoenix_new == 1){
+				var check = false;
+				if(typeof $model.key == "string" || )
+				{
+					check = ($model[$model.key] == 0) ? false : true;
+				}
+				else if(typeof $model.key == "object"){
+					for (var i in $model.key){
+						if($model[$model.key[i]] != 0){
+							check = true;
+						}	 
+					}
+				}
+				if(check == false ){
 					var argcolum = []; 
 					var argvalue = [];
 					for(var i in dataChange){
@@ -284,7 +297,7 @@ function driverMysql($SeverInfo){
 				  		$model[$model.key] = result.insertId; 
 				  	}
 					if(typeof $model.phoenix_callback == "function"){
-						$model.phoenix_callback(this.phoenix_callback = null);
+						$model.phoenix_callback($model.phoenix_callback = null);
 					}
 					_Controller.endwait();
 				});
@@ -315,7 +328,7 @@ function driverMysql($SeverInfo){
 				}
 				$model.phoenix_list = [];
 			    if(typeof $model.phoenix_callback !== null){
-					$model.phoenix_callback(this.phoenix_callback = null);
+					$model.phoenix_callback($model.phoenix_callback = null);
 				}
 				_Controller.endwait();
 		  	}

@@ -1,7 +1,10 @@
-function Midellwell (){
+function _Midellwell (){
+	const _load    = require("./loader.js");
+	const _session = require("./sessions.js");
+	this.load      = new _load();
+	this.session   = new _session();
 	this.redirect  = function($url){
-		_Controller.redirect($url);
-		return true;
+		_Phoenix.redirect($url);
 	}
 }
-module.exports = Midellwell;
+module.exports = _Midellwell;

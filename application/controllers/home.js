@@ -1,7 +1,7 @@
 function home (){
 	this.extent   = MyController;
 	this.index = function(){
-		this.load.view("master/layout.html");
+		return this.load.view("master/layout.html",this.data);
 	}
 	this.demomodel = function(){
 		var that = this;

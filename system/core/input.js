@@ -1,16 +1,9 @@
 function Input (){
-	this.oldDataPost = {};
+	this.oldDataPost = {}
 	this.oldDataGet  = {};
 	this.phoenix_input_init = function(){
-		var oldDataPost = _Phoenix.session.getflash("phoenix_sent_post");
-		if(oldDataPost){
-			this.oldDataPost = oldDataPost;
-		}
-		var oldDataGet  = _Phoenix.session.getflash("phoenix_sent_get");
-		if(oldDataGet){
-			this.oldDataGet = oldDataGet;
-		}
-		console.log(this);
+	    this.oldDataPost = _Phoenix.session.get("sent_post");
+		this.oldDataGet  = _Phoenix.session.get("sent_get");
 	}
 	this.post = function ($name = null){
 		if($name == null){
@@ -44,18 +37,23 @@ function Input (){
 	}
 	this.oldpost = function($name){
 		var post = this.oldDataPost;
-		console.log(post);
-		if(typeof post[$name] !== "undefined")
+		if(typeof post[$name] !== "undefined"){
+			delete this.oldDataPost[$name];
+			_Controller.session.add("sent_post",this.oldDataPost);
 			return post[$name];
+		}
 		else
-			return false;
+			return "";
 	}
 	this.oldget = function($name){
 		var get = this.oldDataGet;
-		if(typeof get[$name] !== "undefined")
+		if(typeof get[$name] !== "undefined"){
+			delete this.oldDataGet[$name];
+			_Phoenix.session.add("sent_get",this.oldDataGet);
 			return get[$name];
+		}
 		else
-			return false;
+			return "";
 	}
 	this.phoenix_input_init();
 }

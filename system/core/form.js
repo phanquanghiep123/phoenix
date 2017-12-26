@@ -17,7 +17,7 @@ function Form() {
 		if($attr != null){
 			for(var i in $attr){
 				if(typeof($attr[i]) !== "function"){
-					attString += i +" = \"" + (($attr[i] == null || $attr[i] == false || $attr[i] == true) ? "" : $attr[i]) +"\" ";
+					attString += i +" = \"" + $attr[i] +"\" ";
 				}
 			}
 		}
@@ -38,7 +38,7 @@ function Form() {
     	if($attr != null){
 			for(var i in $attr){
 				if(typeof($attr[i]) !== "function"){
-					attString += i +" = \"" + (($attr[i] == null || $attr[i] == false || $attr[i] == true) ? "" : $attr[i]) +"\" ";
+					attString += i +" = \"" + $attr[i] +"\" ";
 				}
 			}
 		} 
@@ -59,7 +59,7 @@ function Form() {
     	if($attr != null){
 			for(var i in $attr){
 				if(typeof($attr[i]) !== "function"){
-					attString += i +" = \"" + (($attr[i] == null || $attr[i] == false || $attr[i] == true) ? "" : $attr[i]) +"\" ";
+					attString += i +" = \"" + $attr[i] +"\" ";
 				}
 			}
 		}
@@ -80,7 +80,7 @@ function Form() {
     	if($attr != null){
 			for(var i in $attr){
 				if(typeof($attr[i]) !== "function"){
-					attString += i +" = \"" + (($attr[i] == null || $attr[i] == false || $attr[i] == true) ? "" : $attr[i]) +"\" ";
+					attString += i +" = \"" + $attr[i] +"\" ";
 				}
 			}
 		}
@@ -103,7 +103,7 @@ function Form() {
 			for(var i in $attr){
 				if(typeof($attr[i]) !== "function"){
 					if(i == "value") value = $attr[i];
-					else attString += i +" = \"" + (($attr[i] == null || $attr[i] == false || $attr[i] == true) ? "" : $attr[i]) +"\" ";
+					else attString += i +" = \"" + $attr[i] +"\" ";
 				}
 			}
 		}
@@ -124,7 +124,7 @@ function Form() {
     	if($attr != null){
 			for(var i in $attr){
 				if(typeof($attr[i]) !== "function"){
-					attString += i +" = \"" + (($attr[i] == null || $attr[i] == false || $attr[i] == true) ? "" : $attr[i]) +"\" ";
+					attString += i +" = \"" + $attr[i] +"\" ";
 				}
 			}
 		}
@@ -145,7 +145,7 @@ function Form() {
     	if($attr != null){
 			for(var i in $attr){
 				if(typeof($attr[i]) !== "function"){
-					attString += i +" = \"" + (($attr[i] == null || $attr[i] == false || $attr[i] == true) ? "" : $attr[i]) +"\" ";
+					attString += i +" = \"" + $attr[i] +"\" ";
 				}
 			}
 		}
@@ -166,7 +166,7 @@ function Form() {
     	if($attr != null){
 			for(var i in $attr){
 				if(typeof($attr[i]) !== "function"){
-					attString += i +" = \"" + (($attr[i] == null || $attr[i] == false || $attr[i] == true) ? "" : $attr[i]) +"\" ";
+					attString += i +" = \"" + $attr[i] +"\" ";
 				}
 			}
 		}
@@ -187,7 +187,7 @@ function Form() {
     	if($attr != null){
 			for(var i in $attr){
 				if(typeof($attr[i]) !== "function"){
-					attString += i +" = \"" + (($attr[i] == null || $attr[i] == false || $attr[i] == true) ? "" : $attr[i]) +"\" ";
+					attString += i +" = \"" + $attr[i] +"\" ";
 				}
 			}
 		}
@@ -211,7 +211,7 @@ function Form() {
     	if($attr != null){
 			for(var i in $attr){
 				if(typeof($attr[i]) !== "function"){
-					attString += i +" = \"" + (($attr[i] == null || $attr[i] == false || $attr[i] == true) ? "" : $attr[i]) +"\" ";
+					attString += i +" = \"" + $attr[i] +"\" ";
 				}
 			}
 		}
@@ -244,7 +244,7 @@ function Form() {
     	if($attr != null){
 			for(var i in $attr){
 				if(typeof($attr[i]) !== "function"){
-					attString += i +" = \"" + (($attr[i] == null || $attr[i] == false || $attr[i] == true) ? "" : $attr[i]) +"\" ";
+					attString += i +" = \"" + $attr[i] +"\" ";
 				}
 			}
 		}
@@ -261,7 +261,7 @@ function Form() {
     	if($attr != null){
 			for(var i in $attr){
 				if(typeof($attr[i]) !== "function"){
-					attString += i +" = \"" + (($attr[i] == null || $attr[i] == false || $attr[i] == true) ? "" : $attr[i]) +"\" ";
+					attString += i +" = \"" + $attr[i] +"\" ";
 				}
 			}
 		}
@@ -284,7 +284,7 @@ function Form() {
 			for(var i in $attr){
 				if(typeof($attr[i]) !== "function"){
 					if(i == "label") label = $attr[i];
-					else attString += i +" = \"" + (($attr[i] == null || $attr[i] == false || $attr[i] == true) ? "" : $attr[i]) +"\" ";
+					else attString += i +" = \"" + $attr[i] +"\" ";
 				}
 			}
 		}

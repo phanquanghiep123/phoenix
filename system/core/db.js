@@ -2,7 +2,6 @@ function Db() {
 	this.connectDriver = {};
 	this.driver;
 	this.init = function (){
-		return true;
 		switch(_Config.database.driver) {
 		    case "Mysql":
 		        this.connectDriver = require("./drivers/mysql");

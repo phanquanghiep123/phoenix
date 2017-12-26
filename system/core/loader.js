@@ -1,5 +1,4 @@
 function Loader() {
-	this.phoenix_loadviews = [];
 	this.model = function($file){
 		try {
 			_Phoenix.phoenix_info.model.push({file : $file});
