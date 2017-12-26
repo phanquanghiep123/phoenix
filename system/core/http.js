@@ -5,12 +5,12 @@ function Http(){
 	const http 	     = require('http');
 	const bodyParser = require('body-parser'); 
 	const fileUpload   = require('express-fileupload');
-	//const cookieParser = require('cookie-parser');
-	//const session      = require('express-session');
+	const cookieParser = require('cookie-parser');
+	const session      = require('express-session');
 	_App = express();
 	_App.use(fileUpload());
-	//_App.use(cookieParser());
-	//_App.use(session({secret: "Shh, its a secret!"}));
+	_App.use(cookieParser());
+	_App.use(session({secret: "Shh, its a secret!"}));
 	_App.use("/skins",express.static(_Path + '/skins'));
 	_App.use("/uploads",express.static(_Path + '/uploads'));
 	_App.use(bodyParser.json()); 

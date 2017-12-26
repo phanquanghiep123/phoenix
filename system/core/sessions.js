@@ -8,6 +8,11 @@ function Session (){
 		_Phoenix.request.session[name] = $value;
 		return true;
 	}
+	this.destroy = function($name){
+		var name = this.phoenix_ramkey_section + "_" +$name;
+		delete _Phoenix.request.session[name];
+		return true;
+	}
 	this.get = function ($name){
 		var name = this.phoenix_ramkey_section + "_" +$name;
 		if(_Phoenix.request.session[name] != null && typeof _Phoenix.request.session[name] != "undefined") return _Phoenix.request.session[name];

@@ -2,6 +2,7 @@ function Db() {
 	this.connectDriver = {};
 	this.driver;
 	this.init = function (){
+		return true;
 		switch(_Config.database.driver) {
 		    case "Mysql":
 		        this.connectDriver = require("./drivers/mysql");
@@ -11,6 +12,9 @@ function Db() {
 		        break;
 		    case "PostgreSQL":
 		        this.connectDriver = require("./drivers/postgresql");
+		   		break;
+		   	case "MongoDB":
+		        this.connectDriver = require("./drivers/mongodb");
 		   		break;
 		}
 		this.driver = new this.connectDriver(_Config.database[_Config.database.driver]);

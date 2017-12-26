@@ -9,13 +9,12 @@ function Controller() {
 	this.phoenix_info.layout      = [];
 	this.phoenix_info.routes      = {};
 	this.phoenix_isreturn         = false;
-	this.phoenix_dataviews        = "";
 	this.phoenix_dataviewreturn   = "";
 	this.phoenix_listsection      = {};
 	this.phoneix_namesection      = null;
-	this.phoneix_setsection       = false;
+	this.phoneix_setsection       = false; 
 	this.phoenix_dataviewshtml    = "";
-	this.phoenix_converttohtml    = false;
+	this.phoneix_redirect         = false;
 	this.contenttype              = "text/html";
 	this.end = function(){
 		this.load.views = "";
@@ -26,24 +25,23 @@ function Controller() {
 		this.phoenix_info.error      = [];
 		this.phoenix_info.layout     = [];
 		this.phoenix_listsection     = {};
-		this.phoenix_dataviews       = "";
-		this.phoenix_datalayouts     = "";
+		this.phoenix_dataviewshtml   = "";
+		this.phoneix_redirect        = false;
 		return this.response.end();
 	}
 	this.phoenix_construct = function(){
-        /*if(this.session.get("phoenix_sc")!= false){
+        if(this.session.get("phoenix_sc")!= false){
         	this.phoenix_ramkey_section = this.session.get("phoenix_sc");
         }else{
         	this.phoenix_ramkey_section = RamdonString();
         	this.session.add("phoenix_sc",this.phoenix_ramkey_section);
-        }*/
+        }
 	}
 	this.phoenix_destructors =  function(){
 		var that = this;  
 	    setInterval(function(){
 	    	if(that.waitdding == 0){
 	    		var errors = that.phoenix_info.error;
-	    		console.log(errors.length);
 		        if( errors.length != 0){
 		        	var val;
 		        	for (var key in errors){
@@ -52,9 +50,12 @@ function Controller() {
 			        	that.response.write("<p>"+val.detail+"<br/></p>");
 		        	} 
 		        }else{
-		        	that.response.header("Content-Type",that.contenttype);
-		        	
-		        	that.phoenix_readviewtohtml(); 
+		        	if(that.phoneix_redirect != false){
+		        		that.response.redirect(that.phoneix_redirect);
+		        	}else{
+		        		that.response.header("Content-Type",that.contenttype);
+		        		that.phoenix_readviewtohtml(); 
+		        	}
 		        }
 		        clearInterval(this);
 		        that.end();
@@ -73,10 +74,8 @@ function Controller() {
 	this.phoenix_entent_path = function($type = null){
 		if($type == "view") return _F_views;
 	}
-	this.phoenix_readviewtohtml = function(){
-		this.phoenix_converttohtml = true;
-		this.readandconvert(this.phoenix_dataviews);
-		/*for( var i in this.phoenix_listsection){
+	this.phoenix_readviewtohtml = function(){		 
+		for( var i in this.phoenix_listsection){
 			var setstart   = "[start_" + this.phoneix_fixsetsection + this.phoenix_listsection[i] + "]";
 			var setend     = "[end_"   + this.phoneix_fixsetsection + this.phoenix_listsection[i] + "]";
 			var start      = "[start_" + this.phoneix_fixaddsection + this.phoenix_listsection[i] + "]";
@@ -85,6 +84,7 @@ function Controller() {
 			var layoutArg,searchString,replaceString;
 			layoutArg = this.phoenix_dataviewshtml.split(setstart);
 			if(layoutArg != null){
+				//delete this.phoenix_listsection[i]
 				if(typeof layoutArg[1] != "undefined"){
 					replaceString  = layoutArg[1].split(setend);
 					replaceString  = replaceString[0];
@@ -95,26 +95,22 @@ function Controller() {
 							searchString  = searchString[0];
 							this.phoenix_dataviewshtml = this.phoenix_dataviewshtml.ReplaceAll(setstart+replaceString+setend,""); 
 							this.phoenix_dataviewshtml = this.phoenix_dataviewshtml.ReplaceAll(start+searchString+end,setstart+replaceString+setend);
-							this.phoenix_dataviewshtml = this.phoenix_dataviewshtml.ReplaceAll(setstart,"");  
-							this.phoenix_dataviewshtml = this.phoenix_dataviewshtml.ReplaceAll(setend,"");  
+							this.phoenix_dataviewshtml = this.phoenix_dataviewshtml.ReplaceAll(start,"");
+					        this.phoenix_dataviewshtml = this.phoenix_dataviewshtml.ReplaceAll(end,""); 
+					        this.phoenix_dataviewshtml = this.phoenix_dataviewshtml.ReplaceAll(setstart,"");
+					        this.phoenix_dataviewshtml = this.phoenix_dataviewshtml.ReplaceAll(setend,"");
 						}
 					}
 				}
 			} 
 		}
 		for( var i in this.phoenix_listsection){
-			var setstart   = "[start_" + this.phoneix_fixsetsection + this.phoenix_listsection[i] + "]";
-			var setend     = "[end_"   + this.phoneix_fixsetsection + this.phoenix_listsection[i] + "]";
-			var start      = "[start_" + this.phoneix_fixaddsection + this.phoenix_listsection[i] + "]";
-			var end        = "[end_"   + this.phoneix_fixaddsection + this.phoenix_listsection[i] + "]";
+			var start = "[start_" + this.phoneix_fixaddsection + this.phoenix_listsection[i] + "]";
+			var end   = "[end_"   + this.phoneix_fixaddsection + this.phoenix_listsection[i] + "]";
 			this.phoenix_dataviewshtml = this.phoenix_dataviewshtml.ReplaceAll(start,"");
 			this.phoenix_dataviewshtml = this.phoenix_dataviewshtml.ReplaceAll(end,""); 
-			this.phoenix_dataviewshtml = this.phoenix_dataviewshtml.ReplaceAll(setstart,"");  
-			this.phoenix_dataviewshtml = this.phoenix_dataviewshtml.ReplaceAll(setend,""); 
 		}
-		this.response.write(this.phoenix_dataviewshtml);
-		*/
-		console.log(this.phoenix_dataviewshtml);
+	    this.response.write(this.phoenix_dataviewshtml);
 		return true;
 	}
 	this.readandconvert = function($string){
@@ -139,35 +135,17 @@ function Controller() {
 	}
 	this.phoenix_loadview = function($file, $data = null, $return = false){
 		var view = this.readFlie($file);	
-		if(this.phoenix_converttohtml == false){
-			var stringdata = "";
-			if($data != null){		
-				for (var i in $data ){
-					if(typeof $data[i] == "object"){
-						var t = this.phoenix_coverjson($data[i]);
-						stringdata += i + " = " + "this.phoenix_coverobject(\""+t+"\");" ;
-					}else if( typeof $data[i] == "number"){
-						stringdata+= i + " = " + $data[i] + ";";
-					}else if(typeof $data == "string"){
-						stringdata+= i + " = " + "\"" + $data[i] + "\";";
-					}
+		if($data != null){		
+			for (var key in $data ){
+				try {
+					eval(key + " = $data[key];" );			
+				} catch (e) {
+					if (e instanceof SyntaxError) this.phoenix_info.error.push({detail:e ,message : e.message});
+					else this.phoenix_info.error.push({detail:e ,message : e});
 				}
 			}
-			stringdata = "<?node "+stringdata+ " ?>";
-			this.phoenix_dataviews += stringdata + view;
-		}else{
-			if($data != null){		
-				for (var key in $data ){
-					try {
-						eval(key + " = $data[key];" );			
-					} catch (e) {
-						if (e instanceof SyntaxError) this.phoenix_info.error.push({detail:e ,message : e.message});
-						else this.phoenix_info.error.push({detail:e ,message : e});
-					}
-				}
-			}
-			this.readandconvert(view); 
 		}
+		this.readandconvert(view);
 	}
 	this.LayoutSection = function($name){
 		this.phoneix_setsection  = false;
@@ -183,9 +161,9 @@ function Controller() {
 		}	
 	}
 	this.LayoutSetSection = function($name){
-		this.phoneix_setsection = true;
-		this.namesection = $name;
-		this.phoenix_dataviewshtml += "[start_" + this.phoneix_fixsetsection + this.phoenix_listsection[this.namesection] + "]";
+		this.phoneix_setsection  = true;
+		this.phoneix_namesection = $name;
+		this.phoenix_dataviewshtml += "[start_" + this.phoneix_fixsetsection + this.phoenix_listsection[this.phoneix_namesection] + "]";
 	}
 	this.ExtenLayout  = function($file){
 		var view = this.readFlie($file);

@@ -19,6 +19,12 @@ function Validate() {
     	phone	  : "Please enter {$1} is phone number",
     	url 	  : "Please enter {$1} a url"
 	}
+	this.phoneix_validate_init = function(){
+		var allError = _Phoenix.session.getflag("phoenix_validate_errors");
+		if(allError){
+			this.allError = allError;
+		}
+	}
 	this.addmessge = function($messges){
 		this.messges = Object.assign(this.messges,$messges);
 		return this.messges;
@@ -111,6 +117,7 @@ function Validate() {
 				}
 			}
 		}
+		_Phoenix.session.addflag("phoenix_validate_errors",this.ListError);
 		return {validate : validatecheck, errors : this.ListError };
 	}
 	this.email = function($value){
@@ -205,14 +212,18 @@ function Validate() {
         return true;
     }
     this.getError = function ($name = null){
-    	if($name == null) return this.allError;
-    	else return this.ListError[$name];
+    	var allError = this.allError;
+    	if($name == null) return allError;
+    	if(typeof allError[$name] != "undefined") return allError[$name];
+    	else return false;
     }
 	this.getListError = function (){
-		return this.ListError;				
+		var allError = this.allError
+		return allError;				
 	}
 	this.getAllError = function(){
 		return this.ListDetailErrr;
 	}
+	this.phoneix_validate_init();
 }
 module.exports = Validate;

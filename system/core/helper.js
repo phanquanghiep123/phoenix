@@ -41,7 +41,8 @@ EscapeString = function(str) {
 	});
 }
 redirect = function($url){
-	_Controller.response.redirect($url);
+	_Controller.phoneix_redirect = $url;
+	return true;
 }
 CheckLogin = function() {
 	if (_SessionInfor.Username == undefined && _SessionInfor.Password == undefined) {

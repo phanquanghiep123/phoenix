@@ -6,7 +6,7 @@ function MyController (){
 		this.load.input();
 		this.data.abc = 1;
 		this.data.title = "Phoenix | Signup";
-		this.validate.addmessge({
+		/*this.validate.addmessge({
 			email    : "Vui lòng nhập {$1} là email",
 			number   : "Hãy nhập {$1} là số",
 			required : "Hãy nhập {$1} không được rổng",
@@ -20,7 +20,7 @@ function MyController (){
 			same     : "Hãy nhập {$1} giống như {$2}",
 			phone    : "Hãy nhập {$1} là số điện thoại",
 			url      : "Hãy nhập {$1} một url",
-		});
+		});*/
 	}
 }
 module.exports = MyController;

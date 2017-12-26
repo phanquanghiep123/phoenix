@@ -1,7 +1,8 @@
 function signin(argument) {
 	this.extent = MyController;
 	this.index  = function(){
-		this.load.view("frontend/auth/signin.html",this.data);
+		this.data.title = "Phoneix | Signin";
+		return this.load.view("frontend/auth/signin.html",this.data);
 	}
 	this.save = function(){ 
 		var that = this;
@@ -18,11 +19,10 @@ function signin(argument) {
 					that.session.add("Auth",this);
 				}
 				else {
-
+					that.session.addflag("error","Email or password not match!")
 				}
 			}).record();
 		}else{
-			that.session.addflag ("error",$check.errors);
 			redirect(route("auth.signin"))
 		}
 	}
