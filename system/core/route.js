@@ -5,12 +5,17 @@ function Router(){
 		var a     = $Option.action.toLowerCase().trim();
 		var _this = this;
 		_Phoenix.phoenix_info.routes[$Option.name] = $Option;
-		_App[$Option.type]($Option.url,function(req,res,next){	
+		_App[$Option.type]($Option.url,function(req,res,next){
 			if($midellwell != null) $midellwell();
 			if($Option.midellwell != null) $Option.midellwell();
 		    _Controller.request  = req;
 		    _Controller.response = res;
 		    _Controller.next     = next;
+		    if($Option.type.trim() == "get"){
+		    	_Controller.session.addflash("phoenix_sent_get",_Controller.request.query);
+		    }else{
+		    	_Controller.session.addflash("phoenix_sent_" + $Option.type,_Controller.request.body);
+		    }
 		    _this.make(c,a) ;
 		    return true;
 		});

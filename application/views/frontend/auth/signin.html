@@ -3,21 +3,19 @@
 <div class="container">
   <div class="row main">
     <?node 
-      var error = this.session.getflag("error");
+      var error = this.session.getflash("error");
       if(error){
         write("<p>"+error+"</p>");
       }
     ?>
     <div class="main-login main-center">
-      <?node 
-        this.form.start("signup",{"method": "post","action": route("auth.signin"),enctype : "multipart/form-data"});
-      ?>
+      <?node this.form.start("signup",{"method": "post","action": route("auth.signin"),enctype : "multipart/form-data"});?>
       <div class="form-group">
         <label for="name" class="cols-sm-2 control-label">Your Email</label>
         <div class="cols-sm-10">
           <div class="input-group">
             <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
-            <?node this.form.inputEmail("you_email",{ class : "form-control",id:"you_email",placeholder:"Enter your Email"});?>
+            <?node this.form.inputEmail("you_email",{ class : "form-control",id:"you_email",placeholder:"Enter your Email",value:this.input.oldpost("you_email")});?>
           </div>
           <?node if(this.validate.getError("you_email")){ write('<p class="error"><span>'+this.validate.getError("you_email")+'</span></p>');} ?>
         </div>
@@ -27,7 +25,7 @@
         <div class="cols-sm-10">
           <div class="input-group">
             <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-            <?node this.form.inputPassword("password",{ class : "form-control",id:"password",placeholder:"Enter your Password"});?>
+            <?node this.form.inputPassword("password",{ class : "form-control",id:"password",placeholder:"Enter your Password",value:this.input.oldpost("password")});?>
           </div>
           <?node if(this.validate.getError("password")){ write('<p class="error"><span>'+this.validate.getError("password")+'</span></p>');}?>
         </div>

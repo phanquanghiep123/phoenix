@@ -1,5 +1,5 @@
 function Session (){
-	this.phoenix_flags = [];
+	this.phoenix_flashs = [];
 	this.add = function($name,$value){
 		var hour    = 3600000;
 		_Phoenix.request.session.cookie.expires = new Date(Date.now() + hour);
@@ -18,13 +18,13 @@ function Session (){
 		if(_Phoenix.request.session[name] != null && typeof _Phoenix.request.session[name] != "undefined") return _Phoenix.request.session[name];
 		else return false;
 	}
-	this.addflag =  function ($name,$value){
+	this.addflash =  function ($name,$value){
 		var name = this.phoenix_ramkey_section + "_" +$name;
-		this.phoenix_flags.push(name);
+		this.phoenix_flashs.push(name);
 		_Phoenix.request.session[name] = $value;
 		return true;
 	}
-	this.getflag = function($name){
+	this.getflash = function($name){
 		var name = this.phoenix_ramkey_section + "_" +$name;
 		if(_Phoenix.request.session[name] != null && typeof _Phoenix.request.session[name] != "undefined") {
 			var s = _Phoenix.request.session[name];

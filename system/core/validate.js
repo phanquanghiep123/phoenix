@@ -20,7 +20,7 @@ function Validate() {
     	url 	  : "Please enter {$1} a url"
 	}
 	this.phoneix_validate_init = function(){
-		var allError = _Phoenix.session.getflag("phoenix_validate_errors");
+		var allError = _Phoenix.session.getflash("phoenix_validate_errors");
 		if(allError){
 			this.allError = allError;
 		}
@@ -117,7 +117,7 @@ function Validate() {
 				}
 			}
 		}
-		_Phoenix.session.addflag("phoenix_validate_errors",this.ListError);
+		_Phoenix.session.addflash("phoenix_validate_errors",this.ListError);
 		return {validate : validatecheck, errors : this.ListError };
 	}
 	this.email = function($value){

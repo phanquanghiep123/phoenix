@@ -63,6 +63,9 @@ joinArray = function(InputArray, str) {
 	return string;
 }
 write = function(string) {
+	if(string == null || string == false || string == true){
+		_Phoenix.phoenix_dataviewshtml += "";
+	}
 	_Phoenix.phoenix_dataviewshtml += string;
 }
 base_url = function(url = null){

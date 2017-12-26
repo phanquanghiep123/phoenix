@@ -17,15 +17,11 @@ function Form() {
 		if($attr != null){
 			for(var i in $attr){
 				if(typeof($attr[i]) !== "function"){
-					attString += i +" = \"" + $attr[i] +"\" ";
+					attString += i +" = \"" + (($attr[i] == null || $attr[i] == false || $attr[i] == true) ? "" : $attr[i]) +"\" ";
 				}
 			}
 		}
-		if(_Phoenix.phoenix_isreturn == false){
-			_Phoenix.phoenix_dataviewshtml += '<form name="'+this.CurentName+'" '+attString+'>';
-		}else{
-			_Phoenix.phoenix_dataviewreturn += '<form name="'+this.CurentName+'" '+attString+'>';
-		}
+		write('<form name="'+this.CurentName+'" '+attString+'>');
 		return true;
 	}
 	this.inputText = function($name = null,$attr = {}){
@@ -42,15 +38,11 @@ function Form() {
     	if($attr != null){
 			for(var i in $attr){
 				if(typeof($attr[i]) !== "function"){
-					attString += i +" = \"" + $attr[i] +"\" ";
+					attString += i +" = \"" + (($attr[i] == null || $attr[i] == false || $attr[i] == true) ? "" : $attr[i]) +"\" ";
 				}
 			}
-		}
-		if(_Phoenix.phoenix_isreturn == false){
-			_Phoenix.phoenix_dataviewshtml += '<input type="text" name="'+$name+'" '+attString+'>';
-		}else{
-			_Phoenix.phoenix_dataviewreturn += '<input type="text" name="'+$name+'" '+attString+'>';
-		}
+		} 
+		write('<input type="text" name="'+$name+'" '+attString+'>');
 		return true;
 	}
 	this.inputEmail= function($name = null,$attr = {}){
@@ -67,15 +59,11 @@ function Form() {
     	if($attr != null){
 			for(var i in $attr){
 				if(typeof($attr[i]) !== "function"){
-					attString += i +" = \"" + $attr[i] +"\" ";
+					attString += i +" = \"" + (($attr[i] == null || $attr[i] == false || $attr[i] == true) ? "" : $attr[i]) +"\" ";
 				}
 			}
 		}
-		if(_Phoenix.phoenix_isreturn == false){
-			_Phoenix.phoenix_dataviewshtml += '<input type="email" name="'+$name+'" '+attString+'>';
-		}else{
-			_Phoenix.phoenix_dataviewreturn += '<input type="email" name="'+$name+'" '+attString+'>';
-		}
+		write('<input type="email" name="'+$name+'" '+attString+'>');
 		return true;
 	}
 	this.inputNumber= function($name = null,$attr = {}){
@@ -92,15 +80,11 @@ function Form() {
     	if($attr != null){
 			for(var i in $attr){
 				if(typeof($attr[i]) !== "function"){
-					attString += i +" = \"" + $attr[i] +"\" ";
+					attString += i +" = \"" + (($attr[i] == null || $attr[i] == false || $attr[i] == true) ? "" : $attr[i]) +"\" ";
 				}
 			}
 		}
-		if(_Phoenix.phoenix_isreturn == false){
-			_Phoenix.phoenix_dataviewshtml += '<input type="number" name="'+$name+'" '+attString+'>';
-		}else{
-			_Phoenix.phoenix_dataviewreturn += '<input type="number" name="'+$name+'" '+attString+'>';
-		}
+		write('<input type="number" name="'+$name+'" '+attString+'>');
 		return true;
 	}
 	this.inputTextarea = function($name = null,$attr = {}){
@@ -119,15 +103,11 @@ function Form() {
 			for(var i in $attr){
 				if(typeof($attr[i]) !== "function"){
 					if(i == "value") value = $attr[i];
-					else attString += i +" = \"" + $attr[i] +"\" ";
+					else attString += i +" = \"" + (($attr[i] == null || $attr[i] == false || $attr[i] == true) ? "" : $attr[i]) +"\" ";
 				}
 			}
 		}
-		if(_Phoenix.phoenix_isreturn == false){
-			_Phoenix.phoenix_dataviewshtml += '<textarea name="'+$name+'" '+attString+'>'+value+'</textarea>';
-		}else{
-			_Phoenix.phoenix_dataviewreturn += '<textarea name="'+$name+'" '+attString+'>'+value+'</textarea>';
-		}
+		write('<textarea name="'+$name+'" '+attString+'>'+value+'</textarea>');
 		return true;
 	}
 	this.inputPassword = function($name = null,$attr = {}){
@@ -144,15 +124,11 @@ function Form() {
     	if($attr != null){
 			for(var i in $attr){
 				if(typeof($attr[i]) !== "function"){
-					attString += i +" = \"" + $attr[i] +"\" ";
+					attString += i +" = \"" + (($attr[i] == null || $attr[i] == false || $attr[i] == true) ? "" : $attr[i]) +"\" ";
 				}
 			}
 		}
-		if(_Phoenix.phoenix_isreturn == false){
-			_Phoenix.phoenix_dataviewshtml += '<input type="password" name="'+$name+'" '+attString+'>';
-		}else{
-			_Phoenix.phoenix_dataviewreturn += '<input type="password" name="'+$name+'" '+attString+'>';
-		}
+ 		write('<input type="password" name="'+$name+'" '+attString+'>');
 		return true;
 	}
 	this.inputDate = function($name = null,$attr = {}){
@@ -169,15 +145,11 @@ function Form() {
     	if($attr != null){
 			for(var i in $attr){
 				if(typeof($attr[i]) !== "function"){
-					attString += i +" = \"" + $attr[i] +"\" ";
+					attString += i +" = \"" + (($attr[i] == null || $attr[i] == false || $attr[i] == true) ? "" : $attr[i]) +"\" ";
 				}
 			}
 		}
-		if(_Phoenix.phoenix_isreturn == false){
-			_Phoenix.phoenix_dataviewshtml += '<input type="date" name="'+$name+'" '+attString+'>';
-		}else{
-			_Phoenix.phoenix_dataviewreturn += '<input type="date" name="'+$name+'" '+attString+'>';
-		}
+		write('<input type="date" name="'+$name+'" '+attString+'>');
 		return true;
 	}
 	this.inputCheckbox = function($name = null,$attr = {}){
@@ -194,15 +166,11 @@ function Form() {
     	if($attr != null){
 			for(var i in $attr){
 				if(typeof($attr[i]) !== "function"){
-					attString += i +" = \"" + $attr[i] +"\" ";
+					attString += i +" = \"" + (($attr[i] == null || $attr[i] == false || $attr[i] == true) ? "" : $attr[i]) +"\" ";
 				}
 			}
 		}
-		if(_Phoenix.phoenix_isreturn == false){
-			_Phoenix.phoenix_dataviewshtml += '<input type="checkbox" name="'+$name+'" '+attString+'>';
-		}else{
-			_Phoenix.phoenix_dataviewreturn += '<input type="checkbox" name="'+$name+'" '+attString+'>';
-		}
+		write('<input type="checkbox" name="'+$name+'" '+attString+'>');
 		return true;
 	}
 	this.inputRadio = function($name = null,$attr = {}){
@@ -219,15 +187,11 @@ function Form() {
     	if($attr != null){
 			for(var i in $attr){
 				if(typeof($attr[i]) !== "function"){
-					attString += i +" = \"" + $attr[i] +"\" ";
+					attString += i +" = \"" + (($attr[i] == null || $attr[i] == false || $attr[i] == true) ? "" : $attr[i]) +"\" ";
 				}
 			}
 		}
-		if(_Phoenix.phoenix_isreturn == false){
-			_Phoenix.phoenix_dataviewshtml += '<input type="radio" name="'+$name+'" '+attString+'>';
-		}else{
-			_Phoenix.phoenix_dataviewreturn += '<input type="radio" name="'+$name+'" '+attString+'>';
-		}
+		write('<input type="radio" name="'+$name+'" '+attString+'>');
 		return true;
 	}
 	this.inputSelect = function($name = null,$attr = {},$table = null, $key_value,$key_label,$active = null){
@@ -247,7 +211,7 @@ function Form() {
     	if($attr != null){
 			for(var i in $attr){
 				if(typeof($attr[i]) !== "function"){
-					attString += i +" = \"" + $attr[i] +"\" ";
+					attString += i +" = \"" + (($attr[i] == null || $attr[i] == false || $attr[i] == true) ? "" : $attr[i]) +"\" ";
 				}
 			}
 		}
@@ -263,11 +227,7 @@ function Form() {
 			});	
 		}
 		stringOption += '</select>';
-		if(_Phoenix.phoenix_isreturn == false){
-			_Phoenix.phoenix_dataviewshtml += stringOption;
-		}else{
-			_Phoenix.phoenix_dataviewreturn += stringOption;
-		}
+		write(stringOption);
 		return true;
 	}
 	this.inputFile = function($name,$attr = {}){
@@ -284,15 +244,11 @@ function Form() {
     	if($attr != null){
 			for(var i in $attr){
 				if(typeof($attr[i]) !== "function"){
-					attString += i +" = \"" + $attr[i] +"\" ";
+					attString += i +" = \"" + (($attr[i] == null || $attr[i] == false || $attr[i] == true) ? "" : $attr[i]) +"\" ";
 				}
 			}
 		}
-		if(_Phoenix.phoenix_isreturn == false){
-			_Phoenix.phoenix_dataviewshtml += '<input type="file" name="'+$name+'" '+attString+'>';
-		}else{
-			_Phoenix.phoenix_dataviewreturn += '<input type="file" name="'+$name+'" '+attString+'>';
-		}
+		write('<input type="file" name="'+$name+'" '+attString+'>');
 		return true;
 	}
 	this.inputSubmit = function($name,$attr = {}){
@@ -305,15 +261,11 @@ function Form() {
     	if($attr != null){
 			for(var i in $attr){
 				if(typeof($attr[i]) !== "function"){
-					attString += i +" = \"" + $attr[i] +"\" ";
+					attString += i +" = \"" + (($attr[i] == null || $attr[i] == false || $attr[i] == true) ? "" : $attr[i]) +"\" ";
 				}
 			}
 		}
-		if(_Phoenix.phoenix_isreturn == false){
-			_Phoenix.phoenix_dataviewshtml += '<input type="submit" name="'+$name+'" '+attString+'>';
-		}else{
-			_Phoenix.phoenix_dataviewreturn += '<input type="submit" name="'+$name+'" '+attString+'>';
-		}
+		write('<input type="submit" name="'+$name+'" '+attString+'>');
 		return true;
 	}
 	this.inputButton = function($name = null,$attr = {}){
@@ -332,15 +284,11 @@ function Form() {
 			for(var i in $attr){
 				if(typeof($attr[i]) !== "function"){
 					if(i == "label") label = $attr[i];
-					else attString += i +" = \"" + $attr[i] +"\" ";
+					else attString += i +" = \"" + (($attr[i] == null || $attr[i] == false || $attr[i] == true) ? "" : $attr[i]) +"\" ";
 				}
 			}
 		}
-		if(_Phoenix.phoenix_isreturn == false){
-			_Phoenix.phoenix_dataviewshtml += '<button name="'+$name+'" '+attString+'>'+label+'</button>';
-		}else{
-			_Phoenix.phoenix_dataviewreturn += '<button name="'+$name+'" '+attString+'>'+label+'</button>';
-		}
+		write('<button name="'+$name+'" '+attString+'>'+label+'</button>');
 		return true;
 	}
 	this.end = function(){
@@ -348,12 +296,7 @@ function Form() {
 			_Phoenix.phoenix_info.error.push({detail:this ,message : "Error: Please start form before end form!"});
 			return false;
 		}
-		if(_Phoenix.phoenix_isreturn == false){
-			_Phoenix.phoenix_dataviewshtml += '</form>';
-		}else{
-			_Phoenix.phoenix_dataviewreturn += '</form>';
-		}
-		
+		write('</form>');
 		return true;
 	}
 }

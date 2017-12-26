@@ -19,7 +19,7 @@ function signin(argument) {
 					that.session.add("Auth",this);
 				}
 				else {
-					that.session.addflag("error","Email or password not match!")
+					that.session.addflash("error","Email or password not match!")
 				}
 			}).record();
 		}else{
