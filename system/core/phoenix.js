@@ -18,6 +18,5 @@ function Phoenix(argument) {
 	this.next = function(){
 		return this.response.next();
 	}
-	
 }
 module.exports = Phoenix;

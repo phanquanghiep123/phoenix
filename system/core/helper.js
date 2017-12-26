@@ -62,11 +62,7 @@ joinArray = function(InputArray, str) {
 	return string;
 }
 write = function(string) {
-	if(!_Phoenix.phoenix_islayout)
-		_Phoenix.phoenix_dataviews += string;
-	else
-		_Phoenix.phoenix_datalayouts += string;
-	return true;
+	_Phoenix.phoenix_dataviewshtml += string;
 }
 base_url = function(url = null){
 	var base = _Config.local.host;

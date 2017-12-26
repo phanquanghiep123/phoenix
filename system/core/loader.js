@@ -25,30 +25,28 @@ function Loader() {
 		}
 	}
 	this.view = function( $file = "", $data = {}, $return = false){
-		var view = _Phoenix.loadview($file, $data, $return);
+		var view = _Phoenix.phoenix_loadview($file, $data, $return);
 		_Phoenix.phoenix_info.view.push({type: "file" ,file : $file , data : $data });
-		if( $return == true){
-			return view;
-		}
+		if( $return == true) view;
 		return true;
 	}
 	this.db = function(){
-		var _load      =  require("./loader.js");
+		var _load   =  require("./loader.js");
 		_Phoenix.db = new _load();
 		return _Phoenix.db;
 	}
 	this.form = function(){
-		var _form        =  require("./form.js");
+		var _form     =  require("./form.js");
 		_Phoenix.form = new _form();
 		return _Phoenix.form;
 	}
 	this.validate = function(){
-		var _validate        =  require("./validate.js");
+		var _validate     =  require("./validate.js");
 		_Phoenix.validate = new _validate();
 		return _Phoenix.validate;
 	}
 	this.input = function(){
-	    var _input         = require("./input.js");
+	    var _input      = require("./input.js");
 	    _Phoenix.input  = new _input();
 		return _Phoenix.input;
 	}
