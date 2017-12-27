@@ -36,21 +36,21 @@ function Input (){
 		}
 	}
 	this.oldpost = function($name){
-		var post = this.oldDataPost;
-		if(typeof post[$name] !== "undefined"){
+		var post = this.oldDataPost[$name];
+		if(typeof post !== "undefined"){
 			delete this.oldDataPost[$name];
-			_Controller.session.add("sent_post",this.oldDataPost);
-			return post[$name];
+			_Phoenix.session.add("sent_post",this.oldDataPost);
+			return post;
 		}
 		else
 			return "";
 	}
 	this.oldget = function($name){
-		var get = this.oldDataGet;
-		if(typeof get[$name] !== "undefined"){
+		var get = this.oldDataGet[$name];
+		if(typeof get !== "undefined"){
 			delete this.oldDataGet[$name];
 			_Phoenix.session.add("sent_get",this.oldDataGet);
-			return get[$name];
+			return get ;
 		}
 		else
 			return "";

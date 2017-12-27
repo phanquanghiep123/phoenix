@@ -41,17 +41,17 @@ EscapeString = function(str) {
 	});
 }
 redirect = function($url){
-	_Controller.phoneix_redirect = $url;
+	_Phoenix.phoneix_redirect = $url;
 	return true;
 }
 CheckLogin = function() {
 	if (_SessionInfor.Username == undefined && _SessionInfor.Password == undefined) {
-		_Controller.response.redirect('/admin/login');
+		_Phoenix.response.redirect('/admin/login');
 	}
 }
 CheckDoneLogin = function() {
 	if (_SessionInfor.Username !== undefined && _SessionInfor.Password !== undefined) {
-		_Controller.response.redirect('/admin');
+		_Phoenix.response.redirect('/admin');
 	}
 }
 joinArray = function(InputArray, str) {
@@ -145,7 +145,7 @@ AutoloadMyController = function ($arg  = []){
 		for (var key in $arg){
 			val = $arg[key];
 			var include = require(_F_core + val["file"]);
-			eval(val.name + " = new include(); "+val.name + " = Object.assign(_Controller,"+val.name+") ;");
+			eval(val.name + " = new include(); "+val.name + " = Object.assign(_Phoenix,"+val.name+") ;");
 		}
 	}
 }

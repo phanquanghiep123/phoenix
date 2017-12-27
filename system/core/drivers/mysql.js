@@ -248,7 +248,7 @@ function driverMysql($SeverInfo){
 					}
 				}
 				var check = false;
-				if(typeof $model.key == "string" || )
+				if(typeof $model.key == "string" )
 				{
 					check = ($model[$model.key] == 0) ? false : true;
 				}
