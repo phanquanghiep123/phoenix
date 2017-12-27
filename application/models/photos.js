@@ -1,0 +1,40 @@
+function Photos() {
+	this.table  = "photos";
+	this.key    = "photo_id";
+	this.colums = ["photo_id","name","number_item","description","path_file","type","member_id","created_at","note","image_category","status_photo","thumb","album","same_photo","last_comment","photo_credit","product_type","offer_product","unit_price","maximum_price","sample_pricing","priority_display","manufacture","update_category_done","category","keywords","update_done","width","height","weight_lbs","weight_kg","depth_proj","is_story"];
+	this.photo_id = null;
+ 	this.name = null;
+ 	this.number_item = null;
+ 	this.description = null;
+ 	this.path_file = null;
+ 	this.type = null;
+ 	this.member_id = null;
+ 	this.created_at = null;
+ 	this.note = null;
+ 	this.image_category = null;
+ 	this.status_photo = null;
+ 	this.thumb = null;
+ 	this.album = null;
+ 	this.same_photo = null;
+ 	this.last_comment = null;
+ 	this.photo_credit = null;
+ 	this.product_type = null;
+ 	this.offer_product = null;
+ 	this.unit_price = null;
+ 	this.maximum_price = null;
+ 	this.sample_pricing = null;
+ 	this.priority_display = null;
+ 	this.manufacture = null;
+ 	this.update_category_done = null;
+ 	this.category = null;
+ 	this.keywords = null;
+ 	this.update_done = null;
+ 	this.width = null;
+ 	this.height = null;
+ 	this.weight_lbs = null;
+ 	this.weight_kg = null;
+ 	this.depth_proj = null;
+ 	this.is_story = null;
+ 	
+}
+module.exports = Photos;

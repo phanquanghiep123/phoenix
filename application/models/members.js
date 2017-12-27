@@ -1,0 +1,43 @@
+function Members() {
+	this.table  = "members";
+	this.key    = "id";
+	this.colums = ["id","slug_general","company_name","first_name","last_name","job_title","years_employed","work_ph","work_email","company_about","linkedin_business","logo","banner","hide_banner","avatar","agree","pwd","email","registration_date","update_date","enable","confirm_active","type_member","business_type","token","role","status_member","is_blog","cellphone","city","state","country","designWall_handel","twitter_handel","instagram_handel","post_messeger"];
+	this.id = null;
+ 	this.slug_general = null;
+ 	this.company_name = null;
+ 	this.first_name = null;
+ 	this.last_name = null;
+ 	this.job_title = null;
+ 	this.years_employed = null;
+ 	this.work_ph = null;
+ 	this.work_email = null;
+ 	this.company_about = null;
+ 	this.linkedin_business = null;
+ 	this.logo = null;
+ 	this.banner = null;
+ 	this.hide_banner = null;
+ 	this.avatar = null;
+ 	this.agree = null;
+ 	this.pwd = null;
+ 	this.email = null;
+ 	this.registration_date = null;
+ 	this.update_date = null;
+ 	this.enable = null;
+ 	this.confirm_active = null;
+ 	this.type_member = null;
+ 	this.business_type = null;
+ 	this.token = null;
+ 	this.role = null;
+ 	this.status_member = null;
+ 	this.is_blog = null;
+ 	this.cellphone = null;
+ 	this.city = null;
+ 	this.state = null;
+ 	this.country = null;
+ 	this.designWall_handel = null;
+ 	this.twitter_handel = null;
+ 	this.instagram_handel = null;
+ 	this.post_messeger = null;
+ 	
+}
+module.exports = Members;

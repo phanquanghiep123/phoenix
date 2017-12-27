@@ -1,6 +1,7 @@
 function signin(argument) {
 	this.extent = MyController;
 	this.index  = function(){
+		var that = this;
 		this.data.title = "Phoneix | Signin";
 		return this.load.view("frontend/auth/signin.html",this.data);
 	}

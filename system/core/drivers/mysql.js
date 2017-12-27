@@ -21,6 +21,61 @@ function driverMysql($SeverInfo){
 			else  _Controller.phoenix_info.error.push({detail:e ,message : e}); 
 		}
 	}
+	this.generator_models = function($callback){
+		var file = _Fs.readFileSync(_Path + '../system/core/example/model.js', 'utf8');
+		var options = {sql : "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_SCHEMA ='"+$SeverInfo.database+"'", nesttables: false};
+		_connection.query(options,function(err, rows, fields){
+			var length_table = (rows.length);
+			for(var i in rows){
+				options = {sql : "DESCRIBE "+rows[i].TABLE_NAME+";", nesttables: false};
+				const data = rows[i];
+				_connection.query(options,function(err, table, fields){
+					length_table--;
+					const table_name = data["TABLE_NAME"];
+					const path = _F_models+"/"+table_name+".js";
+					var stream  = _Fs.createWriteStream(path);
+					var newfile = file;
+					stream.once('open', function(fd) {
+						newfile = newfile.ReplaceAll("{{NAME}}",table_name.capitalize());
+						newfile = newfile.ReplaceAll("{{TABLE}}",table_name);
+						var keys = [];
+						var colums = [];
+						var thisColums = "";
+						for(var item in table){
+							if(table[item].Key == "PRI"){
+								keys.push(table[item].Field);
+							}
+							colums.push(table[item].Field);
+							if(typeof table[item].Field != "undefined"){
+								thisColums += "this." + table[item].Field +" = null;\n \t";
+							}						
+						}
+
+						if(keys.length == 1){
+							newfile = newfile.ReplaceAll("{{KEY}}", "\""+keys[0]+"\"");
+						}
+						else if(keys.length == 1){
+							newfile = newfile.ReplaceAll("{{KEY}}", "false");
+						}
+						else{
+							var stringkey = keys.join("\",\"");
+							stringkey = "[\""+stringkey+"\"]"; 
+							newfile = newfile.ReplaceAll("{{KEY}}", stringkey);
+						}
+						var stringcolum = colums.join("\",\"");
+						stringcolum = "[\""+stringcolum+"\"]"; 
+						newfile = newfile.ReplaceAll("{{COLUMS}}", stringcolum);
+						newfile = newfile.ReplaceAll("{{ADD}}", thisColums);
+						stream.write(newfile);
+						stream.end();
+					});
+					if(length_table == 0){
+						$callback();
+					}
+				});
+		    }
+		});
+	}
 	this.reset = function (){
 		this._table       = null;
 		this._columns     = [];

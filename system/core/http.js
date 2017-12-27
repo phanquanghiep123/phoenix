@@ -14,5 +14,13 @@ function Http(){
 	_App.listen(server_port, server_ip_address, function () {
 	  console.log( "Listening on " + server_ip_address + ", port " + server_port );
 	});
+	_App.get('/generator_models',function(req,res,next){
+		const _db = require("./db.js");
+	    var db    = new _db();
+		db.generator_models(function(){
+			res.write("Generator models successfully!");
+			res.end();
+		});
+    });
 }
 module.exports = Http;

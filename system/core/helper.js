@@ -173,3 +173,7 @@ ObjectLength = function($o = null){
 	if(typeof $o != "object") return 0;
 	return Object.keys($o).length;
 }
+
+String.prototype.capitalize = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+}

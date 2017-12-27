@@ -1,0 +1,32 @@
+function Sa_users_social() {
+	this.table  = "sa_users_social";
+	this.key    = "social_id";
+	this.colums = ["social_id","user_id","identifier","webSiteURL","profileURL","photoURL","displayName","description","firstName","lastName","gender","language","age","birthDay","birthMonth","birthYear","email","emailVerified","phone","address","country","region","city","zip","network_name"];
+	this.social_id = null;
+ 	this.user_id = null;
+ 	this.identifier = null;
+ 	this.webSiteURL = null;
+ 	this.profileURL = null;
+ 	this.photoURL = null;
+ 	this.displayName = null;
+ 	this.description = null;
+ 	this.firstName = null;
+ 	this.lastName = null;
+ 	this.gender = null;
+ 	this.language = null;
+ 	this.age = null;
+ 	this.birthDay = null;
+ 	this.birthMonth = null;
+ 	this.birthYear = null;
+ 	this.email = null;
+ 	this.emailVerified = null;
+ 	this.phone = null;
+ 	this.address = null;
+ 	this.country = null;
+ 	this.region = null;
+ 	this.city = null;
+ 	this.zip = null;
+ 	this.network_name = null;
+ 	
+}
+module.exports = Sa_users_social;
