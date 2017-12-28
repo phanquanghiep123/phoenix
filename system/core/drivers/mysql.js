@@ -9,7 +9,7 @@ function driverMysql($SeverInfo){
     this._group       = [];
     this._limit       = [];
     this._sql         = "";
-	const init = function(){
+	const connect = function(){
 		try{
 		    _connection.connect(function($err) {
 			if ($err) {
@@ -20,6 +20,9 @@ function driverMysql($SeverInfo){
 			if (e instanceof SyntaxError)  _Controller.phoenix_info.error.push({detail:e ,message : e.message});
 			else  _Controller.phoenix_info.error.push({detail:e ,message : e}); 
 		}
+	}
+	const endconnect = function (){
+		_connection.end();
 	}
 	this.reset = function (){
 		this._table       = null;
@@ -178,6 +181,7 @@ function driverMysql($SeverInfo){
 			if($connect == true){
 				try { 
 					var options = {sql : sql, nesttables: false};
+					connect();
 					_connection.query(options,function(err, rows, fields){
 						if ($model.phoenix_tomodel != false) {
 							$model.phoenix_tomodel.phoenix_callback = $model.phoenix_callback;
@@ -216,12 +220,14 @@ function driverMysql($SeverInfo){
 									$model.phoenix_list = argModels;
 									$model.phoenix_callback($model.phoenix_callback = null);
 								}
-							}	
+							}
+					    endconnect();	
 						_Controller.endwait();
 					});
 				}catch (e){
 					if (e instanceof SyntaxError) _Controller.phoenix_info.error.push({detail:e ,message : e.message});
 					else _Controller.phoenix_info.error.push({detail:e ,message : e});
+					endconnect();
 					_Controller.endwait();
 				}
 			}
@@ -231,78 +237,94 @@ function driverMysql($SeverInfo){
 		var that = this;
 		var sql  = "";
 		var options = {sql : "DESCRIBE " + replacecolum($model.table), nesttables: false};
-		_connection.query(options,function(err, rows, fields){
-			if(err == null){
-				var dataColumns = [];
-				for ( var i in rows){
-					dataColumns.push(rows[i]["Field"]);
-				}
-				var  dataChange = {};
-				for( var i in dataColumns){
-					if(dataColumns[i] != $model.key){
-						if(typeof $model[dataColumns[i]] !== "undefined"){
-							dataChange[dataColumns[i]] = $model[dataColumns[i]];
-						}else{
-							$model[dataColumns[i]] = null;
+		try {
+			connect();
+			_connection.query(options,function(err, rows, fields){
+				if(err == null){
+					var dataColumns = [];
+					for ( var i in rows){
+						dataColumns.push(rows[i]["Field"]);
+					}
+					var  dataChange = {};
+					for( var i in dataColumns){
+						if(dataColumns[i] != $model.key){
+							if(typeof $model[dataColumns[i]] !== "undefined"){
+								dataChange[dataColumns[i]] = $model[dataColumns[i]];
+							}else{
+								$model[dataColumns[i]] = null;
+							}
 						}
 					}
-				}
-				var check = false;
-				if(typeof $model.key == "string" )
-				{
-					check = ($model[$model.key] == 0) ? false : true;
-				}
-				else if(typeof $model.key == "object"){
-					for (var i in $model.key){
-						if($model[$model.key[i]] != 0){
-							check = true;
-						}	 
+					var check = false;
+					if(typeof $model.key == "string" )
+					{
+						check = ($model[$model.key] == 0) ? false : true;
 					}
-				}
-				if(check == false ){
-					var argcolum = []; 
-					var argvalue = [];
-					for(var i in dataChange){
-						if(typeof(i) === "string"){
-							argcolum.push(replacecolum(i));
-							argvalue.push(replacevalue(dataChange [i]));
-						}	
-					}
-					var stringColum = argcolum.join(" , ");
-					var stringValue = argvalue.join(" , ");
-					sql  = 'INSERT INTO '+ replacecolum($model.table) + " ( " + stringColum + " ) VALUE ( "+ stringValue + " )";
-				}else{
-					var argUpdate = []; 
-					for(var i in dataChange){
-						if(typeof(i) === "string"){
-							argUpdate.push(replacecolum(i) + " = " +replacevalue(dataChange[i]));
-						}	
-					} 
-					if($model.phoenix_where.length > 0){
-						for(var i in $model.phoenix_where){
-							that.where($model.phoenix_where[i]);
+					else if(typeof $model.key == "object"){
+						for (var i in $model.key){
+							if($model[$model.key[i]] != 0){
+								check = true;
+							}	 
 						}
 					}
-					var where = that.convertSql(1);
-				    sql = "UPDATE "+ replacecolum($model.table)+ " SET " + argUpdate.join(" , ") + where ;
-				}
-				$model.phoenix_sql  = sql;
-				$model.phoenix_new  = 0 ;
-				that.reset();
-				_connection.query(sql, function(err, result) {
-				  	if (err) {
-						_Controller.phoenix_info.error.push({detail:err ,message : err.sqlMessage});
-				  	}
-				  	if($model[$model.key] == 0){
-				  		$model[$model.key] = result.insertId; 
-				  	}
-					if(typeof $model.phoenix_callback == "function"){
-						$model.phoenix_callback($model.phoenix_callback = null);
+					if(check == false ){
+						var argcolum = []; 
+						var argvalue = [];
+						for(var i in dataChange){
+							if(typeof(i) === "string"){
+								argcolum.push(replacecolum(i));
+								argvalue.push(replacevalue(dataChange [i]));
+							}	
+						}
+						var stringColum = argcolum.join(" , ");
+						var stringValue = argvalue.join(" , ");
+						sql  = 'INSERT INTO '+ replacecolum($model.table) + " ( " + stringColum + " ) VALUE ( "+ stringValue + " )";
+					}else{
+						var argUpdate = []; 
+						for(var i in dataChange){
+							if(typeof(i) === "string"){
+								argUpdate.push(replacecolum(i) + " = " +replacevalue(dataChange[i]));
+							}	
+						} 
+						if($model.phoenix_where.length > 0){
+							for(var i in $model.phoenix_where){
+								that.where($model.phoenix_where[i]);
+							}
+						}
+						var where = that.convertSql(1);
+					    sql = "UPDATE "+ replacecolum($model.table)+ " SET " + argUpdate.join(" , ") + where ;
 					}
-					_Controller.endwait();
-				});
-			}	
-		});
+					$model.phoenix_sql  = sql;
+					$model.phoenix_new  = 0 ;
+					that.reset();
+					try {
+						_connection.query(sql, function(err, result) {
+						  	if (err) {
+								_Controller.phoenix_info.error.push({detail:err ,message : err.sqlMessage});
+						  	}
+						  	if($model[$model.key] == 0){
+						  		$model[$model.key] = result.insertId; 
+						  	}
+							if(typeof $model.phoenix_callback == "function"){
+								$model.phoenix_callback($model.phoenix_callback = null);
+							}
+							endconnect();
+							_Controller.endwait();
+						});
+					}catch (e){
+						if (e instanceof SyntaxError) _Controller.phoenix_info.error.push({detail:e ,message : e.message});
+						else _Controller.phoenix_info.error.push({detail:e ,message : e});
+						endconnect();
+						_Controller.endwait();
+					}
+				}
+			});
+		}catch (e){
+			if (e instanceof SyntaxError) _Controller.phoenix_info.error.push({detail:e ,message : e.message});
+			else _Controller.phoenix_info.error.push({detail:e ,message : e});
+			endconnect();
+			_Controller.endwait();
+		}
 	}
 	this.find = function ($model){
 		if($model.phoenix_where.length > 0){
@@ -315,24 +337,35 @@ function driverMysql($SeverInfo){
 		var options = {sql : sql, nesttables: false};
 		$model.phoenix_sql = sql;
 		this.reset();
-		_connection.query(options,function(err, rows){
-			if (err) {
-				_Controller.phoenix_info.error.push({detail:err ,message : err.sqlMessage});
-		  	}else{
-		  		var row = null;
-		  		if(rows.length > 0 ){
-					row = rows[0];
-					for (var i in row){
-						$model[i] = row[i];
+		try{
+			connect();
+			_connection.query(options,function(err, rows){
+				if (err) {
+					_Controller.phoenix_info.error.push({detail:err ,message : err.sqlMessage});
+			  	}else{
+			  		var row = null;
+			  		if(rows.length > 0 ){
+						row = rows[0];
+						for (var i in row){
+							$model[i] = row[i];
+						}
 					}
-				}
-				$model.phoenix_list = [];
-			    if(typeof $model.phoenix_callback !== null){
-					$model.phoenix_callback($model.phoenix_callback = null);
-				}
-				_Controller.endwait();
-		  	}
-		});
+					$model.phoenix_list = [];
+				    if(typeof $model.phoenix_callback !== null){
+						$model.phoenix_callback($model.phoenix_callback = null);
+					}	
+			  	}
+			  	endconnect();
+			  	_Controller.endwait();
+			  	
+			});
+		}catch (e){
+			if (e instanceof SyntaxError) _Controller.phoenix_info.error.push({detail:e ,message : e.message});
+			else _Controller.phoenix_info.error.push({detail:e ,message : e});
+			endconnect();
+			_Controller.endwait();
+		}
+		
 	}
 	this.destroy = function($model){
 		var sql = "";
@@ -356,16 +389,26 @@ function driverMysql($SeverInfo){
 		$model.phoenix_sql = sql;
 		this.reset();
 		var options = {sql : sql, nesttables: false};
-		_connection.query(options,function(err, rows){
-			if (err) {
-				_Controller.phoenix_info.error.push({detail:err ,message : err.sqlMessage});
-		  	}else{
-			    if(typeof $model.phoenix_callback  == "function"){
-					$model.phoenix_callback($model.phoenix_callback = null);
-				}
-		  	}
-		  	_Controller.endwait();	
-		});
+		try{
+			connect();
+			_connection.query(options,function(err, rows){
+				if (err) {
+					_Controller.phoenix_info.error.push({detail:err ,message : err.sqlMessage});
+			  	}else{
+				    if(typeof $model.phoenix_callback  == "function"){
+						$model.phoenix_callback($model.phoenix_callback = null);
+					}
+			  	}
+			  	endconnect();
+			  	_Controller.endwait();	
+			});
+		}catch (e){
+			if (e instanceof SyntaxError) _Controller.phoenix_info.error.push({detail:e ,message : e.message});
+			else _Controller.phoenix_info.error.push({detail:e ,message : e});
+			endconnect();
+			_Controller.endwait();
+		}
+		
 	}
 	this.convertSql = function(type){
 		var replayKey = {
@@ -405,9 +448,6 @@ function driverMysql($SeverInfo){
 		sql = sql.ReplaceKeyAll(replayKey);
 		return sql;
 	}
-	this.end = function (){
-		_connection.end();
-	}
 	const replacecolum  = function($column = null){
 		const _sqlKeyWord  = ["%","=","*","/","+","-","like","in","not","or","on","and","left","end","as","right","inner"];
 		var argString = $column.split(" ");
@@ -440,6 +480,5 @@ function driverMysql($SeverInfo){
 			valueString = ($value);
 		return 	valueString;
 	}
-	init();
 }
 module.exports = driverMysql;
