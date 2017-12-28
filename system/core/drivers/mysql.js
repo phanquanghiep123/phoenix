@@ -32,7 +32,7 @@ function driverMysql($SeverInfo){
 				_connection.query(options,function(err, table, fields){
 					length_table--;
 					const table_name = data["TABLE_NAME"];
-					const path = _F_models+"/"+table_name+".js";
+					const path  = _F_models+"/"+table_name+".js";
 					var stream  = _Fs.createWriteStream(path);
 					var newfile = file;
 					stream.once('open', function(fd) {
@@ -50,7 +50,6 @@ function driverMysql($SeverInfo){
 								thisColums += "this." + table[item].Field +" = null;\n \t";
 							}						
 						}
-
 						if(keys.length == 1){
 							newfile = newfile.ReplaceAll("{{KEY}}", "\""+keys[0]+"\"");
 						}

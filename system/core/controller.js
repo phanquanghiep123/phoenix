@@ -53,6 +53,7 @@ function Controller() {
 		        		that.response.write("<p>"+val.message+"<br/></p>");
 			        	that.response.write("<p>"+val.detail+"<br/></p>");
 		        	} 
+		        	console.log(errors);
 		        }else{
 		        	if(that.phoneix_redirect != false){
 		        		that.response.redirect(that.phoneix_redirect);

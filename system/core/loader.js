@@ -45,9 +45,14 @@ function Loader() {
 		return _Phoenix.validate;
 	}
 	this.input = function(){
-	    var _input      = require("./input.js");
-	    _Phoenix.input  = new _input();
+	    var _input     = require("./input.js");
+	    _Phoenix.input = new _input();
 		return _Phoenix.input;
+	}
+	this.upload = function(){
+		 var _upload    = require("./upload.js");
+	    _Phoenix.upload = new _upload();
+		return _Phoenix.upload;
 	}
 }
 module.exports = Loader;

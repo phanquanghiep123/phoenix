@@ -25,7 +25,7 @@ function Input (){
 				return false;
 		}
 	}
-	this.file = function($name){
+	this.file = function($name = null){
 		if($name == null){
 			return _Phoenix.request.files;
 		}else{
