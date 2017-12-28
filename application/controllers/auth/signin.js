@@ -1,6 +1,7 @@
 function signin(argument) {
 	this.extent = MyController;
 	this.index  = function(){
+		var that = this;
 		this.data.title = "Phoneix | Signin";
 		return this.load.view("frontend/auth/signin.html",this.data);
 	}
@@ -13,7 +14,8 @@ function signin(argument) {
 		if($check.validate == true){
 			var email = that.input.post("you_email"); 
 			var password = that.input.post("password");
-			var users = this.load.model("users");
+			this.load.model("users");
+			var users = this.users;
 			users.where([["email","=",email],["password","=",password]]).callback(function(){
 				if(this.id != 0){
 					that.session.add("Auth",this);

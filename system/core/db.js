@@ -40,6 +40,9 @@ function Db() {
 	this.end = function(){
 		return this.driver.end();
 	}
+	this.generator_models = function($callback){
+		return this.driver.generator_models($callback);
+	}
 	this.init();
 }
 module.exports = Db;

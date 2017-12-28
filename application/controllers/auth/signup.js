@@ -17,17 +17,18 @@ function signup (){
 			var full_name = this.input.post("full_name");
 			var email     = this.input.post("you_email");
 			var password  = this.input.post("password");
-			var user = this.load.model("users").addnew();
+			this.load.model("users");
+			var user = this.users;
 			user.where(["email","=",email]).callback(function(){
+
 				if(this.id == 0){
 					this.email     = email;
 					this.password  = password;
 					this.full_name = full_name;
 					this.callback(function(){
-						console.log(this);
+						that.session.add("Auth",this);
+						return that.redirect(route("home.index"));
 					}).save();
-					//that.session.addflash("error","Create new account success Please login!");
-					//return that.redirect(route("auth.signin"));
 				}else{
 					that.validate.adderror("you_email","this Email is been exists!");
 					return that.redirect(route("auth.signup"));

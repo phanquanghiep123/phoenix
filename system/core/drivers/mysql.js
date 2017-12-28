@@ -21,8 +21,74 @@ function driverMysql($SeverInfo){
 			else  _Controller.phoenix_info.error.push({detail:e ,message : e}); 
 		}
 	}
+	connect();
 	const endconnect = function (){
-		_connection.end();
+		if(_Controller.waitdding == 0){
+			_connection.end();
+		}
+		return true;
+		
+    }
+	this.generator_models = function($callback){
+		try{
+			var file = _Fs.readFileSync(_Path + '../system/core/example/model.js', 'utf8');
+			var options = {sql : "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_SCHEMA ='"+$SeverInfo.database+"'", nesttables: false};
+			_connection.query(options,function(err, rows, fields){
+				var length_table = (rows.length);
+				for(var i in rows){
+					options = {sql : "DESCRIBE "+rows[i].TABLE_NAME+";", nesttables: false};
+					const data = rows[i];
+					_connection.query(options,function(err, table, fields){
+						length_table--;
+						const table_name = data["TABLE_NAME"];
+						const path = _F_models+"/"+table_name+".js";
+						var stream  = _Fs.createWriteStream(path);
+						var newfile = file;
+						stream.once('open', function(fd) {
+							newfile = newfile.ReplaceAll("{{NAME}}",table_name.capitalize());
+							newfile = newfile.ReplaceAll("{{TABLE}}",table_name);
+							var keys = [];
+							var colums = [];
+							var thisColums = "";
+							for(var item in table){
+								if(table[item].Key == "PRI"){
+									keys.push(table[item].Field);
+								}
+								colums.push(table[item].Field);
+								if(typeof table[item].Field != "undefined"){
+									thisColums += "this." + table[item].Field +" = null;\n \t";
+								}						
+							}
+
+							if(keys.length == 1){
+								newfile = newfile.ReplaceAll("{{KEY}}", "\""+keys[0]+"\"");
+							}
+							else if(keys.length == 1){
+								newfile = newfile.ReplaceAll("{{KEY}}", "false");
+							}
+							else{
+								var stringkey = keys.join("\",\"");
+								stringkey = "[\""+stringkey+"\"]"; 
+								newfile = newfile.ReplaceAll("{{KEY}}", stringkey);
+							}
+							var stringcolum = colums.join("\",\"");
+							stringcolum = "[\""+stringcolum+"\"]"; 
+							newfile = newfile.ReplaceAll("{{COLUMS}}", stringcolum);
+							newfile = newfile.ReplaceAll("{{ADD}}", thisColums);
+							stream.write(newfile);
+							stream.end();
+						});
+						if(length_table == 0){
+						
+							$callback();
+						}
+					});
+			    }
+			});
+		}catch(e){
+			if (e instanceof SyntaxError)  _Controller.phoenix_info.error.push({detail:e ,message : e.message});
+			else  _Controller.phoenix_info.error.push({detail:e ,message : e}); 
+		}
 	}
 	this.reset = function (){
 		this._table       = null;
@@ -181,7 +247,7 @@ function driverMysql($SeverInfo){
 			if($connect == true){
 				try { 
 					var options = {sql : sql, nesttables: false};
-					connect();
+	
 					_connection.query(options,function(err, rows, fields){
 						if ($model.phoenix_tomodel != false) {
 							$model.phoenix_tomodel.phoenix_callback = $model.phoenix_callback;
@@ -221,13 +287,13 @@ function driverMysql($SeverInfo){
 									$model.phoenix_callback($model.phoenix_callback = null);
 								}
 							}
-					    endconnect();	
+					   	
 						_Controller.endwait();
 					});
 				}catch (e){
 					if (e instanceof SyntaxError) _Controller.phoenix_info.error.push({detail:e ,message : e.message});
 					else _Controller.phoenix_info.error.push({detail:e ,message : e});
-					endconnect();
+				
 					_Controller.endwait();
 				}
 			}
@@ -238,7 +304,6 @@ function driverMysql($SeverInfo){
 		var sql  = "";
 		var options = {sql : "DESCRIBE " + replacecolum($model.table), nesttables: false};
 		try {
-			connect();
 			_connection.query(options,function(err, rows, fields){
 				if(err == null){
 					var dataColumns = [];
@@ -301,28 +366,33 @@ function driverMysql($SeverInfo){
 						_connection.query(sql, function(err, result) {
 						  	if (err) {
 								_Controller.phoenix_info.error.push({detail:err ,message : err.sqlMessage});
+						  	
+						  	}else{
+						  		if($model[$model.key] == 0){
+							  		$model[$model.key] = result.insertId; 
+							  	}
+								if(typeof $model.phoenix_callback == "function"){
+									$model.phoenix_callback($model.phoenix_callback = null);
+								}
+							
 						  	}
-						  	if($model[$model.key] == 0){
-						  		$model[$model.key] = result.insertId; 
-						  	}
-							if(typeof $model.phoenix_callback == "function"){
-								$model.phoenix_callback($model.phoenix_callback = null);
-							}
-							endconnect();
 							_Controller.endwait();
 						});
 					}catch (e){
 						if (e instanceof SyntaxError) _Controller.phoenix_info.error.push({detail:e ,message : e.message});
 						else _Controller.phoenix_info.error.push({detail:e ,message : e});
-						endconnect();
+					
 						_Controller.endwait();
 					}
+				}else{
+					_Controller.phoenix_info.error.push({detail:err ,message : err.sqlMessage});
+				
 				}
 			});
 		}catch (e){
 			if (e instanceof SyntaxError) _Controller.phoenix_info.error.push({detail:e ,message : e.message});
 			else _Controller.phoenix_info.error.push({detail:e ,message : e});
-			endconnect();
+		
 			_Controller.endwait();
 		}
 	}
@@ -338,7 +408,6 @@ function driverMysql($SeverInfo){
 		$model.phoenix_sql = sql;
 		this.reset();
 		try{
-			connect();
 			_connection.query(options,function(err, rows){
 				if (err) {
 					_Controller.phoenix_info.error.push({detail:err ,message : err.sqlMessage});
@@ -355,14 +424,14 @@ function driverMysql($SeverInfo){
 						$model.phoenix_callback($model.phoenix_callback = null);
 					}	
 			  	}
-			  	endconnect();
+			  
 			  	_Controller.endwait();
 			  	
 			});
 		}catch (e){
 			if (e instanceof SyntaxError) _Controller.phoenix_info.error.push({detail:e ,message : e.message});
 			else _Controller.phoenix_info.error.push({detail:e ,message : e});
-			endconnect();
+		
 			_Controller.endwait();
 		}
 		
@@ -390,7 +459,6 @@ function driverMysql($SeverInfo){
 		this.reset();
 		var options = {sql : sql, nesttables: false};
 		try{
-			connect();
 			_connection.query(options,function(err, rows){
 				if (err) {
 					_Controller.phoenix_info.error.push({detail:err ,message : err.sqlMessage});
@@ -399,13 +467,13 @@ function driverMysql($SeverInfo){
 						$model.phoenix_callback($model.phoenix_callback = null);
 					}
 			  	}
-			  	endconnect();
+			  
 			  	_Controller.endwait();	
 			});
 		}catch (e){
 			if (e instanceof SyntaxError) _Controller.phoenix_info.error.push({detail:e ,message : e.message});
 			else _Controller.phoenix_info.error.push({detail:e ,message : e});
-			endconnect();
+		
 			_Controller.endwait();
 		}
 		
