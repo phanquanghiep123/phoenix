@@ -28,6 +28,7 @@ function signup (){
 			var full_name = this.input.post("full_name");
 			var email     = this.input.post("you_email");
 			var password  = this.input.post("password");
+<<<<<<< HEAD
 			var user = this.load.model("users").addnew();
 			
 			/*var tp = _Path + '/uploads/'+$file.name;
@@ -44,16 +45,25 @@ function signup (){
 	        });
 
 			return false;
+=======
+			this.load.model("users");
+			var user = this.users;
+>>>>>>> 13c0ec3433e4f0e97476fb000642c05f8c3bc0fe
 			user.where(["email","=",email]).callback(function(){
+
 				if(this.id == 0){
 					this.email     = email;
 					this.password  = password;
 					this.full_name = full_name;
 					this.callback(function(){
-						console.log(this);
+						that.session.add("Auth",this);
+						return that.redirect(route("home.index"));
 					}).save();
+<<<<<<< HEAD
 					that.session.addflash("error","Create new account success Please login!");
 					return that.redirect(route("auth.signin"));
+=======
+>>>>>>> 13c0ec3433e4f0e97476fb000642c05f8c3bc0fe
 				}else{
 					that.validate.adderror("you_email","this Email is been exists!");
 					return that.redirect(route("auth.signup"));
